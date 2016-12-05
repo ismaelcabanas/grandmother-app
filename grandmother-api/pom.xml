@@ -27,6 +27,23 @@
 
     <build>
         <plugins>
+            <!-- Plugin para compilar groovy -->
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>testGenerateStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Compiler Plugin : compila los fuentes del proyecto -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -47,10 +64,14 @@
 
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
+                <version>${surefire.version}</version>
                 <configuration>
                     <!-- Establece la Sets the VM argument line used when unit tests are run. -->
                     <argLine>${surefireArgLine}</argLine>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Spec.*</include>
+                    </includes>
                     <!-- Excluye los tests de integración cuando se ejecutan los tests unitarios. -->
                     <excludes>
                         <exclude>**/IT*.java</exclude>
@@ -114,7 +135,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.1.201405082137</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <!--
                         Prepara el agente de tiempo de ejecución de JaCoCo, el cual
