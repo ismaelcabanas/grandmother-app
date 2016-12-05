@@ -5,4 +5,5 @@ package cabanas.garcia.ismael.grandmother.model
  */
 interface ChargeType {
 
+    def create()
 }
