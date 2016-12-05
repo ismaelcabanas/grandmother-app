@@ -1,0 +1,54 @@
+<html
+        xmlns:c="http://www.concordion.org/2007/concordion"
+        xmlns:r="http://pragmatists.github.io/concordion-rest-extension"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://pragmatists.github.io/concordion-rest-extension http://pragmatists.github.io/concordion-rest-extension/xsd/concordion-rest.xsd">
+
+<body class="container">
+<h1 class="page-header">API Alta de categorías de gastos</h1>
+
+<div>
+    <strong>Como</strong> administrador<br/>
+    <strong>quiero</strong> un API REST que de de alta categorías de gastos<br/>
+    <strong>para</strong> poder agrupar gastos por categorías.<br/>
+</div>
+
+<h3>Criterios de aceptación</h3>
+<ul>
+    <li>
+        El alta de una categoría de gasto debe quedar persistida en el sistema
+    </li>
+    <li>
+        Una categoría de gasto viene identificada por su nombre
+    </li>
+    <!-- - Si se intenta persistir una categoría existente no se debería persistir
+en el sistema.
+- Si se intenta persistir una categoría existente el API debería informar
+que la categoría no se persiste por ese motivo.-->
+</ul>
+
+<div c:example="Alta de una categoría de gasto" class="panel panel-default">
+    <div class="panel-heading"><b>Alta de una categoría de gasto</b></div>
+    <div class="panel-body">
+
+        <r:request>
+            Cuando envío <r:post path="/categories"></r:post> con el siguiente body
+            <r:jsonBody>
+                {
+                "name":"Agua"
+                }
+            </r:jsonBody>
+            (utilizando <r:setHeader name="Content-Type">application/json</r:setHeader>)
+        </r:request>
+
+        Entonces debería recibir <r:status>HTTP/1.1 201 Created</r:status>
+
+    </div>
+
+
+</div>
+</body>
+
+</html>
+
+
