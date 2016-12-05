@@ -1,5 +1,11 @@
-package cabanas.garcia.ismael.grandmother.model
+package cabanas.garcia.ismael.grandmother.model.impl
 
+import cabanas.garcia.ismael.grandmother.model.Account
+import cabanas.garcia.ismael.grandmother.model.Category
+import cabanas.garcia.ismael.grandmother.model.ChargeMovement
+import cabanas.garcia.ismael.grandmother.model.ChargeType
+import cabanas.garcia.ismael.grandmother.model.DepositMovement
+import cabanas.garcia.ismael.grandmother.model.Person
 import cabanas.garcia.ismael.grandmother.service.DebitMovementService
 import cabanas.garcia.ismael.grandmother.service.DepositMovementService
 import groovy.transform.EqualsAndHashCode

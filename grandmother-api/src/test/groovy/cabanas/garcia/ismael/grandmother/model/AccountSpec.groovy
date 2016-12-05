@@ -1,17 +1,11 @@
 package cabanas.garcia.ismael.grandmother.model
 
-import cabanas.garcia.ismael.grandmother.model.Account
-import cabanas.garcia.ismael.grandmother.model.AccountImpl
-import cabanas.garcia.ismael.grandmother.model.CategoryImpl
-import cabanas.garcia.ismael.grandmother.model.ChargeMovement
-import cabanas.garcia.ismael.grandmother.model.ChargeType
-import cabanas.garcia.ismael.grandmother.model.ChargeTypeImpl
-import cabanas.garcia.ismael.grandmother.model.DepositMovement
-import cabanas.garcia.ismael.grandmother.model.Person
-import cabanas.garcia.ismael.grandmother.model.PersonImpl
+import cabanas.garcia.ismael.grandmother.model.impl.AccountImpl
+import cabanas.garcia.ismael.grandmother.model.impl.CategoryImpl
+import cabanas.garcia.ismael.grandmother.model.impl.ChargeTypeImpl
+import cabanas.garcia.ismael.grandmother.model.impl.PersonImpl
 import cabanas.garcia.ismael.grandmother.service.DebitMovementService
 import cabanas.garcia.ismael.grandmother.service.DepositMovementService
-import cabanas.garcia.ismael.grandmother.model.Category
 import spock.lang.Specification
 
 import java.time.Instant

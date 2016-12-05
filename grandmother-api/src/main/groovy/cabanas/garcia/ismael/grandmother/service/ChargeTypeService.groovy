@@ -1,7 +1,6 @@
 package cabanas.garcia.ismael.grandmother.service
 
 import cabanas.garcia.ismael.grandmother.model.ChargeType
-import cabanas.garcia.ismael.grandmother.model.ChargeTypeImpl
 
 /**
  * Created by XI317311 on 05/12/2016.

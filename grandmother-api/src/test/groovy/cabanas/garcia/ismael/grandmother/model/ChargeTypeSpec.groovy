@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.grandmother.model
 
+import cabanas.garcia.ismael.grandmother.model.impl.ChargeTypeImpl
 import cabanas.garcia.ismael.grandmother.service.ChargeTypeService
 import spock.lang.Specification
 

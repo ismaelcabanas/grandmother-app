@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.grandmother.model
 
+import cabanas.garcia.ismael.grandmother.model.impl.CategoryImpl
 import cabanas.garcia.ismael.grandmother.service.CategoryService
-import org.mockito.Mock
 import spock.lang.Specification
 
 /**

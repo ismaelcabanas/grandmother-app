@@ -1,5 +1,6 @@
-package cabanas.garcia.ismael.grandmother.model
+package cabanas.garcia.ismael.grandmother.model.impl
 
+import cabanas.garcia.ismael.grandmother.model.ChargeType
 import cabanas.garcia.ismael.grandmother.service.ChargeTypeService
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
