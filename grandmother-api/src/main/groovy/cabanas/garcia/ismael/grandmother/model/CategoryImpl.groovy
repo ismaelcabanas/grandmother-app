@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.grandmother.model
 
+import cabanas.garcia.ismael.grandmother.service.CategoryService
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
@@ -12,4 +13,10 @@ import groovy.transform.builder.Builder
 @EqualsAndHashCode
 class CategoryImpl implements Category{
     private String name
+    private CategoryService categoryService
+
+    @Override
+    def create() {
+        categoryService.create(this)
+    }
 }
