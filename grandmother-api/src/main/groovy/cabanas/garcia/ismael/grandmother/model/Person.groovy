@@ -5,5 +5,7 @@ package cabanas.garcia.ismael.grandmother.model
  */
 interface Person {
 
+    String getName()
+
     def create()
 }

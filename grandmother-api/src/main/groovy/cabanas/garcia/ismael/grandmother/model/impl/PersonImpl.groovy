@@ -17,6 +17,11 @@ class PersonImpl implements Person {
     private PersonService personService
 
     @Override
+    String getName() {
+        name
+    }
+
+    @Override
     def create() {
         personService.create(this)
     }

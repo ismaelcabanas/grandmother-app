@@ -1,8 +1,7 @@
 package cabanas.garcia.ismael.grandmother.model.impl
 
-import cabanas.garcia.ismael.grandmother.model.Category
 import cabanas.garcia.ismael.grandmother.model.ChargeMovement
-import cabanas.garcia.ismael.grandmother.model.ChargeType
+import cabanas.garcia.ismael.grandmother.model.Charge
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
@@ -15,16 +14,10 @@ import groovy.transform.builder.Builder
 @EqualsAndHashCode
 class ChargeMovementImpl extends MovementImpl implements ChargeMovement{
 
-    Category category
-    ChargeType chargeType
+    Charge charge
 
     @Override
-    Category getCategory() {
-        return category
-    }
-
-    @Override
-    ChargeType getChargeType() {
-        return chargeType
+    Charge getCharge() {
+        return charge
     }
 }

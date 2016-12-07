@@ -9,5 +9,5 @@ interface Account {
 
     BigDecimal balance()
 
-    def debit(BigDecimal amount, Category category, ChargeType chargeType, Date dateOfCharge)
+    def debit(BigDecimal amount, Charge chargeType, Date dateOfCharge)
 }

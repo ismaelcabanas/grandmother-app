@@ -2,11 +2,12 @@ package cabanas.garcia.ismael.grandmother.model
 
 import cabanas.garcia.ismael.grandmother.model.impl.AccountImpl
 import cabanas.garcia.ismael.grandmother.model.impl.CategoryImpl
-import cabanas.garcia.ismael.grandmother.model.impl.ChargeTypeImpl
+import cabanas.garcia.ismael.grandmother.model.impl.ChargeImpl
 import cabanas.garcia.ismael.grandmother.model.impl.PersonImpl
 import cabanas.garcia.ismael.grandmother.service.DebitMovementService
 import cabanas.garcia.ismael.grandmother.service.DepositMovementService
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import java.time.Instant
 
@@ -16,97 +17,92 @@ import java.time.Instant
  */
 class AccountSpec extends Specification{
 
-    def "Deposit on an account realized for a person in a determinaded moment produces the account's balance is the sum of current balance plus money deposited for that person"(){
-        given:
-        BigDecimal currentBalance = 10.000
-        BigDecimal amount = 30.000
-        Date currentDate = Date.from(Instant.now())
-        DepositMovementService mockDepositMovementService = Mock(DepositMovementService)
-        DebitMovementService mockDebitMovementService = Mock(DebitMovementService)
-        Account account = new AccountImpl(balance: currentBalance,
+    @Unroll
+    def "when #person.name deposits #givenAmount€ on an account with #currentBalance€ at #dateOfDeposit then the account's balance is #expectedBalance€"(){
+        given: "mocks of deposit and debit movements services"
+            DepositMovementService mockDepositMovementService = Mock(DepositMovementService)
+            DebitMovementService mockDebitMovementService = Mock(DebitMovementService)
+        and: "an account with the mocks services and a current balance"
+             Account account = new AccountImpl(balance: currentBalance,
                 depositMovementService: mockDepositMovementService, debitMovementService: mockDebitMovementService)
-        Person person = new PersonImpl(name: "Ismael")
-
-        when:
-        account.deposit(amount, person, currentDate)
-
+        when: "the person does the deposit"
+            account.deposit(givenAmount, person, dateOfDeposit)
         then:
-        account.balance() == currentBalance + amount
+            account.balance() == expectedBalance
+        where:
+        currentBalance | givenAmount | expectedBalance | person                         | dateOfDeposit
+        10.000         | 30.000      | 40.000          | new PersonImpl(name: "Ismael") | now()
+        0              | 20.000      | 20.000          | new PersonImpl(name: "Ismael") | now()
     }
 
-    def "Deposit on an account realized for a person in a determinaded moment produces that the movement is registered in the system"(){
+    @Unroll
+    def "when #person.name deposits #givenAmount€ on an account with balance #currentBalance at #dateOfDeposit then the movement is registered in the system"(){
         DepositMovement depositMovement
-        given:
-        BigDecimal currentBalance = 10.000
-        BigDecimal amount = 30.000
-        DepositMovementService mockDepositMovementService = Mock(DepositMovementService)
-        DebitMovementService mockDebitMovementService = Mock(DebitMovementService)
-        Account account = new AccountImpl(balance: currentBalance,
+        given: "mocks of deposit and debit movements services"
+            DepositMovementService mockDepositMovementService = Mock(DepositMovementService)
+            DebitMovementService mockDebitMovementService = Mock(DebitMovementService)
+        and: "an account with the mocks services and a current balance"
+            Account account = new AccountImpl(balance: currentBalance,
                 depositMovementService: mockDepositMovementService, debitMovementService: mockDebitMovementService)
-        Person person = new PersonImpl(name: "Ismael")
-        Date dateOfDeposit = Date.from(Instant.now())
-
-        when:
-        account.deposit(amount, person, dateOfDeposit)
-
+        when: "the person does the deposit"
+            account.deposit(givenAmount, person, dateOfDeposit)
         then:
-        1 * mockDepositMovementService.add(_) >> {arguments -> depositMovement = arguments[0]}
-        0 * mockDebitMovementService.add(_)
-
+            1 * mockDepositMovementService.add(_) >> {arguments -> depositMovement = arguments[0]}
+            0 * mockDebitMovementService.add(_)
         and:
-            depositMovement.getAmount() == amount
+            depositMovement.getAmount() == givenAmount
             depositMovement.getDateOfMovement() == dateOfDeposit
             depositMovement.getPerson() == person
+        where:
+        currentBalance | givenAmount | expectedBalance | person                         | dateOfDeposit
+        10.000         | 30.000      | 40.000          | new PersonImpl(name: "Ismael") | now()
+
     }
 
-    def "Debit on account in a moment the account's balance is the current balance less the amount charged" (){
-        given:
-        BigDecimal currentBalance = 10.000
-        BigDecimal amountCharged = 30.000
-        DepositMovementService mockDepositMovementService = Mock(DepositMovementService)
-        DebitMovementService mockDebitMovementService = Mock(DebitMovementService)
-        Account account = new AccountImpl(balance: currentBalance,
+    @Unroll
+    def "when there is a charge of #charge.name of #givenAmount€ at #dateOfCharged on an account with balance #currentBalance€ then the account's balance is #expectedBalance" (){
+        given: "mocks of deposit and debit movements services"
+            DepositMovementService mockDepositMovementService = Mock(DepositMovementService)
+            DebitMovementService mockDebitMovementService = Mock(DebitMovementService)
+        and: "an account with a determinaded balnce and the mocks services"
+            Account account = new AccountImpl(balance: currentBalance,
                 depositMovementService: mockDepositMovementService, debitMovementService: mockDebitMovementService)
-        Person person = new PersonImpl(name: "Ismael")
-        Date dateOfCharged = Date.from(Instant.now())
-        Category category = new CategoryImpl(name: "Hogar")
-        ChargeType chargeType = new ChargeTypeImpl(name: "Agua")
-
-        when:
-        account.debit(amountCharged, category, chargeType, dateOfCharged)
-
+        when: "debit a charge on account"
+            account.debit(givenAmountCharged, charge, dateOfDeposit)
         then:
-        account.balance() == currentBalance - amountCharged
-
+            account.balance() == expectedBalance
+        where:
+        currentBalance | givenAmountCharged | expectedBalance | charge                       | dateOfDeposit
+        10.000         | 30.000             | -20.000         | new ChargeImpl(name: "Agua") | now()
+        30.000         | 20.000             | 10.000          | new ChargeImpl(name: "Agua") | now()
     }
 
-    def "Debit on account in a moment produces that the movement is registered in the system" (){
+    def "when there is a charge on an account then a movement is registered in the system" (){
         ChargeMovement chargedMovement
 
-        given:
-        BigDecimal currentBalance = 10.000
-        BigDecimal amountCharged = 30.000
-        DepositMovementService mockDepositMovementService = Mock(DepositMovementService)
-        DebitMovementService mockDebitMovementService = Mock(DebitMovementService)
-        Account account = new AccountImpl(balance: currentBalance,
+        given: "mocks of deposit and debit movements services"
+            DepositMovementService mockDepositMovementService = Mock(DepositMovementService)
+            DebitMovementService mockDebitMovementService = Mock(DebitMovementService)
+        and: "an account with a determinaded balance and the mocks services"
+            BigDecimal currentBalance = new BigDecimal(20.000)
+            Account account = new AccountImpl(balance: currentBalance,
                 depositMovementService: mockDepositMovementService, debitMovementService: mockDebitMovementService)
-        Person person = new PersonImpl(name: "Ismael")
-        Date dateOfCharged = Date.from(Instant.now())
-        Category category = new CategoryImpl(name: "Hogar")
-        ChargeType chargeType = new ChargeTypeImpl(name: "Agua")
-
-        when:
-        account.debit(amountCharged, category, chargeType, dateOfCharged)
-
+        and: "a charge of a amount given"
+            Charge charge = new ChargeImpl(name: "Agua")
+            BigDecimal amountCharged = new BigDecimal(10.000)
+            Date dateOfCharge = now()
+        when: "debit a charge on account"
+            account.debit(amountCharged, charge, dateOfCharge)
         then:
-        1 * mockDebitMovementService.add(_) >> {arguments -> chargedMovement = arguments[0]}
-        0 * mockDepositMovementService.add(_)
-
+            1 * mockDebitMovementService.add(_) >> {arguments -> chargedMovement = arguments[0]}
+            0 * mockDepositMovementService.add(_)
         and:
-        chargedMovement.getAmount() == amountCharged.negate()
-        chargedMovement.getCategory() == category
-        chargedMovement.getChargeType() == chargeType
-        chargedMovement.getDateOfMovement() == dateOfCharged
+            chargedMovement.getAmount() == amountCharged.negate()
+            chargedMovement.getCharge() == charge
+            chargedMovement.getDateOfMovement() == dateOfCharge
+    }
 
+    private Date now() {
+        Date.from(Instant.now())
     }
 }

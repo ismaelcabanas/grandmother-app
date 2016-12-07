@@ -8,4 +8,6 @@ import cabanas.garcia.ismael.grandmother.model.Person
 interface PersonService {
 
     def create(Person person)
+
+    List<Person> findAll()
 }

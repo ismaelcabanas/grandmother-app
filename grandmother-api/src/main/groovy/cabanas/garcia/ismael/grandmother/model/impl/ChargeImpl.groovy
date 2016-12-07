@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.grandmother.model.impl
 
-import cabanas.garcia.ismael.grandmother.model.ChargeType
-import cabanas.garcia.ismael.grandmother.service.ChargeTypeService
+import cabanas.garcia.ismael.grandmother.model.Charge
+import cabanas.garcia.ismael.grandmother.service.ChargeService
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
@@ -12,12 +12,12 @@ import groovy.transform.builder.Builder
 @Builder
 @ToString
 @EqualsAndHashCode
-class ChargeTypeImpl implements ChargeType{
+class ChargeImpl implements Charge{
     private String name
-    private ChargeTypeService chargeTypeService
+    private ChargeService chargeService
 
     @Override
     def create() {
-        chargeTypeService.create(this)
+        chargeService.create(this)
     }
 }

@@ -1,9 +1,8 @@
 package cabanas.garcia.ismael.grandmother.model.impl
 
 import cabanas.garcia.ismael.grandmother.model.Account
-import cabanas.garcia.ismael.grandmother.model.Category
 import cabanas.garcia.ismael.grandmother.model.ChargeMovement
-import cabanas.garcia.ismael.grandmother.model.ChargeType
+import cabanas.garcia.ismael.grandmother.model.Charge
 import cabanas.garcia.ismael.grandmother.model.DepositMovement
 import cabanas.garcia.ismael.grandmother.model.Person
 import cabanas.garcia.ismael.grandmother.service.DebitMovementService
@@ -31,9 +30,9 @@ class AccountImpl implements Account{
     }
 
     @Override
-    def debit(BigDecimal amount, Category category, ChargeType chargeType, Date dateOfCharge) {
+    def debit(BigDecimal amount, Charge chargeType, Date dateOfCharge) {
         BigDecimal debitAmount = amount.negate()
-        ChargeMovement movement = new ChargeMovementImpl(amount: debitAmount, category: category, chargeType: chargeType,
+        ChargeMovement movement = new ChargeMovementImpl(amount: debitAmount, charge: chargeType,
             dateOfMovement: dateOfCharge)
         debitMovementService.add(movement)
         balance = balance.subtract(amount)

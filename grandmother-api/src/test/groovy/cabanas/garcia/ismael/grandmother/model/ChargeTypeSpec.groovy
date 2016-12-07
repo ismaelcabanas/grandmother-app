@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.grandmother.model
 
-import cabanas.garcia.ismael.grandmother.model.impl.ChargeTypeImpl
-import cabanas.garcia.ismael.grandmother.service.ChargeTypeService
+import cabanas.garcia.ismael.grandmother.model.impl.ChargeImpl
+import cabanas.garcia.ismael.grandmother.service.ChargeService
 import spock.lang.Specification
 
 /**
@@ -11,8 +11,8 @@ class ChargeTypeSpec extends Specification{
 
     def "should create new charges"(){
         given:
-        ChargeTypeService mockChargeTypeService = Mock(ChargeTypeService)
-        ChargeType chargeType = new ChargeTypeImpl(name: "Agua", chargeTypeService: mockChargeTypeService)
+        ChargeService mockChargeTypeService = Mock(ChargeService)
+        Charge chargeType = new ChargeImpl(name: "Agua", chargeService: mockChargeTypeService)
 
         when:
         chargeType.create()
