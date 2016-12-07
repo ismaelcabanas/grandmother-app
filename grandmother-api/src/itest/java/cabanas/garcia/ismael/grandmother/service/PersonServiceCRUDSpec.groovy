@@ -1,14 +1,8 @@
 package cabanas.garcia.ismael.grandmother.service
 
-import cabanas.garcia.ismael.grandmother.model.Person
-import cabanas.garcia.ismael.grandmother.model.impl.PersonImpl
-import cabanas.garcia.ismael.grandmother.repository.PersonRepository
+import cabanas.garcia.ismael.grandmother.domain.account.Person
 import cabanas.garcia.ismael.grandmother.service.impl.PersonServiceImpl
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.SpringApplicationContextLoader
-import org.springframework.boot.test.WebIntegrationTest
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Stepwise
 
@@ -20,9 +14,6 @@ import spock.lang.Stepwise
 class PersonServiceCRUDSpec extends Specification{
 
     public static final String ISMAEL_NAME = "Ismael"
-
-    @Autowired
-    PersonRepository personRepository
 
     def "remove all persons"(){
         given: "person repository service"

@@ -1,8 +1,5 @@
-package cabanas.garcia.ismael.grandmother.model.impl
+package cabanas.garcia.ismael.grandmother.domain.account
 
-import cabanas.garcia.ismael.grandmother.model.Charge
-import cabanas.garcia.ismael.grandmother.model.ChargeType
-import cabanas.garcia.ismael.grandmother.service.ChargeService
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
@@ -13,28 +10,20 @@ import groovy.transform.builder.Builder
 @Builder
 @ToString
 @EqualsAndHashCode
-class ChargeImpl implements Charge{
-    private ChargeService chargeService
+class Charge {
+
     private BigDecimal amount
     private ChargeType type
     private Date date
 
-    @Override
-    def create() {
-        chargeService.create(this)
-    }
-
-    @Override
     BigDecimal getAmount() {
         return amount
     }
 
-    @Override
     ChargeType getType() {
         return type
     }
 
-    @Override
     Date getDate() {
         return date
     }

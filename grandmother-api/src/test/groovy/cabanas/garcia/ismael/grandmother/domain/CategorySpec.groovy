@@ -1,6 +1,6 @@
-package cabanas.garcia.ismael.grandmother.model
+package cabanas.garcia.ismael.grandmother.domain
 
-import cabanas.garcia.ismael.grandmother.model.impl.CategoryImpl
+import cabanas.garcia.ismael.grandmother.domain.impl.CategoryImpl
 import cabanas.garcia.ismael.grandmother.service.CategoryService
 import spock.lang.Specification
 

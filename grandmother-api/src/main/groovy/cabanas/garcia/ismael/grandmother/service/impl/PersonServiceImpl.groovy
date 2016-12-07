@@ -1,7 +1,6 @@
 package cabanas.garcia.ismael.grandmother.service.impl
 
-import cabanas.garcia.ismael.grandmother.model.Person
-import cabanas.garcia.ismael.grandmother.repository.PersonRepository
+import cabanas.garcia.ismael.grandmother.domain.account.Person
 import cabanas.garcia.ismael.grandmother.service.PersonService
 
 /**
@@ -9,7 +8,6 @@ import cabanas.garcia.ismael.grandmother.service.PersonService
  */
 class PersonServiceImpl implements PersonService {
 
-    private PersonRepository repository
 
     @Override
     def create(Person person) {

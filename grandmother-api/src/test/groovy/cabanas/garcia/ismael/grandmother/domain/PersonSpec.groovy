@@ -1,6 +1,6 @@
-package cabanas.garcia.ismael.grandmother.model
+package cabanas.garcia.ismael.grandmother.domain
 
-import cabanas.garcia.ismael.grandmother.model.impl.PersonImpl
+import cabanas.garcia.ismael.grandmother.domain.account.Person
 import cabanas.garcia.ismael.grandmother.service.PersonService
 import spock.lang.Specification
 
@@ -12,7 +12,7 @@ class PersonSpec extends Specification{
     def "should create new persons"(){
         given:
         PersonService mockPersonService = Mock(PersonService)
-        Person person = new PersonImpl(name: "Ismael", personService: mockPersonService)
+        Person person = new Person(name: "Ismael", personService: mockPersonService)
 
         when:
         person.create()

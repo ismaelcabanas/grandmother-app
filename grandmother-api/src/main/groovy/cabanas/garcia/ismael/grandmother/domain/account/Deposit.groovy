@@ -1,7 +1,5 @@
-package cabanas.garcia.ismael.grandmother.model.impl
+package cabanas.garcia.ismael.grandmother.domain.account
 
-import cabanas.garcia.ismael.grandmother.model.Deposit
-import cabanas.garcia.ismael.grandmother.model.Person
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
@@ -12,22 +10,20 @@ import groovy.transform.builder.Builder
 @Builder
 @ToString
 @EqualsAndHashCode
-class DepositImpl implements Deposit{
+class Deposit {
+
     private BigDecimal amount
     private Person person
     private Date date
 
-    @Override
     BigDecimal getAmount() {
         return amount
     }
 
-    @Override
     Date getDate() {
         return date
     }
 
-    @Override
     Person getPerson() {
         return person
     }

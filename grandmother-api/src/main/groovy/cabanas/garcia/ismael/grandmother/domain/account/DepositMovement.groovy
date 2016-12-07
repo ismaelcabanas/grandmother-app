@@ -1,7 +1,5 @@
-package cabanas.garcia.ismael.grandmother.model.impl
+package cabanas.garcia.ismael.grandmother.domain.account
 
-import cabanas.garcia.ismael.grandmother.model.DepositMovement
-import cabanas.garcia.ismael.grandmother.model.Person
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
@@ -12,10 +10,9 @@ import groovy.transform.builder.Builder
 @Builder
 @ToString
 @EqualsAndHashCode
-class DepositMovementImpl extends MovementImpl implements DepositMovement{
+class DepositMovement extends Movement{
     Person person
 
-    @Override
     Person getGetPerson() {
         return person
     }

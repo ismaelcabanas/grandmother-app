@@ -1,6 +1,5 @@
-package cabanas.garcia.ismael.grandmother.model.impl
+package cabanas.garcia.ismael.grandmother.domain.account
 
-import cabanas.garcia.ismael.grandmother.model.Person
 import cabanas.garcia.ismael.grandmother.service.PersonService
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
@@ -12,16 +11,15 @@ import groovy.transform.builder.Builder
 @Builder
 @ToString
 @EqualsAndHashCode
-class PersonImpl implements Person {
+class Person {
+
     private String name
     private PersonService personService
 
-    @Override
     String getName() {
         name
     }
 
-    @Override
     def create() {
         personService.create(this)
     }

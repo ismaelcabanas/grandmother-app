@@ -1,6 +1,5 @@
-package cabanas.garcia.ismael.grandmother.model.impl
+package cabanas.garcia.ismael.grandmother.domain.account
 
-import cabanas.garcia.ismael.grandmother.model.ChargeType
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
@@ -11,12 +10,10 @@ import groovy.transform.builder.Builder
 @Builder
 @ToString
 @EqualsAndHashCode
-class ChargeTypeImpl implements ChargeType {
-
+class ChargeType {
     private String name
 
-    @Override
-    String getName() {
-        return name
+    String getName(){
+        name
     }
 }
