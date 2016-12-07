@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.grandmother.domain.account
+package cabanas.garcia.ismael.grandmother.domain.person
 
 import cabanas.garcia.ismael.grandmother.service.PersonService
 import groovy.transform.EqualsAndHashCode

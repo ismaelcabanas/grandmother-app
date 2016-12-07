@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.grandmother.service
 
-import cabanas.garcia.ismael.grandmother.domain.account.Person
+import cabanas.garcia.ismael.grandmother.domain.person.Person
 
 /**
  * Created by XI317311 on 05/12/2016.

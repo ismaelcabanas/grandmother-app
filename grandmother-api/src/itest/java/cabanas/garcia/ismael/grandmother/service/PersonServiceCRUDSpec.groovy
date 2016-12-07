@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.grandmother.service
 
-import cabanas.garcia.ismael.grandmother.domain.account.Person
+import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.PersonServiceImpl
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification

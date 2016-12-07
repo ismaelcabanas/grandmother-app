@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.grandmother.domain.account
 
+import cabanas.garcia.ismael.grandmother.domain.person.Person
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder

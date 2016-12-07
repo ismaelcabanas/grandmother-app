@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.grandmother.domain.account
 
+import cabanas.garcia.ismael.grandmother.domain.person.Person
 import spock.lang.Specification
 import spock.lang.Unroll
 
