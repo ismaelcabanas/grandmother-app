@@ -12,4 +12,10 @@ interface PersonService {
     List<Person> findAll()
 
     def deleteAll()
+
+    Person findById(String id)
+
+    def delete(Person person)
+
+    Person update(Person person)
 }

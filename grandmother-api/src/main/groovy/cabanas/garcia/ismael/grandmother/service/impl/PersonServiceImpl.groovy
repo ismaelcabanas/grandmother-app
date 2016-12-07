@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.grandmother.service.impl
 
 import cabanas.garcia.ismael.grandmother.domain.person.Person
+import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
 import cabanas.garcia.ismael.grandmother.service.PersonService
 
 /**
@@ -8,19 +9,35 @@ import cabanas.garcia.ismael.grandmother.service.PersonService
  */
 class PersonServiceImpl implements PersonService {
 
+    private PersonRepository personRepository
 
     @Override
     def create(Person person) {
-        return null
+        personRepository.save(person)
     }
 
     @Override
     def deleteAll() {
-        return null
+        personRepository.deleteAll()
+    }
+
+    @Override
+    Person findById(String id) {
+        personRepository.findOne(id)
+    }
+
+    @Override
+    def delete(Person person) {
+        personRepository.delete(person)
+    }
+
+    @Override
+    Person update(Person person) {
+        personRepository.save(person)
     }
 
     @Override
     List<Person> findAll() {
-        return null
+        return personRepository.findAll()
     }
 }

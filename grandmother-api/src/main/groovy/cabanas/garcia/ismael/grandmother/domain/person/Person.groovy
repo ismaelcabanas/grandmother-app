@@ -1,9 +1,12 @@
 package cabanas.garcia.ismael.grandmother.domain.person
 
-import cabanas.garcia.ismael.grandmother.service.PersonService
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
+
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
 /**
  * Created by XI317311 on 05/12/2016.
@@ -11,16 +14,23 @@ import groovy.transform.builder.Builder
 @Builder
 @ToString
 @EqualsAndHashCode
+@Entity
 class Person {
 
+    @Id
+    @GeneratedValue
+    private String id
     private String name
-    private PersonService personService
 
     String getName() {
         name
     }
 
-    def create() {
-        personService.create(this)
+    String getId(){
+        id
+    }
+
+    def changeName(String newName) {
+        name = newName
     }
 }
