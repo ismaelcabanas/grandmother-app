@@ -1,15 +1,13 @@
 package cabanas.garcia.ismael.grandmother.model
 
 /**
- * Created by XI317311 on 05/12/2016.
+ * Created by XI317311 on 07/12/2016.
  */
-interface Charge {
-
-    def create()
+interface Deposit {
 
     BigDecimal getAmount()
 
-    ChargeType getType()
-
     Date getDate()
+
+    Person getPerson()
 }

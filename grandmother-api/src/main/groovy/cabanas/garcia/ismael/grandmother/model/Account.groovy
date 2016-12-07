@@ -5,9 +5,9 @@ package cabanas.garcia.ismael.grandmother.model
  */
 interface Account {
 
-    def deposit(BigDecimal amount, Person person, Date dateOfDeposit)
+    def deposit(Deposit deposit)
 
     BigDecimal balance()
 
-    def debit(BigDecimal amount, Charge chargeType, Date dateOfCharge)
+    def charge(Charge charge)
 }

@@ -3,8 +3,8 @@ package cabanas.garcia.ismael.grandmother.model.impl
 import cabanas.garcia.ismael.grandmother.model.Account
 import cabanas.garcia.ismael.grandmother.model.ChargeMovement
 import cabanas.garcia.ismael.grandmother.model.Charge
+import cabanas.garcia.ismael.grandmother.model.Deposit
 import cabanas.garcia.ismael.grandmother.model.DepositMovement
-import cabanas.garcia.ismael.grandmother.model.Person
 import cabanas.garcia.ismael.grandmother.service.DebitMovementService
 import cabanas.garcia.ismael.grandmother.service.DepositMovementService
 import groovy.transform.EqualsAndHashCode
@@ -23,22 +23,24 @@ class AccountImpl implements Account{
     private DebitMovementService debitMovementService
 
     @Override
-    def deposit(BigDecimal amount, Person person, Date dateOfDeposit) {
-        DepositMovement movement = new DepositMovementImpl(amount: amount, person: person, dateOfMovement: dateOfDeposit)
+    def deposit(Deposit deposit) {
+        DepositMovement movement = new DepositMovementImpl(amount: deposit.getAmount(),
+                person: deposit.getPerson(), dateOfMovement: deposit.getDate())
         depositMovementService.add(movement)
-        balance = balance.add(amount)
+        balance = balance.add(deposit.getAmount())
     }
 
     @Override
-    def debit(BigDecimal amount, Charge chargeType, Date dateOfCharge) {
-        BigDecimal debitAmount = amount.negate()
-        ChargeMovement movement = new ChargeMovementImpl(amount: debitAmount, charge: chargeType,
-            dateOfMovement: dateOfCharge)
-        debitMovementService.add(movement)
-        balance = balance.subtract(amount)
-    }
-
     BigDecimal balance(){
         balance
+    }
+
+    @Override
+    def charge(Charge charge) {
+        BigDecimal debitAmount = charge.getAmount()
+        ChargeMovement movement = new ChargeMovementImpl(amount: debitAmount, chargeType: charge.getType(),
+                dateOfMovement: charge.getDate())
+        debitMovementService.add(movement)
+        balance = balance.subtract(debitAmount)
     }
 }
