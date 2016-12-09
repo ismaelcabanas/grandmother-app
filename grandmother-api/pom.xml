@@ -24,6 +24,10 @@
         <slf4j-api.version>1.7.21</slf4j-api.version>
         <surefire.version>2.19.1</surefire.version>
         <concordion.version>2.0.3</concordion.version>
+        <gmavenVersion>1.5</gmavenVersion>
+        <gmavenProviderSelection>2.0</gmavenProviderSelection>
+        <groovyVersion>2.0.0</groovyVersion>
+        <groovy.version>2.4.7</groovy.version>
     </properties>
 
     <build>
@@ -32,7 +36,11 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.5</version>
+                <version>${gmavenVersion}</version>
+                <configuration>
+                    <providerSelection>${gmavenProviderSelection}</providerSelection>
+                    <sourceEncoding>UTF-8</sourceEncoding>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -43,6 +51,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>${groovyVersion}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <!-- Compiler Plugin : compila los fuentes del proyecto -->
@@ -70,12 +85,11 @@
                     <!-- Establece la Sets the VM argument line used when unit tests are run. -->
                     <argLine>${surefireArgLine}</argLine>
                     <includes>
-                        <include>**/*Test.java</include>
                         <include>**/*Spec.*</include>
                     </includes>
                     <!-- Excluye los tests de integración cuando se ejecutan los tests unitarios. -->
                     <excludes>
-                        <exclude>**/IT*.java</exclude>
+                        <exclude>**/*ITSpec.*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -86,6 +100,30 @@
                 <version>1.9.1</version>
                 <executions>
                     <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/groovy</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-test-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/test/groovy</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>add-integration-test-sources</id>
                         <phase>generate-test-sources</phase>
                         <goals>
@@ -94,7 +132,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>src/itest/java</source>
+                                <source>src/itest/groovy</source>
                             </sources>
                             <resources>
                                 <resource>
@@ -126,7 +164,7 @@
                             <argLine>${failsafeArgLine}</argLine>
                             <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                             <includes>
-                                <include>**/*IT.java</include>
+                                <include>**/*ITSpec.*</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -258,6 +296,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency> <!-- enables mocking of classes (in addition to interfaces) -->
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>3.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- enables mocking of classes without default constructor (together with CGLIB) -->
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>2.1</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
@@ -286,7 +336,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.4.7</version>
+            <version>${groovy.version}</version>
         </dependency>
 
         <!-- SLF4J -->
