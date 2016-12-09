@@ -12,19 +12,8 @@ import groovy.transform.builder.Builder
 @EqualsAndHashCode
 class Charge {
 
-    private BigDecimal amount
-    private ChargeType type
-    private Date date
+    BigDecimal amount
+    ChargeType type
+    Date date
 
-    BigDecimal getAmount() {
-        return amount
-    }
-
-    ChargeType getType() {
-        return type
-    }
-
-    Date getDate() {
-        return date
-    }
 }
