@@ -1,6 +1,8 @@
 package cabanas.garcia.ismael.grandmother.service.impl
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
+import cabanas.garcia.ismael.grandmother.domain.account.Charge
+import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
@@ -14,6 +16,19 @@ class AccountServiceImpl implements AccountService{
     private AccountRepository accountRepository
 
     @Override
+    Account charge(String accountId, String chargeTypeId, BigDecimal amount, Date date) {
+        Account account = accountRepository.findOne(accountId)
+        
+        ChargeType chargeType = ChargeType.builder().id(chargeTypeId).build()
+        Charge charge = Charge.builder().type(chargeType).amount(amount).date(date).build()
+        account.charge(charge)
+
+        accountRepository.save(account)
+
+        return account
+    }
+
+    @Override
     Account deposit(String accountId, String personId, BigDecimal amount, Date date) {
         Account account = accountRepository.findOne(accountId)
 
@@ -22,6 +37,8 @@ class AccountServiceImpl implements AccountService{
         account.deposit(deposit)
 
         accountRepository.save(account)
+
+        return account
     }
 
     @Override

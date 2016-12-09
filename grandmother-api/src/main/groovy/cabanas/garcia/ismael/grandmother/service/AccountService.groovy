@@ -10,4 +10,6 @@ interface AccountService {
     Account open(String accountNumber)
 
     Account deposit(String accountId, String personId, BigDecimal amount, Date date)
+
+    Account charge(String accountId, String chargeTypeId, BigDecimal amount, Date date)
 }
