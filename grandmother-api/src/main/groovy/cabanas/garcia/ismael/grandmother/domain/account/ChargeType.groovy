@@ -4,16 +4,23 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
 
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+
 /**
  * Created by XI317311 on 07/12/2016.
  */
 @Builder
 @ToString
 @EqualsAndHashCode
+@Entity
 class ChargeType {
-    private String name
 
-    String getName(){
-        name
-    }
+    String name
+
+    @Id
+    @GeneratedValue
+    String id
+
 }
