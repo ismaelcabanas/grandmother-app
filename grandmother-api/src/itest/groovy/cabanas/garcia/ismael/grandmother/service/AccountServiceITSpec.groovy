@@ -5,10 +5,8 @@ import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
-import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
 import cabanas.garcia.ismael.grandmother.service.impl.AccountServiceImpl
 import cabanas.garcia.ismael.grandmother.service.impl.ChargeTypeServiceImpl
-import cabanas.garcia.ismael.grandmother.service.impl.PersonServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
@@ -32,10 +30,10 @@ class AccountServiceITSpec extends Specification{
     AccountRepository accountRepository
 
     @Autowired
-    PersonRepository personRepository
+    PersonService personService
 
     @Autowired
-    ChargeTypeRepository chargeTypeRepository
+    ChargeTypeService chargeTypeService
 
     private static final String ACCOUNT_NUMBER = "ES6401820474280201551793"
 
@@ -57,9 +55,7 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository)
             Account account = accountService.open(ACCOUNT_NUMBER)
         and: "a given existing person in the system"
-            Person ismael = new Person(name: "Ismael")
-            PersonService personService = new PersonServiceImpl(personRepository: personRepository)
-            personService.create(ismael)
+            Person ismael = createPerson("Ismael")
         and: "an amount"
             BigDecimal depositAmount = AMOUNT
         and: "date of deposit"
@@ -76,9 +72,7 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository)
             Account account = accountService.open(ACCOUNT_NUMBER)
         and: "a given existing charge in the system"
-            ChargeType waterCharge = new ChargeType(name: WATER_CHARGE_TYPE)
-            ChargeTypeService chargeTypeService = new ChargeTypeServiceImpl(chargeTypeRepository: chargeTypeRepository)
-            chargeTypeService.create(waterCharge)
+            ChargeType waterCharge = createChargeType(WATER_CHARGE_TYPE)
         and: "an charge amount"
             BigDecimal chargeAmount = AMOUNT
         and: "date of charge"
@@ -106,9 +100,7 @@ class AccountServiceITSpec extends Specification{
             account = accountService.deposit(account.getId(), ismael.getId(), amountDepositedByBea, dateOfDepositByBea)
         and: "a water's charge on account"
             BigDecimal waterChargeAmount = 20.000
-            ChargeType waterCharge = new ChargeType(name: WATER_CHARGE_TYPE)
-            ChargeTypeService chargeTypeService = new ChargeTypeServiceImpl(chargeTypeRepository: chargeTypeRepository)
-            chargeTypeService.create(waterCharge)
+            ChargeType waterCharge = createChargeType(WATER_CHARGE_TYPE)
             Date dateOfCharge = Date.parse(DATE_FORMAT_PATTERN, "15/07/2016")
             account = accountService.charge(account.getId(), waterCharge.getId(), waterChargeAmount, dateOfCharge)
         expect:
@@ -118,9 +110,13 @@ class AccountServiceITSpec extends Specification{
 
     }
 
+    private def createChargeType(String name) {
+        ChargeType waterCharge = new ChargeType(name: name)
+        chargeTypeService.create(waterCharge)
+    }
+
     private def createPerson(String name){
         Person aPerson = new Person(name: name)
-        PersonService personService = new PersonServiceImpl(personRepository: personRepository)
         personService.create(aPerson)
     }
     private Date now() {
