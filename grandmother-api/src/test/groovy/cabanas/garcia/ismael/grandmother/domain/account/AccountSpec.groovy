@@ -50,7 +50,7 @@ class AccountSpec extends Specification{
             account.charge(chargeTwo)
             account.deposit(depositOne)
         when: "gets the account movements"
-            List<Movement> movements = account.movements()
+            Collection<Movement> movements = account.movements()
         then:
             movements.size() == 3
     }

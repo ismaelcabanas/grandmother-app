@@ -6,7 +6,6 @@ import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
-import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
 import cabanas.garcia.ismael.grandmother.service.AccountService
 
 /**

@@ -4,9 +4,12 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
 
+import javax.persistence.CascadeType
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.OneToMany
 
 /**
  * Created by XI317311 on 05/12/2016.
@@ -21,13 +24,13 @@ class Account {
     @Id
     @GeneratedValue
     String id
+
     BigDecimal balance
     String accountNumber
-    transient List<Movement> movements
 
-    Account(){
-        movements = new ArrayList<Movement>()
-    }
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
+    Collection<Movement> movements = new ArrayList<Movement>()
+
 
     static Account open(String accountNumber) {
         return new Account(balance: ZERO_BALANCE, accountNumber: accountNumber)
@@ -38,7 +41,7 @@ class Account {
         balance = balance.add(deposit.getAmount())
         DepositMovement depositMovement = new DepositMovement(amount: deposit.getAmount(),
             dateOfMovement: deposit.getDate(), person: deposit.getPerson())
-        movements.add(depositMovement)
+        addMovement(depositMovement)
     }
 
     BigDecimal balance(){
@@ -49,10 +52,10 @@ class Account {
         balance = balance.subtract(charge.getAmount())
         ChargeMovement chargeMovement = new ChargeMovement(amount: charge.getAmount(),
             chargeType: charge.getType(), dateOfMovement: charge.getDate())
-        movements.add(chargeMovement)
+        addMovement(chargeMovement)
     }
 
-    List<Movement> movements() {
+    Collection<Movement> movements() {
         movements
     }
 
@@ -60,8 +63,8 @@ class Account {
         accountNumber
     }
 
-    String getId() {
-        id
+    private addMovement(Movement movement){
+        movement.account = this
+        movements.add(movement)
     }
-
 }
