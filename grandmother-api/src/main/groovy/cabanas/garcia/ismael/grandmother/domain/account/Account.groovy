@@ -11,12 +11,19 @@ import groovy.transform.builder.Builder
 @ToString
 @EqualsAndHashCode
 class Account {
+    private static final BigDecimal ZERO_BALANCE = BigDecimal.ZERO
     private BigDecimal balance
+    private String accountNumber
     List<Movement> movements
 
     Account(){
         movements = new ArrayList<Movement>()
     }
+
+    static Account open(String accountNumber) {
+        return new Account(balance: ZERO_BALANCE, accountNumber: accountNumber)
+    }
+
 
     def deposit(Deposit deposit){
         balance = balance.add(deposit.getAmount())
@@ -39,4 +46,13 @@ class Account {
     List<Movement> movements() {
         movements
     }
+
+    String accountNumber() {
+        accountNumber
+    }
+
+    String getId() {
+        null
+    }
+
 }

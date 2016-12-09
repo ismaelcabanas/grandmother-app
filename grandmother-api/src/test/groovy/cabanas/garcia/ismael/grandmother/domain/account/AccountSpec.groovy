@@ -55,6 +55,16 @@ class AccountSpec extends Specification{
             movements.size() == 3
     }
 
+    def "open an account"(){
+        given: "an account number"
+            String accountNumber = "ES123123123"
+        when: "open an account"
+            Account account = Account.open(accountNumber)
+        then:
+            account.accountNumber() == accountNumber
+            account.balance() == BigDecimal.ZERO
+    }
+
     private Date now() {
         Date.from(Instant.now())
     }
