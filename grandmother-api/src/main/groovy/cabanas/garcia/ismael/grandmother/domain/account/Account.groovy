@@ -4,17 +4,25 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
 
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+
 /**
  * Created by XI317311 on 05/12/2016.
  */
-@Builder
 @ToString
 @EqualsAndHashCode
+@Entity
 class Account {
     private static final BigDecimal ZERO_BALANCE = BigDecimal.ZERO
+
+    @Id
+    @GeneratedValue
+    private String id
     private BigDecimal balance
     private String accountNumber
-    List<Movement> movements
+    transient List<Movement> movements
 
     Account(){
         movements = new ArrayList<Movement>()
@@ -52,7 +60,7 @@ class Account {
     }
 
     String getId() {
-        null
+        id
     }
 
 }
