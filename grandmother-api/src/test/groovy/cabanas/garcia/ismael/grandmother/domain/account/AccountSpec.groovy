@@ -65,6 +65,15 @@ class AccountSpec extends Specification{
             account.balance() == BigDecimal.ZERO
     }
 
+    def "buid accounts"(){
+        when:
+            Account account = Account.builder().id("1").accountNumber("123123").balance(30.000).build()
+        then:
+            account.id == "1"
+            account.balance == 30.000
+            account.accountNumber == "123123"
+    }
+
     private Date now() {
         Date.from(Instant.now())
     }

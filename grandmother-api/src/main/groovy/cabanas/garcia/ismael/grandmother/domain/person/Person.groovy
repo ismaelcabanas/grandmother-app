@@ -19,16 +19,10 @@ class Person {
 
     @Id
     @GeneratedValue
-    private String id
-    private String name
+    String id
+    String name
 
-    String getName() {
-        name
-    }
 
-    String getId(){
-        id
-    }
 
     def changeName(String newName) {
         name = newName

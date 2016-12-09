@@ -13,19 +13,8 @@ import groovy.transform.builder.Builder
 @EqualsAndHashCode
 class Deposit {
 
-    private BigDecimal amount
-    private Person person
-    private Date date
+    BigDecimal amount
+    Person person
+    Date date
 
-    BigDecimal getAmount() {
-        return amount
-    }
-
-    Date getDate() {
-        return date
-    }
-
-    Person getPerson() {
-        return person
-    }
 }

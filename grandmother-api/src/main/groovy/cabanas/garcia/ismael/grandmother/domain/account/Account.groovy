@@ -11,6 +11,7 @@ import javax.persistence.Id
 /**
  * Created by XI317311 on 05/12/2016.
  */
+@Builder
 @ToString
 @EqualsAndHashCode
 @Entity
@@ -19,9 +20,9 @@ class Account {
 
     @Id
     @GeneratedValue
-    private String id
-    private BigDecimal balance
-    private String accountNumber
+    String id
+    BigDecimal balance
+    String accountNumber
     transient List<Movement> movements
 
     Account(){
