@@ -4,6 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -17,6 +18,7 @@ import javax.persistence.Id
 @Entity
 class ChargeType {
 
+    @Column(nullable = false)
     String name
 
     @Id
