@@ -15,7 +15,7 @@ import spock.lang.Stepwise
 @ContextConfiguration // not mentioned by docs, but had to include this for Spock to startup the Spring context
 @SpringBootTest
 @Stepwise
-class PersonServiceCRUDSpec extends Specification{
+class PersonServiceCRUDITSpec extends Specification{
 
     public static final String ISMAEL_NAME = "Ismael"
 

@@ -11,7 +11,7 @@ import spock.lang.Specification
  */
 @ContextConfiguration // not mentioned by docs, but had to include this for Spock to startup the Spring context
 @SpringBootTest
-class ApplicationSpec extends Specification{
+class ApplicationITSpec extends Specification{
 
     @Autowired
     WebApplicationContext context
