@@ -22,10 +22,10 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         then:
             response.statusCode == statusCodeExpected
         where:
-        accountNumber | balance | statusCodeExpected
-        ""            | 30.000  | HttpStatus.BAD_REQUEST
-        null          | 10.000  | HttpStatus.BAD_REQUEST
-        "123123"      | 10.000  | HttpStatus.CREATED
-        "123123"      | -10.000 | HttpStatus.BAD_REQUEST
+        accountNumber | balance                 | statusCodeExpected
+        ""            | new BigDecimal(30.000)  | HttpStatus.BAD_REQUEST
+        null          | new BigDecimal(30.000)  | HttpStatus.BAD_REQUEST
+        "123123"      | new BigDecimal(0)       | HttpStatus.CREATED
+        "123123"      | new BigDecimal(-30.000) | HttpStatus.BAD_REQUEST
     }
 }
