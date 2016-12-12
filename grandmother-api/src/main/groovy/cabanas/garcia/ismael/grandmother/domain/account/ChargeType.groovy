@@ -3,6 +3,7 @@ package cabanas.garcia.ismael.grandmother.domain.account
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
+import org.hibernate.validator.constraints.NotEmpty
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -19,6 +20,7 @@ import javax.persistence.Id
 class ChargeType {
 
     @Column(nullable = false)
+    @NotEmpty
     String name
 
     @Id
