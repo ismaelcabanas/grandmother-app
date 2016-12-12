@@ -9,6 +9,7 @@ import cabanas.garcia.ismael.grandmother.service.impl.AccountServiceImpl
 import cabanas.garcia.ismael.grandmother.service.impl.ChargeTypeServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
@@ -21,11 +22,13 @@ import java.time.Instant
 @ContextConfiguration // not mentioned by docs, but had to include this for Spock to startup the Spring context
 @SpringBootTest
 @Transactional
+@DirtiesContext // What it does is mark the ApplicationContext as dirty, thus requiring it to be reloaded for the next integration test
 class AccountServiceITSpec extends Specification{
 
     public static final String WATER_CHARGE_TYPE = "Agua"
     public static final BigDecimal AMOUNT = 30.000
     public static final String DATE_FORMAT_PATTERN = "dd/MM/yyyy"
+
     @Autowired
     AccountRepository accountRepository
 
@@ -107,7 +110,6 @@ class AccountServiceITSpec extends Specification{
             account.balance == 10.000
         and:
             account.movements.size() == 3
-
     }
 
     private def createChargeType(String name) {
