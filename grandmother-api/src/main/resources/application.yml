@@ -4,6 +4,15 @@ server:
 spring:
   profiles:
     active: development
+
+logging:
+  level:
+    cabanas:
+      garcia:
+        ismael:
+          grandmother: DEBUG
+    org:
+      hibernate: INFO
 ---
 
 spring:
