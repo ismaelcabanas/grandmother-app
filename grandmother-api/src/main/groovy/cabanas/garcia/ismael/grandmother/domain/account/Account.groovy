@@ -3,6 +3,7 @@ package cabanas.garcia.ismael.grandmother.domain.account
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
+import org.hibernate.validator.constraints.NotEmpty
 
 import javax.persistence.CascadeType
 import javax.persistence.Entity
@@ -10,6 +11,7 @@ import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.OneToMany
+import javax.validation.constraints.Min
 
 /**
  * Created by XI317311 on 05/12/2016.
@@ -25,15 +27,18 @@ class Account {
     @GeneratedValue
     String id
 
+    @Min(value = 0L)
     BigDecimal balance
+    
+    @NotEmpty
     String accountNumber
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
     Collection<Movement> movements = new ArrayList<Movement>()
 
 
-    static Account open(String accountNumber) {
-        return new Account(balance: ZERO_BALANCE, accountNumber: accountNumber)
+    static Account open(String accountNumber, BigDecimal balance = BigDecimal.ZERO) {
+        return new Account(balance: balance, accountNumber: accountNumber)
     }
 
 

@@ -7,11 +7,16 @@ import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.AccountService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
 /**
  * Created by XI317311 on 09/12/2016.
  */
+@Service
 class AccountServiceImpl implements AccountService{
+
+    @Autowired
     private AccountRepository accountRepository
 
     @Override
@@ -41,8 +46,8 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    Account open(String accountNumber) {
-        Account account = Account.open(accountNumber)
+    Account open(String accountNumber, BigDecimal balance) {
+        Account account = Account.open(accountNumber, balance)
 
         accountRepository.save(account)
 
