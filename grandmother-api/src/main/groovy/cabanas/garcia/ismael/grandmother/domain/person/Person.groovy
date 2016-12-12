@@ -3,6 +3,7 @@ package cabanas.garcia.ismael.grandmother.domain.person
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
+import org.hibernate.validator.constraints.NotEmpty
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -23,6 +24,7 @@ class Person {
     String id
 
     @Column(nullable = false)
+    @NotEmpty
     String name
 
 
