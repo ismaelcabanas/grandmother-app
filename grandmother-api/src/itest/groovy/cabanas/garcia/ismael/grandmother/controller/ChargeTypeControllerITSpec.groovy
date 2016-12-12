@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 
 /**
@@ -37,16 +36,16 @@ class ChargeTypeControllerITSpec extends Specification{
 
     def "should return 400 status code when create a charge type without required params"(){
         given:
-            ChargeType chargeType = new ChargeType(name: chargeName)
+            ChargeType chargeType = new ChargeType(name: chargeTypeName)
             RequestEntity<ChargeType> requestEntity = RequestEntity.post(serviceURI("chargeTypes")).body(chargeType)
         when:
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
             response.statusCode == statusCodeExpected
         where:
-        chargeName | statusCodeExpected
-        ""         | HttpStatus.BAD_REQUEST
-        null       | HttpStatus.BAD_REQUEST
+        chargeTypeName | statusCodeExpected
+        ""             | HttpStatus.BAD_REQUEST
+        null           | HttpStatus.BAD_REQUEST
     }
 
     URI serviceURI(String path = "") {
