@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller
 
+import cabanas.garcia.ismael.grandmother.controller.request.ChargeRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
 import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
@@ -39,6 +40,13 @@ class AccountController {
     ResponseEntity<Void> deposit(@PathVariable("id") String accountId, @Valid @RequestBody DepositRequestBody requestBody){
         log.debug("Updating account with data $requestBody")
         accountService.deposit(accountId, requestBody.personId, requestBody.deposit, requestBody.dateOfDeposit)
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT)
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/{id}/charge")
+    ResponseEntity<Void> charge(@PathVariable("id") String accountId, @Valid @RequestBody ChargeRequestBody requestBody){
+        log.debug("Updating account with data $requestBody")
+        accountService.deposit(accountId, requestBody.chargeTypeId, requestBody.charge, requestBody.dateOfCharge)
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT)
     }
 }
