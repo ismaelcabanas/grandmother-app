@@ -1,7 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
-import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
@@ -45,41 +44,47 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         "123123"      | new BigDecimal(-30.000) | HttpStatus.BAD_REQUEST
     }
 
-    def "should return 204 status code when Isma deposits 30.000€"(){
-        given: "a person"
-            Person person = createPerson("Isma")
-        and: "an given account"
-            Account account = createDefaultAccount()
-        and: "a given amount"
-            def amount = new BigDecimal(30.000)
+    @Unroll
+    def "should return #statusCodeExpected status code when #person.name deposits #amount€ at #date"(){
+        given: "an given account"
+            Account account = openDefaultAccount()
+        and: "a person in the system"
+            persistPerson(person)
         when: "deposits a given amount"
             String uri = getDepositUri(account)
-            def body = getBody(person, amount)
+            def depositRequestBody = getBody(person, amount, date)
             RequestEntity<DepositRequestBody> requestEntity =
-                    RequestEntity.put(serviceURI(uri))
-                            .body(body)
+                    RequestEntity.put(serviceURI(uri)).body(depositRequestBody)
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
-            response.statusCode == HttpStatus.NO_CONTENT
+            response.statusCode == statusCodeExpected
+        where:
+        amount                | person                   | date                    | statusCodeExpected
+        new BigDecimal(30000) | new Person(name: "Isma") | parseDate("01/01/2010") | HttpStatus.NO_CONTENT
+        null | new Person(name: "Isma") | parseDate("01/01/2010") | HttpStatus.BAD_REQUEST
+        new BigDecimal(30000) | new Person(name: "Isma") | null | HttpStatus.BAD_REQUEST
+
     }
 
-    private DepositRequestBody getBody(Person person, BigDecimal amount) {
-        new DepositRequestBody(personId: person.id, deposit: amount)
+    Date parseDate(String date) {
+        Date.parse("dd/MM/yyyy", date)
+    }
+
+    private DepositRequestBody getBody(Person person, BigDecimal amount, Date date) {
+        new DepositRequestBody(personId: person.id, deposit: amount, dateOfDeposit: date)
     }
 
     private String getDepositUri(Account account) {
         UriComponentsBuilder.fromPath(account.id).pathSegment("deposit").build().encode().toUriString()
     }
 
-    Account createDefaultAccount() {
+    Account openDefaultAccount() {
         Account account = new Account(accountNumber: "123123")
         accountRepository.save(account)
         return account
     }
 
-    Person createPerson(String name){
-        Person person = new Person(name: name)
+    def persistPerson(Person person){
         personRepository.save(person)
-        return person
     }
 }
