@@ -74,6 +74,15 @@ class AccountSpec extends Specification{
             account.accountNumber == "123123"
     }
 
+    def "create an account without balance"(){
+        when:
+            Account account = new Account(id: "1", accountNumber: "123123")
+        then:
+            account.id == "1"
+            account.balance == BigDecimal.ZERO
+            account.accountNumber == "123123"
+    }
+
     private Date now() {
         Date.from(Instant.now())
     }

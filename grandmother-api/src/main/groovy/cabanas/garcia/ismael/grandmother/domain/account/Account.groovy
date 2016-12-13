@@ -28,7 +28,7 @@ class Account {
     String id
 
     @Min(value = 0L)
-    BigDecimal balance
+    BigDecimal balance = BigDecimal.ZERO
     
     @NotEmpty
     String accountNumber
