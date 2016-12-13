@@ -11,11 +11,17 @@ import spock.lang.Unroll
  * Created by XI317311 on 12/12/2016.
  */
 class PersonControllerITSpec extends RestIntegrationBaseSpec {
+
+    @Override
+    String getBasePath() {
+        return "persons/"
+    }
+
     @Unroll
     def "should return #statusCodeExpected status code when create a person with name '#name'"(){
         given:
             Person person = new Person(name: name)
-            RequestEntity<Person> requestEntity = RequestEntity.post(serviceURI("persons")).body(person)
+            RequestEntity<Person> requestEntity = RequestEntity.post(serviceURI()).body(person)
         when:
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
