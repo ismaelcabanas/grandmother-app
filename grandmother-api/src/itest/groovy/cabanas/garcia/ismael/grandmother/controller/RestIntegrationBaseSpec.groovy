@@ -21,8 +21,7 @@ abstract class RestIntegrationBaseSpec extends Specification{
     TestRestTemplate restTemplate = new TestRestTemplate()
 
     URI serviceURI(String path = "") {
-        new URI("http://localhost:$port/${basePath}${path}")
+        new URI("http://localhost:$port${path}")
     }
 
-    String getBasePath() { "" }
 }

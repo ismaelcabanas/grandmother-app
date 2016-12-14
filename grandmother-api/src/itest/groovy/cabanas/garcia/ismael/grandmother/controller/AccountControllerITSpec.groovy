@@ -20,10 +20,6 @@ import spock.lang.Unroll
  */
 class AccountControllerITSpec extends RestIntegrationBaseSpec{
 
-    @Override
-    String getBasePath() {
-        return "accounts/"
-    }
     @Autowired
     PersonRepository personRepository
 
@@ -37,7 +33,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     def "should return status #statusCodeExpected when create a account with account number '#accountNumber' and balance #balance" (){
         given:
             Account account = new Account(accountNumber: accountNumber, balance: balance)
-            RequestEntity<Account> requestEntity = RequestEntity.post(serviceURI()).body(account)
+            RequestEntity<Account> requestEntity = RequestEntity.post(serviceURI("/accounts")).body(account)
         when:
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
@@ -57,10 +53,9 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         and: "a person in the system"
             persistPerson(person)
         when: "deposits a given amount"
-            String uri = getDepositUri(account)
             def depositRequestBody = getBody(person, amount, date)
             RequestEntity<DepositRequestBody> requestEntity =
-                    RequestEntity.put(serviceURI(uri)).body(depositRequestBody)
+                    RequestEntity.put(serviceURI("/accounts/$account.id/deposit")).body(depositRequestBody)
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
             response.statusCode == statusCodeExpected
@@ -79,10 +74,9 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         and: "a charge type in the system"
             persistChargeType(chargeType)
         when: "deposits a given amount"
-            String uri = getChargeUri(account)
             def depositRequestBody = getBody(chargeType, amount, date)
             RequestEntity<DepositRequestBody> requestEntity =
-                    RequestEntity.put(serviceURI(uri)).body(depositRequestBody)
+                    RequestEntity.put(serviceURI("/accounts/$account.id/charge")).body(depositRequestBody)
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
             response.statusCode == statusCodeExpected
@@ -93,7 +87,18 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         new BigDecimal(30000) | new ChargeType(name: "Agua") | null                    | HttpStatus.BAD_REQUEST
 
     }
+/*
+    def "shoul return status 200 when get an existing account"(){
+        given:
+            Account account = openDefaultAccount()
+            RequestEntity<Void> requestEntity =
+                    RequestEntity.get(serviceURI("{id}"))
+        when:
 
+        then:
+
+    }
+*/
     String getChargeUri(Account account) {
         UriComponentsBuilder.fromPath(account.id).pathSegment("charge").build().encode().toUriString()
     }
