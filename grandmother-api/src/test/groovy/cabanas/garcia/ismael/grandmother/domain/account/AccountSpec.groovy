@@ -39,7 +39,7 @@ class AccountSpec extends Specification{
         20.000         | new Charge(amount: 30.000, type: getWaterCharge(), date: now()) | -10.000
     }
 
-    def "when there is debits and charges on an account then the account generates movements"(){
+    def "when there is debits and charges on an account then the account generates transactions"(){
         given: "an account with a balance"
             Account account = new Account(balance: 5.000)
         and: "it does two debits and one deposit on account"
@@ -49,10 +49,10 @@ class AccountSpec extends Specification{
             account.charge(chargeOne)
             account.charge(chargeTwo)
             account.deposit(depositOne)
-        when: "gets the account movements"
-            Collection<Movement> movements = account.movements()
+        when: "gets the account transactions"
+            Transactions transactions = account.transactions
         then:
-            movements.size() == 3
+            transactions.size() == 3
     }
 
     def "open an account"(){
@@ -65,7 +65,7 @@ class AccountSpec extends Specification{
             account.balance() == BigDecimal.ZERO
     }
 
-    def "buid accounts"(){
+    def "build accounts"(){
         when:
             Account account = Account.builder().id("1").accountNumber("123123").balance(30.000).build()
         then:

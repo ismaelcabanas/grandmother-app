@@ -34,7 +34,7 @@ class Account {
     String accountNumber
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
-    Collection<Movement> movements = new ArrayList<Movement>()
+    Collection<Transaction> movements = new ArrayList<Transaction>()
 
     Transactions transactions
 
@@ -42,12 +42,15 @@ class Account {
         return new Account(balance: balance, accountNumber: accountNumber)
     }
 
+    Account(){
+        transactions = new Transactions()
+    }
 
     def deposit(Deposit deposit){
         balance = balance.add(deposit.getAmount())
-        DepositMovement depositMovement = new DepositMovement(amount: deposit.getAmount(),
+        DepositTransaction depositMovement = new DepositTransaction(amount: deposit.getAmount(),
             dateOfMovement: deposit.getDate(), person: deposit.getPerson())
-        addMovement(depositMovement)
+        addTransaction(depositMovement)
     }
 
     BigDecimal balance(){
@@ -56,12 +59,12 @@ class Account {
 
     def charge(Charge charge){
         balance = balance.subtract(charge.getAmount())
-        ChargeMovement chargeMovement = new ChargeMovement(amount: charge.getAmount(),
+        ChargeTransaction chargeMovement = new ChargeTransaction(amount: charge.getAmount(),
             chargeType: charge.getType(), dateOfMovement: charge.getDate())
-        addMovement(chargeMovement)
+        addTransaction(chargeMovement)
     }
 
-    Collection<Movement> movements() {
+    Collection<Transaction> movements() {
         movements
     }
 
@@ -73,8 +76,7 @@ class Account {
         accountNumber
     }
 
-    private addMovement(Movement movement){
-        movement.account = this
-        movements.add(movement)
+    private addTransaction(Transaction movement){
+        transactions.add(movement)
     }
 }

@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne
 @EqualsAndHashCode
 @Entity
 @DiscriminatorValue("DEPOSIT")
-class DepositMovement extends Movement{
+class DepositTransaction extends Transaction{
     @ManyToOne
     Person person
 

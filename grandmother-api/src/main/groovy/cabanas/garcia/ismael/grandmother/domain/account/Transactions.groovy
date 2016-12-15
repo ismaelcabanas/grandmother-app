@@ -11,7 +11,18 @@ import groovy.transform.builder.Builder
 @EqualsAndHashCode
 @Builder
 class Transactions {
-    def add(Movement movement) {
 
+    Collection<Transaction> transactions
+
+    Transactions(){
+        transactions = new ArrayList<Transaction>()
+    }
+
+    def add(Transaction movement) {
+        transactions.add(movement)
+    }
+
+    int size() {
+        transactions.size()
     }
 }
