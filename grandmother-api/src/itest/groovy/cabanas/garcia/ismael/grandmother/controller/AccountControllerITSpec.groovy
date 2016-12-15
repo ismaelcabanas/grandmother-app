@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.controller.request.ChargeRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
+import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
@@ -87,18 +88,8 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         new BigDecimal(30000) | new ChargeType(name: "Agua") | null                    | HttpStatus.BAD_REQUEST
 
     }
-/*
-    def "shoul return status 200 when get an existing account"(){
-        given:
-            Account account = openDefaultAccount()
-            RequestEntity<Void> requestEntity =
-                    RequestEntity.get(serviceURI("{id}"))
-        when:
 
-        then:
 
-    }
-*/
     String getChargeUri(Account account) {
         UriComponentsBuilder.fromPath(account.id).pathSegment("charge").build().encode().toUriString()
     }

@@ -3,6 +3,8 @@ package cabanas.garcia.ismael.grandmother.controller
 import cabanas.garcia.ismael.grandmother.controller.request.ChargeRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
 import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
+import cabanas.garcia.ismael.grandmother.controller.response.TransactionResponse
+import cabanas.garcia.ismael.grandmother.controller.response.TransactionsResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.service.AccountService
 import groovy.util.logging.Slf4j
@@ -48,5 +50,20 @@ class AccountController {
         log.debug("Updating account with data $requestBody")
         accountService.deposit(accountId, requestBody.chargeTypeId, requestBody.charge, requestBody.dateOfCharge)
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT)
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}")
+    ResponseEntity<AccountResponse> read(@PathVariable("id") String accountId){
+        log.debug("Getting account $accountId")
+
+        Account account = accountService.get(accountId)
+
+        AccountResponse accountResponse = AccountResponse.builder()
+                .balance(account.balance)
+                .accountNumber(account.accountNumber)
+                .id(account.id)
+                .build()
+
+        return new ResponseEntity<AccountResponse>(accountResponse, HttpStatus.OK)
     }
 }

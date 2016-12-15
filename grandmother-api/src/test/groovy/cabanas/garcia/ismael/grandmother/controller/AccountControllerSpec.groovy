@@ -1,11 +1,11 @@
 package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
-import cabanas.garcia.ismael.grandmother.domain.account.ChargeMovement
-import cabanas.garcia.ismael.grandmother.domain.account.DepositMovement
-import cabanas.garcia.ismael.grandmother.domain.account.Transactions
+import cabanas.garcia.ismael.grandmother.domain.account.Charge
+import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
+import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
 import groovy.json.JsonSlurper
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -26,24 +26,22 @@ class AccountControllerSpec extends Specification{
 
     def "should return status 200 when hits the URL for getting an existing account"(){
         given: "a given account identifier"
-            String accountId = "1"
+            Account account = AccountTestUtils.getDefaultAccount()
         and: "account controller configured with his services"
-            AccountService accountService = Mock(AccountService)
+            AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
             AccountController controller = new AccountController(accountService: accountService)
         when: "REST account get url is hit"
-            def response = sendGet(controller, "/accounts/$accountId")
+            def response = sendGet(controller, "/accounts/$account.id")
         then:
-            response.status == HttpStatus.OK
+            response.status == HttpStatus.OK.value()
     }
 
     def "should get account details when hits the URL for getting an existing account"(){
-        given: "a given account with movements"
-            Transactions transactions = new Transactions()
-            transactions.add(new DepositMovement(amount: 10000, dateOfMovement: TODAY))
-            transactions.add(new DepositMovement(amount: 15000, dateOfMovement: YESTERDAY))
-            transactions.add(new ChargeMovement(amount: 10000, dateOfMovement: TODAY))
-            Account account = Account.builder()
-                .balance(30000).accountNumber("123").id("1").transactions(transactions).build()
+        given: "a given account with transactions"
+            Account account = AccountTestUtils.getDefaultAccount()
+            account.deposit(new Deposit(amount: 10000, date: TODAY))
+            account.deposit(new Deposit(amount: 15000, date: YESTERDAY))
+            account.charge(new Charge(amount: 10000, date: TODAY))
         and: "account controller configured with his services"
             AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
             AccountController controller = new AccountController(accountService: accountService)
@@ -51,8 +49,9 @@ class AccountControllerSpec extends Specification{
             def response = sendGet(controller, "/accounts/$account.id")
         then:
             def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
-            jsonResponse.balance == 30000
-            jsonResponse.accountNumber == "123"
+            jsonResponse.balance == AccountTestUtils.getDefaultAccount().balance.add(15000)
+            jsonResponse.accountNumber == AccountTestUtils.getDefaultAccount().accountNumber
+            jsonResponse.id == AccountTestUtils.getDefaultAccount().id
     }
 
     def accountDetails() {
