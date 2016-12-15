@@ -53,4 +53,9 @@ class AccountServiceImpl implements AccountService{
 
         return account
     }
+
+    @Override
+    Account get(String accountId) {
+        return null
+    }
 }

@@ -36,6 +36,7 @@ class Account {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
     Collection<Movement> movements = new ArrayList<Movement>()
 
+    Transactions transactions
 
     static Account open(String accountNumber, BigDecimal balance = BigDecimal.ZERO) {
         return new Account(balance: balance, accountNumber: accountNumber)
@@ -62,6 +63,10 @@ class Account {
 
     Collection<Movement> movements() {
         movements
+    }
+
+    def movements(Transactions movements){
+
     }
 
     String accountNumber() {
