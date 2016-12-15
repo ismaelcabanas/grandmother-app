@@ -3,10 +3,8 @@ package cabanas.garcia.ismael.grandmother.service
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
-import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.AccountServiceImpl
-import cabanas.garcia.ismael.grandmother.service.impl.ChargeTypeServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
@@ -109,7 +107,7 @@ class AccountServiceITSpec extends Specification{
         expect:
             account.balance == 10.000
         and:
-            account.movements.size() == 3
+            account.transactions.count() == 3
     }
 
     private def createChargeType(String name) {

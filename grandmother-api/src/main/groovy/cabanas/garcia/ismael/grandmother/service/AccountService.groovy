@@ -7,6 +7,8 @@ import cabanas.garcia.ismael.grandmother.domain.account.Account
  */
 interface AccountService {
 
+    Account open(String accountNumber)
+
     Account open(String accountNumber, BigDecimal balance)
 
     Account deposit(String accountId, String personId, BigDecimal amount, Date date)

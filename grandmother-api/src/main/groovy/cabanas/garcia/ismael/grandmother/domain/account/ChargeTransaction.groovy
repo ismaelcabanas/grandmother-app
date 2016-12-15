@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne
 @EqualsAndHashCode
 @Entity
 @DiscriminatorValue("CHARGE")
-class ChargeMovement extends Movement{
+class ChargeTransaction extends Transaction{
     @ManyToOne
     ChargeType chargeType
 

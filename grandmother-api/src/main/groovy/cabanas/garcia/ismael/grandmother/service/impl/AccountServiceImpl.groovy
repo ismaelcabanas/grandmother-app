@@ -46,6 +46,11 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    Account open(String accountNumber) {
+        open(accountNumber, BigDecimal.ZERO)
+    }
+
+    @Override
     Account open(String accountNumber, BigDecimal balance) {
         Account account = Account.open(accountNumber, balance)
 
