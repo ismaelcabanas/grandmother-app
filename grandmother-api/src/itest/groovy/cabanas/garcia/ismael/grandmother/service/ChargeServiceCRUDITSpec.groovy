@@ -1,10 +1,9 @@
 package cabanas.garcia.ismael.grandmother.service
 
-import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
+import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.ChargeTypeServiceImpl
-import cabanas.garcia.ismael.grandmother.service.impl.PersonServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
@@ -28,13 +27,13 @@ class ChargeServiceCRUDITSpec extends Specification{
         when: "delete all charge types"
             chargeTypeService.deleteAll()
         then:
-            List<ChargeType> allChargeTypes = chargeTypeService.findAll()
+            List<PaymentType> allChargeTypes = chargeTypeService.findAll()
             allChargeTypes.isEmpty()
     }
 
     def "create charge types"(){
         given: "a charge type data"
-            ChargeType chargeType = ChargeType.builder().name(WATER_CHARGE).build()
+            PaymentType chargeType = PaymentType.builder().name(WATER_CHARGE).build()
         and: "charge type service"
             ChargeTypeService chargeTypeService = new ChargeTypeServiceImpl(chargeTypeRepository: chargeTypeRepository)
         when:

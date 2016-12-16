@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.grandmother.service.impl
 
-import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
+import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
 import cabanas.garcia.ismael.grandmother.service.ChargeTypeService
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,12 +16,12 @@ class ChargeTypeServiceImpl implements ChargeTypeService{
     ChargeTypeRepository chargeTypeRepository
 
     @Override
-    def create(ChargeType chargeType) {
+    def create(PaymentType chargeType) {
         chargeTypeRepository.save(chargeType)
     }
 
     @Override
-    List<ChargeType> findAll() {
+    List<PaymentType> findAll() {
         chargeTypeRepository.findAll()
     }
 

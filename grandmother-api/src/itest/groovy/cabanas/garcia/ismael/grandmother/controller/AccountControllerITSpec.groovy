@@ -2,9 +2,8 @@ package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.controller.request.ChargeRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
-import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
-import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
+import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
@@ -82,10 +81,10 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         then:
             response.statusCode == statusCodeExpected
         where:
-        amount                | chargeType                   | date                    | statusCodeExpected
-        new BigDecimal(30000) | new ChargeType(name: "Agua") | parseDate("01/01/2010") | HttpStatus.NO_CONTENT
-        null                  | new ChargeType(name: "Agua") | parseDate("01/01/2010") | HttpStatus.BAD_REQUEST
-        new BigDecimal(30000) | new ChargeType(name: "Agua") | null                    | HttpStatus.BAD_REQUEST
+        amount                | chargeType                    | date                    | statusCodeExpected
+        new BigDecimal(30000) | new PaymentType(name: "Agua") | parseDate("01/01/2010") | HttpStatus.NO_CONTENT
+        null                  | new PaymentType(name: "Agua") | parseDate("01/01/2010") | HttpStatus.BAD_REQUEST
+        new BigDecimal(30000) | new PaymentType(name: "Agua") | null                    | HttpStatus.BAD_REQUEST
 
     }
 
@@ -94,7 +93,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         UriComponentsBuilder.fromPath(account.id).pathSegment("charge").build().encode().toUriString()
     }
 
-    def persistChargeType(ChargeType chargeType) {
+    def persistChargeType(PaymentType chargeType) {
         chargeTypeRepository.save(chargeType)
     }
 
@@ -106,7 +105,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         new DepositRequestBody(personId: person.id, deposit: amount, dateOfDeposit: date)
     }
 
-    private ChargeRequestBody getBody(ChargeType chargeType, BigDecimal amount, Date date) {
+    private ChargeRequestBody getBody(PaymentType chargeType, BigDecimal amount, Date date) {
         new ChargeRequestBody(chargeTypeId: chargeType.id, charge: amount, dateOfCharge: date)
     }
 

@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.grandmother.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
-import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
+import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.AccountServiceImpl
@@ -73,7 +73,7 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository)
             Account account = accountService.open(ACCOUNT_NUMBER)
         and: "a given existing charge in the system"
-            ChargeType waterCharge = createChargeType(WATER_CHARGE_TYPE)
+            PaymentType waterCharge = createChargeType(WATER_CHARGE_TYPE)
         and: "an charge amount"
             BigDecimal chargeAmount = AMOUNT
         and: "date of charge"
@@ -101,7 +101,7 @@ class AccountServiceITSpec extends Specification{
             account = accountService.deposit(account.getId(), ismael.getId(), amountDepositedByBea, dateOfDepositByBea)
         and: "a water's charge on account"
             BigDecimal waterChargeAmount = 20.000
-            ChargeType waterCharge = createChargeType(WATER_CHARGE_TYPE)
+            PaymentType waterCharge = createChargeType(WATER_CHARGE_TYPE)
             Date dateOfCharge = Date.parse(DATE_FORMAT_PATTERN, "15/07/2016")
             account = accountService.charge(account.getId(), waterCharge.getId(), waterChargeAmount, dateOfCharge)
         expect:
@@ -111,7 +111,7 @@ class AccountServiceITSpec extends Specification{
     }
 
     private def createChargeType(String name) {
-        ChargeType waterCharge = new ChargeType(name: name)
+        PaymentType waterCharge = new PaymentType(name: name)
         chargeTypeService.create(waterCharge)
     }
 

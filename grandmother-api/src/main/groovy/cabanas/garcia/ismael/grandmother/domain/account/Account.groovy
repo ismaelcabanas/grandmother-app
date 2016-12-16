@@ -3,16 +3,11 @@ package cabanas.garcia.ismael.grandmother.domain.account
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
-import org.hibernate.validator.constraints.NotEmpty
 
-import javax.persistence.CascadeType
 import javax.persistence.Embedded
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.validation.constraints.Min
 
 /**
  * Created by XI317311 on 05/12/2016.
@@ -28,10 +23,8 @@ class Account {
     @GeneratedValue
     String id
 
-    @Min(value = 0L)
     BigDecimal balance = BigDecimal.ZERO
     
-    @NotEmpty
     String accountNumber
 
     @Embedded
@@ -56,9 +49,9 @@ class Account {
         balance
     }
 
-    def charge(Charge charge){
+    def charge(Payment charge){
         balance = balance.subtract(charge.getAmount())
-        ChargeTransaction chargeMovement = new ChargeTransaction(amount: charge.getAmount(),
+        PaymentTransaction chargeMovement = new PaymentTransaction(amount: charge.getAmount(),
             chargeType: charge.getType(), dateOfMovement: charge.getDate())
         addTransaction(chargeMovement)
     }

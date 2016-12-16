@@ -1,6 +1,5 @@
 package cabanas.garcia.ismael.grandmother.controller
 
-import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import org.springframework.http.HttpStatus
 import org.springframework.http.RequestEntity

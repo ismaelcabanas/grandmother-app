@@ -34,17 +34,17 @@ class AccountSpec extends Specification{
         then:
             account.balance() == expectedBalance
         where:
-        currentBalance | givenCharge                                                     | expectedBalance
-        40.000         | new Charge(amount: 30.000, type: getWaterCharge(), date: now()) | 10.000
-        20.000         | new Charge(amount: 30.000, type: getWaterCharge(), date: now()) | -10.000
+        currentBalance | givenCharge                                                      | expectedBalance
+        40.000         | new Payment(amount: 30.000, type: getWaterCharge(), date: now()) | 10.000
+        20.000         | new Payment(amount: 30.000, type: getWaterCharge(), date: now()) | -10.000
     }
 
     def "when there is debits and charges on an account then the account generates transactions"(){
         given: "an account with a balance"
             Account account = new Account(balance: 5.000)
         and: "it does two debits and one deposit on account"
-            Charge chargeOne = new Charge(amount: 30.000, type: getWaterCharge(), date: now())
-            Charge chargeTwo = new Charge(amount: 10.000, type: getWaterCharge(), date: now())
+            Payment chargeOne = new Payment(amount: 30.000, type: getWaterCharge(), date: now())
+            Payment chargeTwo = new Payment(amount: 10.000, type: getWaterCharge(), date: now())
             Deposit depositOne = new Deposit(amount: 30.000, person: getIsmael(), date: now())
             account.charge(chargeOne)
             account.charge(chargeTwo)
@@ -91,7 +91,7 @@ class AccountSpec extends Specification{
         new Person(name: "Ismael")
     }
 
-    private ChargeType getWaterCharge() {
-        new ChargeType(name: "Agua")
+    private PaymentType getWaterCharge() {
+        new PaymentType(name: "Agua")
     }
 }

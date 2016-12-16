@@ -17,7 +17,7 @@ import javax.persistence.Id
 @ToString
 @EqualsAndHashCode
 @Entity
-class ChargeType {
+class PaymentType {
 
     @Column(nullable = false)
     @NotEmpty

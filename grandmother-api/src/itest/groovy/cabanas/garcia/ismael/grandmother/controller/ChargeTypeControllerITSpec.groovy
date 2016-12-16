@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller
 
-import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
+import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import org.springframework.http.HttpStatus
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
@@ -14,8 +14,8 @@ class ChargeTypeControllerITSpec extends RestIntegrationBaseSpec{
     @Unroll
     def "should return #statusCodeExpected status code when create a charge type with name '#chargeTypeName'"(){
         given:
-            ChargeType chargeType = new ChargeType(name: chargeTypeName)
-            RequestEntity<ChargeType> requestEntity = RequestEntity.post(serviceURI("/chargeTypes")).body(chargeType)
+            PaymentType chargeType = new PaymentType(name: chargeTypeName)
+            RequestEntity<PaymentType> requestEntity = RequestEntity.post(serviceURI("/chargeTypes")).body(chargeType)
         when:
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:

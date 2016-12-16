@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller
 
-import cabanas.garcia.ismael.grandmother.domain.account.ChargeType
+import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.service.ChargeTypeService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +25,7 @@ class ChargeTypeController {
     ChargeTypeService chargeTypeService
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<Void> create(@Valid @RequestBody ChargeType chargeType){
+    ResponseEntity<Void> create(@Valid @RequestBody PaymentType chargeType){
         log.debug("Creating... $chargeType")
         chargeTypeService.create(chargeType)
         new ResponseEntity<Void>(HttpStatus.CREATED)

@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller
 
+import cabanas.garcia.ismael.grandmother.controller.request.AccountRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.ChargeRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
 import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
@@ -32,9 +33,9 @@ class AccountController {
     AccountService accountService
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<Void> create(@Valid @RequestBody Account account){
-        log.debug("Creating account $account")
-        accountService.open(account.accountNumber(), account.balance())
+    ResponseEntity<Void> create(@Valid @RequestBody AccountRequestBody accountRequestBody){
+        log.debug("Creating account $accountRequestBody")
+        accountService.open(accountRequestBody.accountNumber, accountRequestBody.balance)
         return new ResponseEntity<Void>(HttpStatus.CREATED)
     }
 
