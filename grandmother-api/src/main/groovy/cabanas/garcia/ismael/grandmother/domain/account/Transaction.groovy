@@ -28,4 +28,7 @@ abstract class Transaction {
     @JoinColumn(nullable = false)
     Account account
 
+    @Column(nullable = false)
+    String description
+
 }
