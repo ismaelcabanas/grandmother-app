@@ -25,9 +25,9 @@ class PaymentTypeController {
     PaymentTypeService chargeTypeService
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<Void> create(@Valid @RequestBody PaymentType chargeType){
-        log.debug("Creating... $chargeType")
-        chargeTypeService.create(chargeType)
+    ResponseEntity<Void> create(@Valid @RequestBody PaymentType paymentType){
+        log.debug("Creating... $paymentType")
+        chargeTypeService.create(paymentType)
         new ResponseEntity<Void>(HttpStatus.CREATED)
     }
 }

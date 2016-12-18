@@ -41,6 +41,7 @@ class AccountControllerSpec extends Specification{
             def response = sendGet(controller, "/accounts/$account.id")
         then:
             response.status == HttpStatus.OK.value()
+            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
     }
 
     def "should get account details when hits the URL for getting an existing account"(){
@@ -73,6 +74,7 @@ class AccountControllerSpec extends Specification{
             def response = sendPost(controller, "/accounts", accountRequestBody)
         then:
             response.status == HttpStatus.CREATED.value()
+            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
     }
 
     def "should return status 400 when hits URL for creating an account with empty account number"(){
@@ -107,6 +109,7 @@ class AccountControllerSpec extends Specification{
             def response = sendPut(controller, "/accounts/$accountId/deposit", depositRequestBody)
         then:
             response.status == HttpStatus.NO_CONTENT.value()
+            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
     }
 
     @Unroll
@@ -148,6 +151,7 @@ class AccountControllerSpec extends Specification{
             def response = sendPut(controller, "/accounts/$accountId/payment", paymentRequestBody)
         then:
             response.status == HttpStatus.NO_CONTENT.value()
+            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
     }
 
     @Unroll
