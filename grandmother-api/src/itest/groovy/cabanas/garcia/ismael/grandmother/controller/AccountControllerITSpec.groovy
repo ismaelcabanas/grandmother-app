@@ -68,23 +68,23 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     }
 
     @Unroll
-    def "should return status #statusCodeExpected when there is a charge #chargeType.name of #amount€ at #date"(){
+    def "should return status #statusCodeExpected when there is a payment #paymentType.name of #amount€ at #date"(){
         given: "an given account"
             Account account = openDefaultAccount()
         and: "a amount type in the system"
-            persistChargeType(chargeType)
+            persistChargeType(paymentType)
         when: "deposits a given amount"
-            def depositRequestBody = getBody(chargeType, amount, date)
+            def depositRequestBody = getBody(paymentType, amount, date, description)
             RequestEntity<DepositRequestBody> requestEntity =
-                    RequestEntity.put(serviceURI("/accounts/$account.id/amount")).body(depositRequestBody)
+                    RequestEntity.put(serviceURI("/accounts/$account.id/payment")).body(depositRequestBody)
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
             response.statusCode == statusCodeExpected
         where:
-        amount                | chargeType                    | date                    | statusCodeExpected
-        new BigDecimal(30000) | new PaymentType(name: "Agua") | parseDate("01/01/2010") | HttpStatus.NO_CONTENT
-        null                  | new PaymentType(name: "Agua") | parseDate("01/01/2010") | HttpStatus.BAD_REQUEST
-        new BigDecimal(30000) | new PaymentType(name: "Agua") | null                    | HttpStatus.BAD_REQUEST
+        amount                | paymentType                   | date                    | description | statusCodeExpected
+        new BigDecimal(30000) | new PaymentType(name: "Agua") | parseDate("01/01/2010") | "Agua"      | HttpStatus.NO_CONTENT
+        null                  | new PaymentType(name: "Agua") | parseDate("01/01/2010") | "Agua"      | HttpStatus.BAD_REQUEST
+        new BigDecimal(30000) | new PaymentType(name: "Agua") | null                    | "Agua"      | HttpStatus.BAD_REQUEST
 
     }
 
@@ -105,8 +105,8 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         new DepositRequestBody(personId: person.id, deposit: amount, dateOfDeposit: date, description: description)
     }
 
-    private PaymentRequestBody getBody(PaymentType chargeType, BigDecimal amount, Date date) {
-        new PaymentRequestBody(paymentTypeId: chargeType.id, amount: amount, dateOfPayment: date)
+    private PaymentRequestBody getBody(PaymentType chargeType, BigDecimal amount, Date date, String description) {
+        new PaymentRequestBody(paymentTypeId: chargeType.id, amount: amount, dateOfPayment: date, description: description)
     }
 
     private String getDepositUri(Account account) {

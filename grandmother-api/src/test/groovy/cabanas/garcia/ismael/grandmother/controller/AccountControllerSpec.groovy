@@ -141,7 +141,9 @@ class AccountControllerSpec extends Specification{
             Date date = TODAY
             BigDecimal amount = defaultAccount.getBalance()
             String paymentTypeId = "1"
-            PaymentRequestBody paymentRequestBody = new PaymentRequestBody(paymentTypeId: paymentTypeId, amount: amount, dateOfPayment: date)
+            String description = "Agua"
+            PaymentRequestBody paymentRequestBody = new PaymentRequestBody(paymentTypeId: paymentTypeId,
+                    amount: amount, dateOfPayment: date, description: description)
         when: "REST payment on account url is hit"
             def response = sendPut(controller, "/accounts/$accountId/payment", paymentRequestBody)
         then:

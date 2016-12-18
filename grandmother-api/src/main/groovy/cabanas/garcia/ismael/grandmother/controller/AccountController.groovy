@@ -7,6 +7,8 @@ import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
+import cabanas.garcia.ismael.grandmother.domain.account.Payment
+import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.AccountService
 import groovy.util.logging.Slf4j
@@ -55,7 +57,13 @@ class AccountController {
     @RequestMapping(method = RequestMethod.PUT, path = "/{id}/payment")
     ResponseEntity<Void> payment(@PathVariable("id") String accountId, @Valid @RequestBody PaymentRequestBody requestBody){
         log.debug("Updating account with data $requestBody")
-        accountService.payment(accountId, requestBody.paymentTypeId, requestBody.amount, requestBody.dateOfPayment)
+        Payment payment = Payment.builder()
+            .amount(requestBody.amount)
+            .date(requestBody.dateOfPayment)
+            .type(PaymentType.builder().id(requestBody.paymentTypeId).build())
+            .description(requestBody.description)
+            .build()
+        accountService.payment(accountId, payment)
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT)
     }
 

@@ -15,5 +15,6 @@ class Payment {
     BigDecimal amount
     PaymentType type
     Date date
+    String description
 
 }

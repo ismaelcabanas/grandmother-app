@@ -33,6 +33,15 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    Account payment(String accountId, Payment payment) {
+        Account account = accountRepository.findOne(accountId)
+
+        accountRepository.save(account)
+
+        return account
+    }
+
+    @Override
     Account deposit(String accountId, String personId, BigDecimal amount, Date date) {
         Account account = accountRepository.findOne(accountId)
 

@@ -20,4 +20,7 @@ class PaymentRequestBody {
 
     @NotNull
     Date dateOfPayment
+
+    @NotNull
+    String description
 }
