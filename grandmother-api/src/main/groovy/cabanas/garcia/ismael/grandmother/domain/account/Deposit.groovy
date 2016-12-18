@@ -16,5 +16,6 @@ class Deposit {
     BigDecimal amount
     Person person
     Date date
+    String description
 
 }

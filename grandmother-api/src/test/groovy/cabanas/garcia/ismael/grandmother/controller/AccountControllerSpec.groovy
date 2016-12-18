@@ -100,7 +100,9 @@ class AccountControllerSpec extends Specification{
             Date date = TODAY
             BigDecimal amount = defaultAccount.getBalance()
             String personId = "1"
-            DepositRequestBody depositRequestBody = new DepositRequestBody(personId: personId, deposit: amount, dateOfDeposit: date)
+            String description = "Transferencia a su favor"
+            DepositRequestBody depositRequestBody = new DepositRequestBody(personId: personId,
+                    deposit: amount, dateOfDeposit: date, description: description)
         when: "REST desposit on account url is hit"
             def response = sendPut(controller, "/accounts/$accountId/deposit", depositRequestBody)
         then:

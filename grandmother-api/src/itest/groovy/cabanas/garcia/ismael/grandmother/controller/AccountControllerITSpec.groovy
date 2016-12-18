@@ -43,7 +43,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         ""            | new BigDecimal(30.000)  | HttpStatus.BAD_REQUEST
         null          | new BigDecimal(30.000)  | HttpStatus.BAD_REQUEST
         "123123"      | new BigDecimal(0)       | HttpStatus.CREATED
-        "123123"      | new BigDecimal(-30.000) | HttpStatus.BAD_REQUEST
+        "123123"      | new BigDecimal(-30.000) | HttpStatus.CREATED
     }
 
     @Unroll
@@ -53,17 +53,17 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         and: "a person in the system"
             persistPerson(person)
         when: "deposits a given amount"
-            def depositRequestBody = getBody(person, amount, date)
+            def depositRequestBody = getBody(person, amount, date, description)
             RequestEntity<DepositRequestBody> requestEntity =
                     RequestEntity.put(serviceURI("/accounts/$account.id/deposit")).body(depositRequestBody)
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
             response.statusCode == statusCodeExpected
         where:
-        amount                | person                   | date                    | statusCodeExpected
-        new BigDecimal(30000) | new Person(name: "Isma") | parseDate("01/01/2010") | HttpStatus.NO_CONTENT
-        null                  | new Person(name: "Isma") | parseDate("01/01/2010") | HttpStatus.BAD_REQUEST
-        new BigDecimal(30000) | new Person(name: "Isma") | null                    | HttpStatus.BAD_REQUEST
+        amount                | person                   | date                    | description     | statusCodeExpected
+        new BigDecimal(30000) | new Person(name: "Isma") | parseDate("01/01/2010") | "Transferencia" | HttpStatus.NO_CONTENT
+        null                  | new Person(name: "Isma") | parseDate("01/01/2010") | "Transferencia" | HttpStatus.BAD_REQUEST
+        new BigDecimal(30000) | new Person(name: "Isma") | null                    | "Transferencia" | HttpStatus.BAD_REQUEST
 
     }
 
@@ -101,8 +101,8 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         Date.parse("dd/MM/yyyy", date)
     }
 
-    private DepositRequestBody getBody(Person person, BigDecimal amount, Date date) {
-        new DepositRequestBody(personId: person.id, deposit: amount, dateOfDeposit: date)
+    private DepositRequestBody getBody(Person person, BigDecimal amount, Date date, String description) {
+        new DepositRequestBody(personId: person.id, deposit: amount, dateOfDeposit: date, description: description)
     }
 
     private PaymentRequestBody getBody(PaymentType chargeType, BigDecimal amount, Date date) {

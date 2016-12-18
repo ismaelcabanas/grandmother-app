@@ -41,7 +41,7 @@ class Account {
     def deposit(Deposit deposit){
         balance = balance.add(deposit.getAmount())
         DepositTransaction depositMovement = new DepositTransaction(amount: deposit.getAmount(),
-            dateOfMovement: deposit.getDate(), person: deposit.getPerson())
+            dateOfMovement: deposit.getDate(), person: deposit.getPerson(), description: deposit.description)
         addTransaction(depositMovement)
     }
 

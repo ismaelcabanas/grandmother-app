@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.grandmother.stubs.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
+import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.service.AccountService
 
 /**
@@ -29,6 +30,11 @@ abstract class AccountServiceStub implements AccountService{
 
     @Override
     Account get(String accountId) {
+        return null
+    }
+
+    @Override
+    Account deposit(String accountId, Deposit deposit) {
         return null
     }
 }

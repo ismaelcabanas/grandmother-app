@@ -20,4 +20,7 @@ class DepositRequestBody {
 
     @NotNull
     Date dateOfDeposit
+
+    @NotNull
+    String description
 }

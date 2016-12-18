@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.grandmother.domain.account
 
 import groovy.transform.ToString
+import groovy.transform.builder.Builder
 
 import javax.persistence.*
 
@@ -11,6 +12,7 @@ import javax.persistence.*
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "movement_type")
+@Builder
 abstract class Transaction {
 
     @Id
