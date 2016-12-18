@@ -9,7 +9,7 @@ import spock.lang.Unroll
 /**
  * Created by XI317311 on 09/12/2016.
  */
-class ChargeTypeControllerITSpec extends RestIntegrationBaseSpec{
+class PaymentTypeControllerITSpec extends RestIntegrationBaseSpec{
 
     @Unroll
     def "should return #statusCodeExpected status code when create a charge type with name '#chargeTypeName'"(){
