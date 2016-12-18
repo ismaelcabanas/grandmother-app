@@ -72,14 +72,14 @@ class AccountServiceITSpec extends Specification{
         given: "an new account"
             AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository)
             Account account = accountService.open(ACCOUNT_NUMBER)
-        and: "a given existing charge in the system"
+        and: "a given existing amount in the system"
             PaymentType waterCharge = createChargeType(WATER_CHARGE_TYPE)
-        and: "an charge amount"
+        and: "an amount amount"
             BigDecimal chargeAmount = AMOUNT
-        and: "date of charge"
+        and: "date of amount"
             Date dateOfCharge = now()
         when: "debits on account"
-            account = accountService.charge(account.getId(), waterCharge.id, chargeAmount, dateOfCharge)
+            account = accountService.payment(account.getId(), waterCharge.id, chargeAmount, dateOfCharge)
         then:
             account.balance() == chargeAmount.negate()
     }
@@ -99,11 +99,11 @@ class AccountServiceITSpec extends Specification{
             BigDecimal amountDepositedByBea = 10.000
             Date dateOfDepositByBea = Date.parse(DATE_FORMAT_PATTERN, "01/08/2016")
             account = accountService.deposit(account.getId(), ismael.getId(), amountDepositedByBea, dateOfDepositByBea)
-        and: "a water's charge on account"
+        and: "a water's amount on account"
             BigDecimal waterChargeAmount = 20.000
             PaymentType waterCharge = createChargeType(WATER_CHARGE_TYPE)
             Date dateOfCharge = Date.parse(DATE_FORMAT_PATTERN, "15/07/2016")
-            account = accountService.charge(account.getId(), waterCharge.getId(), waterChargeAmount, dateOfCharge)
+            account = accountService.payment(account.getId(), waterCharge.getId(), waterChargeAmount, dateOfCharge)
         expect:
             account.balance == 10.000
         and:

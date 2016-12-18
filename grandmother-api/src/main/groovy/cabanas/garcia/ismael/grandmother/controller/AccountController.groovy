@@ -1,16 +1,13 @@
 package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.controller.request.AccountRequestBody
-import cabanas.garcia.ismael.grandmother.controller.request.ChargeRequestBody
+import cabanas.garcia.ismael.grandmother.controller.request.PaymentRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
 import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
-import cabanas.garcia.ismael.grandmother.controller.response.TransactionResponse
-import cabanas.garcia.ismael.grandmother.controller.response.TransactionsResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.service.AccountService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
@@ -46,10 +43,10 @@ class AccountController {
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT)
     }
 
-    @RequestMapping(method = RequestMethod.PUT, path = "/{id}/charge")
-    ResponseEntity<Void> charge(@PathVariable("id") String accountId, @Valid @RequestBody ChargeRequestBody requestBody){
+    @RequestMapping(method = RequestMethod.PUT, path = "/{id}/payment")
+    ResponseEntity<Void> payment(@PathVariable("id") String accountId, @Valid @RequestBody PaymentRequestBody requestBody){
         log.debug("Updating account with data $requestBody")
-        accountService.deposit(accountId, requestBody.chargeTypeId, requestBody.charge, requestBody.dateOfCharge)
+        accountService.payment(accountId, requestBody.paymentTypeId, requestBody.amount, requestBody.dateOfPayment)
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT)
     }
 

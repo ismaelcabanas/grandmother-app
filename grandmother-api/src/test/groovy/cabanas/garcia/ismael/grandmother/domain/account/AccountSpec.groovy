@@ -29,7 +29,7 @@ class AccountSpec extends Specification{
     def "when there is a charge of #givenCharge.type.name of #givenCharge.amount€ at #givenCharge.date on an account with balance #currentBalance€ then the account's balance is #expectedBalance" (){
         given: "an account with a determinaded balance"
             Account account = new Account(balance: currentBalance)
-        when: "charge the water receipt on account"
+        when: "amount the water receipt on account"
             account.charge(givenCharge)
         then:
             account.balance() == expectedBalance

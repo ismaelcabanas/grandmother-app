@@ -23,7 +23,7 @@ abstract class AccountServiceStub implements AccountService{
     }
 
     @Override
-    Account charge(String accountId, String chargeTypeId, BigDecimal amount, Date date) {
+    Account payment(String accountId, String chargeTypeId, BigDecimal amount, Date date) {
         return null
     }
 

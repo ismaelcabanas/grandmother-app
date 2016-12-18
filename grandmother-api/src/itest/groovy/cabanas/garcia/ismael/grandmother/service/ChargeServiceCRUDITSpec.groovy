@@ -22,9 +22,9 @@ class ChargeServiceCRUDITSpec extends Specification{
     ChargeTypeRepository chargeTypeRepository
 
     def "remove all charge types"(){
-        given: "charge type service"
+        given: "payment type service"
             ChargeTypeService chargeTypeService = new ChargeTypeServiceImpl(chargeTypeRepository: chargeTypeRepository)
-        when: "delete all charge types"
+        when: "delete all payment types"
             chargeTypeService.deleteAll()
         then:
             List<PaymentType> allChargeTypes = chargeTypeService.findAll()
@@ -32,9 +32,9 @@ class ChargeServiceCRUDITSpec extends Specification{
     }
 
     def "create charge types"(){
-        given: "a charge type data"
+        given: "a payment type data"
             PaymentType chargeType = PaymentType.builder().name(WATER_CHARGE).build()
-        and: "charge type service"
+        and: "payment type service"
             ChargeTypeService chargeTypeService = new ChargeTypeServiceImpl(chargeTypeRepository: chargeTypeRepository)
         when:
             chargeTypeService.create(chargeType)

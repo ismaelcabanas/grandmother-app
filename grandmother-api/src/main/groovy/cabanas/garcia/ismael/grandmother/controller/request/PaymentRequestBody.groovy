@@ -10,14 +10,14 @@ import javax.validation.constraints.NotNull
  */
 @ToString
 @EqualsAndHashCode
-class ChargeRequestBody {
+class PaymentRequestBody {
 
     @NotNull
-    String chargeTypeId
+    String paymentTypeId
 
     @NotNull
-    BigDecimal charge
+    BigDecimal amount
 
     @NotNull
-    Date dateOfCharge
+    Date dateOfPayment
 }

@@ -2,10 +2,10 @@ package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.controller.request.AccountRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
+import cabanas.garcia.ismael.grandmother.controller.request.PaymentRequestBody
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
-import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
 import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
@@ -126,6 +126,45 @@ class AccountControllerSpec extends Specification{
         null   | "1"      | TODAY | HttpStatus.BAD_REQUEST.value()
         30000  | "1"      | null  | HttpStatus.BAD_REQUEST.value()
         30000  | null     | TODAY | HttpStatus.BAD_REQUEST.value()
+    }
+
+    def "should return status 204 when hits URL for payments on account"(){
+        given: "account controller configured with his services"
+         AccountService accountService = Mock(AccountService)
+            AccountController controller = new AccountController(accountService: accountService)
+        and: "a account identifier"
+            Account defaultAccount = AccountTestUtils.getDefaultAccount()
+            String accountId = defaultAccount.getId()
+        and: "data of payment"
+            Date date = TODAY
+            BigDecimal amount = defaultAccount.getBalance()
+            String paymentTypeId = "1"
+            PaymentRequestBody paymentRequestBody = new PaymentRequestBody(paymentTypeId: paymentTypeId, amount: amount, dateOfPayment: date)
+        when: "REST payment on account url is hit"
+            def response = sendPut(controller, "/accounts/$accountId/payment", paymentRequestBody)
+        then:
+            response.status == HttpStatus.NO_CONTENT.value()
+    }
+
+    @Unroll
+    def "should return status #badRequestStatus when hits URL for payments on account with invalid parameters"(){
+        given: "account controller configured with his services"
+            AccountService accountService = Mock(AccountService)
+            AccountController controller = new AccountController(accountService: accountService)
+        and: "a account identifier"
+            Account defaultAccount = AccountTestUtils.getDefaultAccount()
+            String accountId = defaultAccount.getId()
+        and: "data of payment"
+            PaymentRequestBody paymentRequestBody = new PaymentRequestBody(paymentTypeId: paymentTypeId, amount: amount, dateOfPayment: date)
+        when: "REST payment on account url is hit"
+            def response = sendPut(controller, "/accounts/$accountId/payment", paymentRequestBody)
+        then:
+            response.status == badRequestStatus
+        where:
+        amount | paymentTypeId | date  | badRequestStatus
+        null   | "1"           | TODAY | HttpStatus.BAD_REQUEST.value()
+        30000  | "1"           | null  | HttpStatus.BAD_REQUEST.value()
+        30000  | null          | TODAY | HttpStatus.BAD_REQUEST.value()
     }
 
     def sendGet(controller, path) {

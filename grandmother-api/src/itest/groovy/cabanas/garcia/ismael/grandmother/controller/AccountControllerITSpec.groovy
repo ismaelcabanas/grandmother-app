@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller
 
-import cabanas.garcia.ismael.grandmother.controller.request.ChargeRequestBody
+import cabanas.garcia.ismael.grandmother.controller.request.PaymentRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
@@ -71,12 +71,12 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     def "should return status #statusCodeExpected when there is a charge #chargeType.name of #amount€ at #date"(){
         given: "an given account"
             Account account = openDefaultAccount()
-        and: "a charge type in the system"
+        and: "a amount type in the system"
             persistChargeType(chargeType)
         when: "deposits a given amount"
             def depositRequestBody = getBody(chargeType, amount, date)
             RequestEntity<DepositRequestBody> requestEntity =
-                    RequestEntity.put(serviceURI("/accounts/$account.id/charge")).body(depositRequestBody)
+                    RequestEntity.put(serviceURI("/accounts/$account.id/amount")).body(depositRequestBody)
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
             response.statusCode == statusCodeExpected
@@ -90,7 +90,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
 
 
     String getChargeUri(Account account) {
-        UriComponentsBuilder.fromPath(account.id).pathSegment("charge").build().encode().toUriString()
+        UriComponentsBuilder.fromPath(account.id).pathSegment("amount").build().encode().toUriString()
     }
 
     def persistChargeType(PaymentType chargeType) {
@@ -105,8 +105,8 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         new DepositRequestBody(personId: person.id, deposit: amount, dateOfDeposit: date)
     }
 
-    private ChargeRequestBody getBody(PaymentType chargeType, BigDecimal amount, Date date) {
-        new ChargeRequestBody(chargeTypeId: chargeType.id, charge: amount, dateOfCharge: date)
+    private PaymentRequestBody getBody(PaymentType chargeType, BigDecimal amount, Date date) {
+        new PaymentRequestBody(paymentTypeId: chargeType.id, amount: amount, dateOfPayment: date)
     }
 
     private String getDepositUri(Account account) {

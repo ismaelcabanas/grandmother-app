@@ -20,7 +20,7 @@ class AccountServiceImpl implements AccountService{
     private AccountRepository accountRepository
 
     @Override
-    Account charge(String accountId, String chargeTypeId, BigDecimal amount, Date date) {
+    Account payment(String accountId, String chargeTypeId, BigDecimal amount, Date date) {
         Account account = accountRepository.findOne(accountId)
         
         PaymentType chargeType = PaymentType.builder().id(chargeTypeId).build()
