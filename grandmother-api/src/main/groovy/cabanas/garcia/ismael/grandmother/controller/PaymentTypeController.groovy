@@ -18,8 +18,8 @@ import javax.validation.Valid
  */
 @Slf4j
 @RestController
-@RequestMapping("/chargeTypes")
-class ChargeTypeController {
+@RequestMapping("/paymentTypes")
+class PaymentTypeController {
 
     @Autowired
     PaymentTypeService chargeTypeService
