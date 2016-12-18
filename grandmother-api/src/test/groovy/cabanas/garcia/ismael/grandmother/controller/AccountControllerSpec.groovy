@@ -7,6 +7,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.service.AccountService
+import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceDefaultAccountStub
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
 import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
 import groovy.json.JsonOutput
@@ -64,7 +65,7 @@ class AccountControllerSpec extends Specification{
 
     def "should return status 201 when hits URL for creating an account"(){
         given: "account controller configured with his services"
-            AccountService accountService = Mock(AccountService)
+            AccountService accountService = new AccountServiceDefaultAccountStub()
             AccountController controller = new AccountController(accountService: accountService)
         and: "a body with account data"
             AccountRequestBody accountRequestBody = AccountRequestBody.builder()
@@ -75,6 +76,7 @@ class AccountControllerSpec extends Specification{
         then:
             response.status == HttpStatus.CREATED.value()
             response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+            response.getHeader("Location") == "http://localhost/accounts/1"
     }
 
     def "should return status 400 when hits URL for creating an account with empty account number"(){

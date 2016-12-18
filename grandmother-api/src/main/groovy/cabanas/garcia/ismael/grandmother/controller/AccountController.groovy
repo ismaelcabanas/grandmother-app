@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 import javax.validation.Valid
 
@@ -39,10 +40,14 @@ class AccountController {
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<Void> create(@Valid @RequestBody AccountRequestBody accountRequestBody){
         log.debug("Creating account $accountRequestBody")
-        accountService.open(accountRequestBody.accountNumber, accountRequestBody.balance)
+        Account account = accountService.open(accountRequestBody.accountNumber, accountRequestBody.balance)
 
         HttpHeaders headers = new HttpHeaders()
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8)
+        headers.setLocation(ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/accounts/" + account.id)
+                .buildAndExpand(account.id).toUri())
 
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED)
     }
