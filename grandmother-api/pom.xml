@@ -331,8 +331,7 @@
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-spring</artifactId>
-            <version>1.1-groovy-2.4-rc-3</version>
-            <scope>test</scope>
+            <version>1.0-groovy-2.4</version>
         </dependency>
 
         <!-- Groovy dependency -->
