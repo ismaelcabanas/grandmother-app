@@ -34,7 +34,7 @@ class AccountServiceITSpec extends Specification{
     PersonService personService
 
     @Autowired
-    ChargeTypeService chargeTypeService
+    PaymentTypeService chargeTypeService
 
     private static final String ACCOUNT_NUMBER = "ES6401820474280201551793"
 

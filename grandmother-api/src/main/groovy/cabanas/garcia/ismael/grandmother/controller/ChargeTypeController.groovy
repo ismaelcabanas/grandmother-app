@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
-import cabanas.garcia.ismael.grandmother.service.ChargeTypeService
+import cabanas.garcia.ismael.grandmother.service.PaymentTypeService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -22,7 +22,7 @@ import javax.validation.Valid
 class ChargeTypeController {
 
     @Autowired
-    ChargeTypeService chargeTypeService
+    PaymentTypeService chargeTypeService
 
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<Void> create(@Valid @RequestBody PaymentType chargeType){
