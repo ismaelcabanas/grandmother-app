@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.*
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -28,9 +29,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * Created by XI317311 on 15/12/2016.
  */
 class AccountControllerSpec extends Specification{
-
-    static Date TODAY = new Date()
-    static Date YESTERDAY = new Date().previous()
 
     def "should return status 200 when hits the URL for getting an existing account"(){
         given: "a given account identifier"
@@ -61,6 +59,21 @@ class AccountControllerSpec extends Specification{
             jsonResponse.balance == AccountTestUtils.getDefaultAccount().balance.add(15000)
             jsonResponse.accountNumber == AccountTestUtils.getDefaultAccount().accountNumber
             jsonResponse.id == AccountTestUtils.getDefaultAccount().id
+    }
+
+    def "should get account details when hits the URL for getting an existing account with balance 0"(){
+        given: "a given account with balance 0"
+            Account account = new Account(accountNumber: "123", balance: 0, id: "1")
+        and: "account controller configured with his services"
+            AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
+            AccountController controller = new AccountController(accountService: accountService)
+        when: "REST account get url is hit"
+            def response = sendGet(controller, "/accounts/$account.id")
+        then:
+            def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
+            jsonResponse.balance == account.balance
+            jsonResponse.accountNumber == account.accountNumber
+            jsonResponse.id == account.id
     }
 
     def "should return status 201 when hits URL for creating an account"(){
