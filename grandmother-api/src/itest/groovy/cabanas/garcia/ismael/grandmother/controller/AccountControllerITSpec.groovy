@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.controller.request.PaymentRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
+import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
@@ -9,6 +10,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRep
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
@@ -69,9 +71,9 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
 
     @Unroll
     def "should return status #statusCodeExpected when there is a payment #paymentType.name of #amount€ at #date"(){
-        given: "an given account"
+        given: "a given account"
             Account account = openDefaultAccount()
-        and: "a amount type in the system"
+        and: "an amount type in the system"
             persistChargeType(paymentType)
         when: "deposits a given amount"
             def depositRequestBody = getBody(paymentType, amount, date, description)
@@ -86,6 +88,18 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         null                  | new PaymentType(name: "Agua") | parseDate("01/01/2010") | "Agua"      | HttpStatus.BAD_REQUEST
         new BigDecimal(30000) | new PaymentType(name: "Agua") | null                    | "Agua"      | HttpStatus.BAD_REQUEST
 
+    }
+
+    def "should return account data when hits the URL for getting account by identifier"(){
+        given: "a given account"
+            Account account = openDefaultAccount()
+        when: "REST account get url is hit"
+            ResponseEntity<AccountResponse> response =
+                    restTemplate.getForEntity(serviceURI("/accounts/$account.id"), AccountResponse.class)
+        then:
+            AccountResponse accountResponse = response.body
+            accountResponse.accountNumber == account.accountNumber
+            accountResponse.balance == account.balance
     }
 
 
