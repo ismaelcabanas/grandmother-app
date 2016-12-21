@@ -81,6 +81,6 @@ class AccountServiceImpl implements AccountService{
 
     @Override
     Account get(String accountId) {
-        return null
+        return accountRepository.findOne(accountId)
     }
 }
