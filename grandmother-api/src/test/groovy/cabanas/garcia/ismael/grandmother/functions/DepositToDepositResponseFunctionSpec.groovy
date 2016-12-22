@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.functions
 
 import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
 import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
 import spock.lang.Specification
@@ -11,23 +12,20 @@ import spock.lang.Specification
  */
 class DepositToDepositResponseFunctionSpec extends Specification{
 
-    private DepositToDepositResponseFunction function = new DepositToDepositResponseFunction()
+    private DepositTransactionToDepositResponseFunction function = new DepositTransactionToDepositResponseFunction()
 
     def "transform deposit object to deposit response object"(){
         given:
-            Deposit deposit = Deposit.builder()
-                    .amount(10000)
-                    .date(DateUtilTest.TODAY)
-                    .person(PersonUtilTest.getDefaultPerson())
-                    .description("Transferencia a su favor")
-                    .build()
+            DepositTransaction depositTransaction =
+                    new DepositTransaction(amount: 10000, dateOfMovement: DateUtilTest.TODAY,
+                        person: PersonUtilTest.getDefaultPerson(), description:  "Transferencia a su favor")
         when:
-            DepositResponse depositResponse = function.apply(deposit)
+            DepositResponse depositResponse = function.apply(depositTransaction)
         then:
-            depositResponse.amount == deposit.amount
-            depositResponse.date == deposit.date
-            depositResponse.person.id == deposit.person.id
-            depositResponse.person.name == deposit.person.name
-            depositResponse.description == deposit.description
+            depositResponse.amount == depositTransaction.amount
+            depositResponse.date == depositTransaction.dateOfMovement
+            depositResponse.person.id == depositTransaction.person.id
+            depositResponse.person.name == depositTransaction.person.name
+            depositResponse.description == depositTransaction.description
     }
 }

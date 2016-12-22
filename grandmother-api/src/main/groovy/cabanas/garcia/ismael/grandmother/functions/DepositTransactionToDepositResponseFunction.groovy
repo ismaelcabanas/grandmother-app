@@ -3,23 +3,24 @@ package cabanas.garcia.ismael.grandmother.functions
 import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
 import cabanas.garcia.ismael.grandmother.controller.response.PersonResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 
 import java.util.function.Function
 
 /**
  * Created by XI317311 on 22/12/2016.
  */
-class DepositToDepositResponseFunction implements Function<Deposit, DepositResponse>{
+class DepositTransactionToDepositResponseFunction implements Function<DepositTransaction, DepositResponse>{
 
     @Override
-    DepositResponse apply(Deposit deposit) {
+    DepositResponse apply(DepositTransaction depositTransaction) {
         def builder = DepositResponse.builder()
-            .amount(deposit.amount)
-            .date(deposit.date)
-            .description(deposit.description)
+            .amount(depositTransaction.amount)
+            .date(depositTransaction.dateOfMovement)
+            .description(depositTransaction.description)
 
-        if(deposit.person != null)
-            builder.person(PersonResponse.builder().id(deposit.person.id).name(deposit.person.name).build())
+        if(depositTransaction.person != null)
+            builder.person(PersonResponse.builder().id(depositTransaction.person.id).name(depositTransaction.person.name).build())
 
         return builder.build()
     }
