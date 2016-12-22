@@ -32,8 +32,8 @@ class AccountControllerSpec extends Specification{
 
     def "should return status 200 when hits the URL for getting an existing account"(){
         given: "a given account identifier"
-            Account account = AccountTestUtils.getDefaultAccount()
-        and: "account controller configured with his services"
+            Account account = getDefaultAccount()
+        and: "account controller configured with stub service"
             AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
             AccountController controller = new AccountController(accountService: accountService)
         when: "REST account get url is hit"
@@ -45,10 +45,10 @@ class AccountControllerSpec extends Specification{
 
     def "should get account details when hits the URL for getting an existing account"(){
         given: "a given account with transactions"
-            Account account = AccountTestUtils.getDefaultAccount()
-            account.deposit(new Deposit(amount: 10000, date: TODAY))
-            account.deposit(new Deposit(amount: 15000, date: YESTERDAY))
-            account.charge(new Payment(amount: 10000, date: TODAY))
+            Account account = getDefaultAccount()
+            deposit(account, 10000, TODAY)
+            deposit(account, 15000, YESTERDAY)
+            payment(account, 10000, TODAY)
         and: "account controller configured with his services"
             AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
             AccountController controller = new AccountController(accountService: accountService)
@@ -63,7 +63,7 @@ class AccountControllerSpec extends Specification{
 
     def "should get account details when hits the URL for getting an existing account with balance 0"(){
         given: "a given account with balance 0"
-            Account account = new Account(accountNumber: "123", balance: 0, id: "1")
+            Account account = Account.builder().id("1").accountNumber("123").balance(0).build()
         and: "account controller configured with his services"
             AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
             AccountController controller = new AccountController(accountService: accountService)
@@ -113,13 +113,13 @@ class AccountControllerSpec extends Specification{
         and: "a account identifier"
             Account defaultAccount = AccountTestUtils.getDefaultAccount()
             String accountId = defaultAccount.getId()
-        and: "data of deposit"
-            Date date = TODAY
-            BigDecimal amount = defaultAccount.getBalance()
-            String personId = "1"
-            String description = "Transferencia a su favor"
-            DepositRequestBody depositRequestBody = new DepositRequestBody(personId: personId,
-                    deposit: amount, dateOfDeposit: date, description: description)
+        and: "request body of deposit"
+            DepositRequestBody depositRequestBody = DepositRequestBody.builder()
+                    .personId("1")
+                    .deposit(defaultAccount.balance)
+                    .dateOfDeposit(TODAY)
+                    .description("Transferencia a su favor")
+                    .build()
         when: "REST desposit on account url is hit"
             def response = sendPut(controller, "/accounts/$accountId/deposit", depositRequestBody)
         then:
@@ -236,5 +236,17 @@ class AccountControllerSpec extends Specification{
 
     def toJson(Object object) {
         return JsonOutput.toJson(object)
+    }
+
+    def Account getDefaultAccount() {
+        AccountTestUtils.getDefaultAccount()
+    }
+
+    def deposit(Account account, BigDecimal amount, Date date) {
+        account.deposit(new Deposit(amount: amount, date: date))
+    }
+
+    def payment(Account account, BigDecimal amount, Date date){
+        account.charge(new Payment(amount: amount, date: date))
     }
 }
