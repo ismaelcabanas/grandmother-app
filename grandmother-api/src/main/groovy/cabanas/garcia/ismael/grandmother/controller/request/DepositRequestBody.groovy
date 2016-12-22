@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.controller.request
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import groovy.transform.builder.Builder
 
 import javax.validation.constraints.NotNull
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull
  */
 @ToString
 @EqualsAndHashCode
+@Builder
 class DepositRequestBody {
 
     @NotNull
