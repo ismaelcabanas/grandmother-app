@@ -190,6 +190,23 @@ class AccountControllerSpec extends Specification{
         30000  | null          | TODAY | HttpStatus.BAD_REQUEST.value()
     }
 
+    def "should return deposits response when hits URL for getting deposits on an account without deposits" (){
+        given: "an account without deposits"
+            Account account = getDefaultAccount()
+        and: "account controller configured with his services"
+            AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
+            AccountController controller = new AccountController(accountService: accountService)
+        when: "REST deposits on account url is hit"
+            def response = sendGet(controller, "/accounts/$account.id/deposits")
+        then:
+            response.status == HttpStatus.OK.value()
+            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+        and:
+            def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
+            jsonResponse.deposits.size == 0
+            jsonResponse.total == account.balance
+    }
+
     def sendGet(controller, path) {
         MockMvc mockMvc = standaloneSetup(controller).build()
         def response = mockMvc.perform(
