@@ -13,11 +13,14 @@ class DepositToDepositResponseFunction implements Function<Deposit, DepositRespo
 
     @Override
     DepositResponse apply(Deposit deposit) {
-        return DepositResponse.builder()
+        def builder = DepositResponse.builder()
             .amount(deposit.amount)
             .date(deposit.date)
-            .person(PersonResponse.builder().id(deposit.person.id).name(deposit.person.name).build())
             .description(deposit.description)
-            .build()
+
+        if(deposit.person != null)
+            builder.person(PersonResponse.builder().id(deposit.person.id).name(deposit.person.name).build())
+
+        return builder.build()
     }
 }
