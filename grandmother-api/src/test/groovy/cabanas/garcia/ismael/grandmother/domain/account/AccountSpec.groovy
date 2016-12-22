@@ -49,7 +49,7 @@ class AccountSpec extends Specification{
             account.charge(chargeOne)
             account.charge(chargeTwo)
             account.deposit(depositOne)
-        when: "gets the account transactions"
+        when: "gets the account list"
             Transactions transactions = account.transactions
         then:
             transactions.count() == 3

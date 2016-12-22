@@ -19,17 +19,17 @@ import javax.persistence.OneToMany
 class Transactions {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
-    Collection<Transaction> transactions
+    Collection<Transaction> list
 
     Transactions(){
-        transactions = new ArrayList<Transaction>()
+        list = new ArrayList<Transaction>()
     }
 
     def add(Transaction movement) {
-        transactions.add(movement)
+        list.add(movement)
     }
 
     int count() {
-        transactions.size()
+        list.size()
     }
 }
