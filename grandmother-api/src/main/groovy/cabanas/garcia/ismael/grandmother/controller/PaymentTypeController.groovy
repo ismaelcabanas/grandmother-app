@@ -18,8 +18,10 @@ import javax.validation.Valid
  */
 @Slf4j
 @RestController
-@RequestMapping("/paymentTypes")
+@RequestMapping(value = "/paymentTypes")
 class PaymentTypeController {
+
+    public static final String PAYMENT_TYPE_BASE_PATH = "/paymentTypes"
 
     @Autowired
     PaymentTypeService chargeTypeService
