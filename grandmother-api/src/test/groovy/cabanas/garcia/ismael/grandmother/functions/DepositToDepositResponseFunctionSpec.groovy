@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
+import cabanas.garcia.ismael.grandmother.utils.DateUtils
 import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
 import spock.lang.Specification
 
@@ -23,7 +24,7 @@ class DepositToDepositResponseFunctionSpec extends Specification{
             DepositResponse depositResponse = function.apply(depositTransaction)
         then:
             depositResponse.amount == depositTransaction.amount
-            depositResponse.date == depositTransaction.dateOfMovement
+            depositResponse.date == DateUtils.format(depositTransaction.dateOfMovement)
             depositResponse.person.id == depositTransaction.person.id
             depositResponse.person.name == depositTransaction.person.name
             depositResponse.description == depositTransaction.description
