@@ -19,6 +19,8 @@ import javax.validation.Valid
 @RequestMapping(value = "/persons")
 class PersonController {
 
+    public static String PERSON_BASE_PATH = "/persons"
+
     @Autowired
     PersonService personService
 
