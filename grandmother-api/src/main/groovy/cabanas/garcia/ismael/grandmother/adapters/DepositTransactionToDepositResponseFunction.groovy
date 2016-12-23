@@ -1,8 +1,7 @@
-package cabanas.garcia.ismael.grandmother.functions
+package cabanas.garcia.ismael.grandmother.adapters
 
 import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
 import cabanas.garcia.ismael.grandmother.controller.response.PersonResponse
-import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.utils.DateUtils
 

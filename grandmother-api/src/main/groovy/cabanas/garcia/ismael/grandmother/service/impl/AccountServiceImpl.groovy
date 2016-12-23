@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.*
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.AccountService
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service
  * Created by XI317311 on 09/12/2016.
  */
 @Service
+@Slf4j
 class AccountServiceImpl implements AccountService{
 
     @Autowired
@@ -83,6 +85,7 @@ class AccountServiceImpl implements AccountService{
 
     @Override
     Collection<DepositTransaction> getDepositTransactions(String accountId) {
+        log.debug("getDepositTransactions() NO IMPLEMENTADO")
         return null
     }
 }

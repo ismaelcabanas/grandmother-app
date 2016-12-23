@@ -12,7 +12,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.person.Person
-import cabanas.garcia.ismael.grandmother.functions.DepositTransactionToDepositResponseFunction
+import cabanas.garcia.ismael.grandmother.adapters.DepositTransactionToDepositResponseFunction
 import cabanas.garcia.ismael.grandmother.service.AccountService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -128,6 +128,7 @@ class AccountController {
     }
 
     private BigDecimal totalOfDepositTransactions(Collection<DepositTransaction> transactions) {
+        assert transactions != null
         BinaryOperator<BigDecimal> addOperator = {s1, s2 -> s1.add(s2)}
         BigDecimal total = transactions.stream()
                 .filter(Objects.&nonNull) // de la colleción, no cojas los objetos nulos. En Groovy el operador .& equivale a :: en Java

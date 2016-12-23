@@ -1,9 +1,8 @@
 package cabanas.garcia.ismael.grandmother.utils
 
 import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
-import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
-import cabanas.garcia.ismael.grandmother.functions.DepositTransactionToDepositResponseFunction
+import cabanas.garcia.ismael.grandmother.adapters.DepositTransactionToDepositResponseFunction
 import spock.lang.Specification
 
 /**
