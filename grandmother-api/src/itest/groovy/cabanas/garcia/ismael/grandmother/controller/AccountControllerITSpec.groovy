@@ -1,35 +1,39 @@
 package cabanas.garcia.ismael.grandmother.controller
 
-import cabanas.garcia.ismael.grandmother.controller.request.PaymentRequestBody
 import cabanas.garcia.ismael.grandmother.controller.request.DepositRequestBody
+import cabanas.garcia.ismael.grandmother.controller.request.PaymentRequestBody
 import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
+import cabanas.garcia.ismael.grandmother.controller.response.DepositsResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
+import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
-import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
+import cabanas.garcia.ismael.grandmother.service.AccountService
+import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.util.UriComponentsBuilder
 import spock.lang.Unroll
 
 /**
  * Created by XI317311 on 12/12/2016.
  */
+@Transactional
 class AccountControllerITSpec extends RestIntegrationBaseSpec{
 
     @Autowired
     PersonRepository personRepository
 
     @Autowired
-    AccountRepository accountRepository
+    ChargeTypeRepository chargeTypeRepository
 
     @Autowired
-    ChargeTypeRepository chargeTypeRepository
+    AccountService accountService
 
     @Unroll
     def "should return status #statusCodeExpected when create a account with account number '#accountNumber' and balance #balance" (){
@@ -102,6 +106,38 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
             accountResponse.balance == account.balance
     }
 
+    def "should return deposit transactions and total for an account"(){
+        given: "a given account"
+            Account account = openDefaultAccount()
+        and: "a given person"
+            Person person = persistPerson(new Person(name: "Ismael"))
+        and: "that person does two deposits on account"
+            Deposit deposit10000 = new Deposit(amount: 10000, date: DateUtilTest.TODAY, description: "Transferencia a su favor", person: person)
+            Deposit deposit20000 = new Deposit(amount: 20000, date: DateUtilTest.YESTERDAY, description: "Transferencia a su favor", person: person)
+            accountService.deposit(account.id, deposit10000)
+            accountService.deposit(account.id, deposit20000)
+        when: "REST deposits on account url is hit"
+            ResponseEntity<DepositsResponse> response =
+                restTemplate.getForEntity(serviceURI("/accounts/$account.id/deposits"), DepositsResponse.class)
+        then:
+            totalAmountDepositsIsExpected(response.body, 30000)
+            responseContainsDeposits(response.body, deposit10000, deposit20000)
+    }
+
+    def responseContainsDeposits(DepositsResponse response, Deposit... deposits) {
+        response.deposits.size() == deposits.size()
+        response.deposits.forEach({depositResponse ->
+            deposits.contains(new Deposit(
+                    amount: depositResponse.amount,
+                    date: depositResponse.date,
+                    description: depositResponse.description,
+                    person: new Person(name: depositResponse.person.name)))
+        })
+    }
+
+    def totalAmountDepositsIsExpected(DepositsResponse response, BigDecimal totalExpected) {
+        response.total == totalExpected
+    }
 
     String getChargeUri(Account account) {
         UriComponentsBuilder.fromPath(account.id).pathSegment("amount").build().encode().toUriString()
@@ -128,9 +164,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     }
 
     Account openDefaultAccount() {
-        Account account = new Account(accountNumber: "123123")
-        accountRepository.save(account)
-        return account
+        return accountService.open("123123")
     }
 
     def persistPerson(Person person){
