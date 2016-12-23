@@ -10,10 +10,13 @@ import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceDefaultAccountStub
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
 import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
+import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
+import cabanas.garcia.ismael.grandmother.utils.DateUtils
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -30,6 +33,11 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  */
 class AccountControllerSpec extends Specification{
 
+    private static final BigDecimal ZERO = BigDecimal.ZERO
+    private static final BigDecimal TEN_THOUSAND = new BigDecimal(10000)
+    private static final BigDecimal TWENTY_THOUSAND = new BigDecimal(20000)
+    private static final BigDecimal THIRTY_THOUSAND = new BigDecimal(30000)
+
     def "should return status 200 when hits the URL for getting an existing account"(){
         given: "a given account identifier"
             Account account = getDefaultAccount()
@@ -44,11 +52,11 @@ class AccountControllerSpec extends Specification{
     }
 
     def "should get account details when hits the URL for getting an existing account"(){
-        given: "a given account with transactions"
+        given: "a given account with list"
             Account account = getDefaultAccount()
-            deposit(account, 10000, TODAY)
+            deposit(account, TEN_THOUSAND, TODAY)
             deposit(account, 15000, YESTERDAY)
-            payment(account, 10000, TODAY)
+            payment(account, TEN_THOUSAND, TODAY)
         and: "account controller configured with his services"
             AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
             AccountController controller = new AccountController(accountService: accountService)
@@ -199,12 +207,35 @@ class AccountControllerSpec extends Specification{
         when: "REST deposits on account url is hit"
             def response = sendGet(controller, "/accounts/$account.id/deposits")
         then:
+            responseStatusCodeIsOk(response)
+            responseContentTypeIsJson(response)
+        and:
+            notExistDepositsInAccount(response)
+    }
+
+
+
+    def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits" (){
+        given: "an account with unordered deposits"
+            Account account = getDefaultAccount()
+            deposit(account, TEN_THOUSAND, TODAY)
+            deposit(account, TWENTY_THOUSAND, YESTERDAY)
+        and: "account controller configured with his services"
+            AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
+            AccountController controller = new AccountController(accountService: accountService)
+        when: "REST deposits on account url is hit"
+            def response = sendGet(controller, "/accounts/$account.id/deposits")
+        then:
             response.status == HttpStatus.OK.value()
             response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
         and:
             def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
-            jsonResponse.deposits.size == 0
-            jsonResponse.total == account.balance
+            jsonResponse.deposits.size == 2
+            jsonResponse.deposits[0].amount == TEN_THOUSAND
+            jsonResponse.deposits[0].date == DateUtils.format(TODAY)
+            jsonResponse.deposits[1].amount == TWENTY_THOUSAND
+            jsonResponse.deposits[1].date == DateUtils.format(YESTERDAY)
+            jsonResponse.total == THIRTY_THOUSAND
     }
 
     def sendGet(controller, path) {
@@ -265,5 +296,19 @@ class AccountControllerSpec extends Specification{
 
     def payment(Account account, BigDecimal amount, Date date){
         account.charge(new Payment(amount: amount, date: date))
+    }
+
+    def responseStatusCodeIsOk(MockHttpServletResponse response) {
+        response.status == HttpStatus.OK.value()
+    }
+
+    def responseContentTypeIsJson(MockHttpServletResponse response) {
+        response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+    }
+
+    def notExistDepositsInAccount(MockHttpServletResponse response) {
+        def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
+        jsonResponse.deposits.size == 0
+        jsonResponse.total == ZERO
     }
 }

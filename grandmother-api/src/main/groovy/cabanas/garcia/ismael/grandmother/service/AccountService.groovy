@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 
 /**
@@ -24,4 +25,6 @@ interface AccountService {
     Account payment(String accountId, Payment payment)
 
     Account get(String accountId)
+
+    Collection<DepositTransaction> getDepositTransactions(String accountId)
 }

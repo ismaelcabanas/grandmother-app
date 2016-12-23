@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
 import cabanas.garcia.ismael.grandmother.controller.response.PersonResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
+import cabanas.garcia.ismael.grandmother.utils.DateUtils
 
 import java.util.function.Function
 
@@ -16,7 +17,7 @@ class DepositTransactionToDepositResponseFunction implements Function<DepositTra
     DepositResponse apply(DepositTransaction depositTransaction) {
         def builder = DepositResponse.builder()
             .amount(depositTransaction.amount)
-            .date(depositTransaction.dateOfMovement)
+            .date(DateUtils.format(depositTransaction.dateOfMovement))
             .description(depositTransaction.description)
 
         if(depositTransaction.person != null)

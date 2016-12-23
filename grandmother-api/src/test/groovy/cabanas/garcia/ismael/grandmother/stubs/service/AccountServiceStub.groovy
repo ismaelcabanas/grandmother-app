@@ -43,4 +43,9 @@ abstract class AccountServiceStub implements AccountService{
     Account payment(String accountId, Payment payment) {
         return null
     }
+
+    @Override
+    Collection<Deposit> getDepositTransactions(String accountId) {
+        return null
+    }
 }

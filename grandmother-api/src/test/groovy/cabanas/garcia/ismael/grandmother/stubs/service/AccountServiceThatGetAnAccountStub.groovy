@@ -1,8 +1,8 @@
 package cabanas.garcia.ismael.grandmother.stubs.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
+import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.service.AccountService
-import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
 
 /**
  * Created by XI317311 on 15/12/2016.
@@ -14,5 +14,13 @@ class AccountServiceThatGetAnAccountStub extends AccountServiceStub implements A
     @Override
     Account get(String accountId) {
         return account
+    }
+
+    @Override
+    Collection<DepositTransaction> getDepositTransactions(String accountId) {
+        Comparator<DepositTransaction> byDateOfTransactionAscendingOrder =
+                {DepositTransaction transaction1, DepositTransaction transaction2 ->
+                    transaction2.dateOfMovement.compareTo(transaction1.dateOfMovement)}
+        return account.transactions.list.sort(false, byDateOfTransactionAscendingOrder)
     }
 }

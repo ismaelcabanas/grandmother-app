@@ -1,9 +1,6 @@
 package cabanas.garcia.ismael.grandmother.service.impl
 
-import cabanas.garcia.ismael.grandmother.domain.account.Account
-import cabanas.garcia.ismael.grandmother.domain.account.Payment
-import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
-import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.domain.account.*
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.AccountService
@@ -82,5 +79,10 @@ class AccountServiceImpl implements AccountService{
     @Override
     Account get(String accountId) {
         return accountRepository.findOne(accountId)
+    }
+
+    @Override
+    Collection<DepositTransaction> getDepositTransactions(String accountId) {
+        return null
     }
 }
