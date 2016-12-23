@@ -236,7 +236,7 @@ class AccountControllerSpec extends Specification{
 
     def existDepositsInAccountAndTotal(MockHttpServletResponse response, BigDecimal total, Deposit... deposits) {
         def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
-        jsonResponse.deposits.size == 2
+        jsonResponse.deposits.size == deposits.size()
         jsonResponse.deposits[0].amount == deposits[0].amount
         jsonResponse.deposits[0].date == DateUtils.format(deposits[0].date)
         jsonResponse.deposits[1].amount == deposits[1].amount

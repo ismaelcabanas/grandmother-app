@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.service.impl
 
 import cabanas.garcia.ismael.grandmother.domain.account.*
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
+import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.AccountService
 import groovy.util.logging.Slf4j
@@ -17,6 +18,9 @@ class AccountServiceImpl implements AccountService{
 
     @Autowired
     private AccountRepository accountRepository
+
+    @Autowired
+    private DepositTransactionRepository depositTransactionRepository
 
     @Override
     Account payment(String accountId, String chargeTypeId, BigDecimal amount, Date date) {
@@ -85,7 +89,6 @@ class AccountServiceImpl implements AccountService{
 
     @Override
     Collection<DepositTransaction> getDepositTransactions(String accountId) {
-        log.debug("getDepositTransactions() NO IMPLEMENTADO")
-        return null
+        return depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
     }
 }

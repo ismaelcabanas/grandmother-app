@@ -1,10 +1,16 @@
 package cabanas.garcia.ismael.grandmother.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
+import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
+import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.AccountServiceImpl
+import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
+import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
+import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
@@ -29,6 +35,9 @@ class AccountServiceITSpec extends Specification{
 
     @Autowired
     AccountRepository accountRepository
+
+    @Autowired
+    DepositTransactionRepository depositTransactionRepository
 
     @Autowired
     PersonService personService
@@ -108,6 +117,31 @@ class AccountServiceITSpec extends Specification{
             account.balance == 10.000
         and:
             account.transactions.count() == 3
+    }
+
+    def "should return deposit transactions ordered in ascending by date"(){
+        given: "account service"
+            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
+                    depositTransactionRepository: depositTransactionRepository)
+        and: "an account persisted in the system"
+            Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
+        and: "a given person persisted in the system"
+            Person person = personService.create(PersonUtilTest.getDefaultPerson())
+        and: "that person does two deposits on account with unordered dates"
+            Deposit deposit10000 = new Deposit(amount: 10000, date: DateUtilTest.YESTERDAY, description: "Transferencia a su favor", person: person)
+            Deposit deposit20000 = new Deposit(amount: 20000, date: DateUtilTest.TODAY, description: "Transferencia a su favor", person: person)
+            accountService.deposit(account.id, deposit10000)
+            accountService.deposit(account.id, deposit20000)
+        when:
+            Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactions(account.id)
+        then:
+            depositTransactions.size() == 2
+            with(depositTransactions.getAt(0)){
+                [amount, dateOfMovement, description, person.name] == [deposit10000.amount, deposit10000.date, deposit10000.description, deposit10000.person.name]
+            }
+            with(depositTransactions.getAt(1)){
+                [amount, dateOfMovement, description, person.name] == [deposit20000.amount, deposit20000.date, deposit20000.description, deposit20000.person.name]
+            }
     }
 
     private def createChargeType(String name) {

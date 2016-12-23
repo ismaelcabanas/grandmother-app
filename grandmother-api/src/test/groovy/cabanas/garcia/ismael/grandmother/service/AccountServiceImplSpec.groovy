@@ -1,13 +1,14 @@
 package cabanas.garcia.ismael.grandmother.service
 
+import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
+import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.service.impl.AccountServiceImpl
 import spock.lang.Specification
 
 import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.*
 import static cabanas.garcia.ismael.grandmother.utils.PaymentTypeUtilTest.*
-import org.mockito.Mock
 
 /**
  * Created by XI317311 on 20/12/2016.
@@ -43,5 +44,19 @@ class AccountServiceImplSpec extends Specification{
             accountService.get(accountId)
         then:
         1 * mockAccountRepository.findOne(accountId)
+    }
+
+    def "should return deposit transactions by date ordered ascending"(){
+        given:
+            String accountId = "1"
+        and:
+            AccountRepository accountRepository = Mock(AccountRepository)
+            DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
+            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
+                depositTransactionRepository: depositTransactionRepository)
+        when:
+            Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactions(accountId)
+        then:
+            1 * depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
     }
 }
