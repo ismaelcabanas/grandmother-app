@@ -49,10 +49,10 @@ class Account {
         balance
     }
 
-    def charge(Payment charge){
-        balance = balance.subtract(charge.getAmount())
-        PaymentTransaction chargeMovement = new PaymentTransaction(amount: charge.getAmount(),
-            chargeType: charge.getType(), dateOfMovement: charge.getDate())
+    def charge(Payment payment){
+        balance = balance.subtract(payment.getAmount())
+        PaymentTransaction chargeMovement = new PaymentTransaction(amount: payment.getAmount(),
+            chargeType: payment.getType(), dateOfMovement: payment.getDate(), description: payment.description)
         addTransaction(chargeMovement)
     }
 

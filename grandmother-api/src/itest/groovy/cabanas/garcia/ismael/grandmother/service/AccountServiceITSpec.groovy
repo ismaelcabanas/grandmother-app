@@ -3,6 +3,7 @@ package cabanas.garcia.ismael.grandmother.service
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
+import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
@@ -60,7 +61,7 @@ class AccountServiceITSpec extends Specification{
             account.getId() != null
     }
 
-    def "a peson does a deposit on given account"(){
+    def "a person does a deposit on given account"(){
         given: "an new account"
             AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository)
             Account account = accountService.open(ACCOUNT_NUMBER)
@@ -71,7 +72,8 @@ class AccountServiceITSpec extends Specification{
         and: "date of deposit"
             Date dateOfDeposit = now()
         when: "deposits on account"
-            account = accountService.deposit(account.getId(), ismael.getId(), depositAmount, dateOfDeposit)
+            Deposit deposit = new Deposit(amount: depositAmount, date: dateOfDeposit, person: ismael, description: "Transferencia a su favor")
+            account = accountService.deposit(account.getId(), deposit)
         then:
             account.balance() == depositAmount
 
@@ -84,13 +86,14 @@ class AccountServiceITSpec extends Specification{
         and: "a given existing amount in the system"
             PaymentType waterCharge = createChargeType(WATER_CHARGE_TYPE)
         and: "an amount amount"
-            BigDecimal chargeAmount = AMOUNT
+            BigDecimal paymentAmount = AMOUNT
         and: "date of amount"
             Date dateOfCharge = now()
         when: "debits on account"
-            account = accountService.payment(account.getId(), waterCharge.id, chargeAmount, dateOfCharge)
+            Payment payment = new Payment(amount: paymentAmount, date: dateOfCharge, description: "El Agua", type: waterCharge)
+            account = accountService.payment(account.getId(), payment)
         then:
-            account.balance() == chargeAmount.negate()
+            account.balance() == paymentAmount.negate()
     }
 
     def "deposits and charges generates movements on an account "(){
@@ -103,16 +106,19 @@ class AccountServiceITSpec extends Specification{
         and: "a deposit done on account by ismael"
             BigDecimal amountDepositedByIsmael = 20.000
             Date dateOfDepositByIsmael = Date.parse(DATE_FORMAT_PATTERN, "01/07/2016")
-            account = accountService.deposit(account.getId(), ismael.getId(), amountDepositedByIsmael, dateOfDepositByIsmael)
+            Deposit despositIsmael = new Deposit(amount: amountDepositedByIsmael, date: dateOfDepositByIsmael, person: ismael, description: "Transferencia a su favor")
+            account = accountService.deposit(account.getId(), despositIsmael)
         and: "a deposit done on account by Bea"
             BigDecimal amountDepositedByBea = 10.000
             Date dateOfDepositByBea = Date.parse(DATE_FORMAT_PATTERN, "01/08/2016")
-            account = accountService.deposit(account.getId(), ismael.getId(), amountDepositedByBea, dateOfDepositByBea)
+            Deposit depositBea = new Deposit(amount: amountDepositedByBea, date: dateOfDepositByBea, person: bea, description: "Transferencia a su favor")
+            account = accountService.deposit(account.getId(), depositBea)
         and: "a water's amount on account"
             BigDecimal waterChargeAmount = 20.000
             PaymentType waterCharge = createChargeType(WATER_CHARGE_TYPE)
             Date dateOfCharge = Date.parse(DATE_FORMAT_PATTERN, "15/07/2016")
-            account = accountService.payment(account.getId(), waterCharge.getId(), waterChargeAmount, dateOfCharge)
+            Payment waterPayment = new Payment(amount: waterChargeAmount, date: dateOfCharge, type: waterCharge, description: "El agua")
+            account = accountService.payment(account.getId(), waterPayment)
         expect:
             account.balance == 10.000
         and:

@@ -39,6 +39,8 @@ class AccountServiceImpl implements AccountService{
     Account payment(String accountId, Payment payment) {
         Account account = accountRepository.findOne(accountId)
 
+        account.charge(payment)
+
         accountRepository.save(account)
 
         return account
