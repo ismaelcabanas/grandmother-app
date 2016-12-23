@@ -47,15 +47,17 @@ class AccountControllerSpec extends Specification{
         when: "REST account get url is hit"
             def response = sendGet(controller, "/accounts/$account.id")
         then:
-            response.status == HttpStatus.OK.value()
-            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+            responseStatusCodeIsOk(response)
+            responseContentTypeIsJson(response)
     }
 
     def "should get account details when hits the URL for getting an existing account"(){
         given: "a given account with list"
             Account account = getDefaultAccount()
-            deposit(account, TEN_THOUSAND, TODAY)
-            deposit(account, 15000, YESTERDAY)
+            Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: TODAY)
+            Deposit deposit15000 = new Deposit(amount: 15000, date: YESTERDAY)
+            deposit(account, deposit10000)
+            deposit(account, deposit15000)
             payment(account, TEN_THOUSAND, TODAY)
         and: "account controller configured with his services"
             AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
@@ -111,7 +113,7 @@ class AccountControllerSpec extends Specification{
         when: "REST account post url is hit"
             def response = sendPost(controller, "/accounts", accountRequestBody)
         then:
-        response.status == HttpStatus.BAD_REQUEST.value()
+            response.status == HttpStatus.BAD_REQUEST.value()
     }
 
     def "should return status 204 when hits URL for depositing on account"(){
@@ -131,8 +133,8 @@ class AccountControllerSpec extends Specification{
         when: "REST desposit on account url is hit"
             def response = sendPut(controller, "/accounts/$accountId/deposit", depositRequestBody)
         then:
-            response.status == HttpStatus.NO_CONTENT.value()
-            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+            responseStatusCodeIsNoContent(response)
+            responseContentTypeIsJson(response)
     }
 
     @Unroll
@@ -173,8 +175,8 @@ class AccountControllerSpec extends Specification{
         when: "REST payment on account url is hit"
             def response = sendPut(controller, "/accounts/$accountId/payment", paymentRequestBody)
         then:
-            response.status == HttpStatus.NO_CONTENT.value()
-            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+            responseStatusCodeIsNoContent(response)
+            responseContentTypeIsJson(response)
     }
 
     @Unroll
@@ -213,29 +215,33 @@ class AccountControllerSpec extends Specification{
             notExistDepositsInAccount(response)
     }
 
-
-
     def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits" (){
         given: "an account with unordered deposits"
             Account account = getDefaultAccount()
-            deposit(account, TEN_THOUSAND, TODAY)
-            deposit(account, TWENTY_THOUSAND, YESTERDAY)
+            Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: TODAY)
+            Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: YESTERDAY)
+            deposit(account, deposit10000)
+            deposit(account, deposit20000)
         and: "account controller configured with his services"
             AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
             AccountController controller = new AccountController(accountService: accountService)
         when: "REST deposits on account url is hit"
             def response = sendGet(controller, "/accounts/$account.id/deposits")
         then:
-            response.status == HttpStatus.OK.value()
-            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+            responseStatusCodeIsOk(response)
+            responseContentTypeIsJson(response)
         and:
-            def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
-            jsonResponse.deposits.size == 2
-            jsonResponse.deposits[0].amount == TEN_THOUSAND
-            jsonResponse.deposits[0].date == DateUtils.format(TODAY)
-            jsonResponse.deposits[1].amount == TWENTY_THOUSAND
-            jsonResponse.deposits[1].date == DateUtils.format(YESTERDAY)
-            jsonResponse.total == THIRTY_THOUSAND
+            existDepositsInAccountAndTotal(response, THIRTY_THOUSAND, deposit10000, deposit20000)
+    }
+
+    def existDepositsInAccountAndTotal(MockHttpServletResponse response, BigDecimal total, Deposit... deposits) {
+        def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
+        jsonResponse.deposits.size == 2
+        jsonResponse.deposits[0].amount == deposits[0].amount
+        jsonResponse.deposits[0].date == DateUtils.format(deposits[0].date)
+        jsonResponse.deposits[1].amount == deposits[1].amount
+        jsonResponse.deposits[1].date == DateUtils.format(deposits[1].date)
+        jsonResponse.total == total
     }
 
     def sendGet(controller, path) {
@@ -290,8 +296,8 @@ class AccountControllerSpec extends Specification{
         AccountTestUtils.getDefaultAccount()
     }
 
-    def deposit(Account account, BigDecimal amount, Date date) {
-        account.deposit(new Deposit(amount: amount, date: date))
+    def deposit(Account account, Deposit deposit) {
+        account.deposit(deposit)
     }
 
     def payment(Account account, BigDecimal amount, Date date){
@@ -310,5 +316,9 @@ class AccountControllerSpec extends Specification{
         def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
         jsonResponse.deposits.size == 0
         jsonResponse.total == ZERO
+    }
+
+    def responseStatusCodeIsNoContent(MockHttpServletResponse response) {
+        response.status == HttpStatus.NO_CONTENT.value()
     }
 }
