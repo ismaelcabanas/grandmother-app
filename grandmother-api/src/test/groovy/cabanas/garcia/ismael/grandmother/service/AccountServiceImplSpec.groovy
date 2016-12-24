@@ -5,6 +5,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.service.impl.AccountServiceImpl
+import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
 import spock.lang.Specification
 
 import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.*
@@ -20,6 +21,7 @@ class AccountServiceImplSpec extends Specification{
             String accountId = "1"
         and:
             AccountRepository mockAccountRepository = Mock(AccountRepository)
+            mockAccountRepository.findOne(accountId) >> AccountTestUtils.getDefaultAccount()
             AccountService accountService = new AccountServiceImpl(accountRepository: mockAccountRepository)
         and:
             Payment paymentData = Payment.builder()
