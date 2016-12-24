@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import java.time.Instant
@@ -125,6 +126,7 @@ class AccountServiceITSpec extends Specification{
             account.transactions.count() == 3
     }
 
+    @Ignore
     def "should return deposit transactions ordered in ascending by date"(){
         given: "account service"
             AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
