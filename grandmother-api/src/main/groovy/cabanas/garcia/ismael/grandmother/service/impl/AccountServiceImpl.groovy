@@ -81,16 +81,25 @@ class AccountServiceImpl implements AccountService{
 
         accountRepository.save(account)
 
+        log.debug("Account persited $account")
+
         return account
     }
 
     @Override
     Account get(String accountId) {
-        return accountRepository.findOne(accountId)
+        log.debug("Getting account $accountId")
+
+        Account account = accountRepository.findOne(accountId)
+
+        log.debug("Account got $account")
+
+        return account
     }
 
     @Override
     Collection<DepositTransaction> getDepositTransactions(String accountId) {
+        Collection<DepositTransaction> list  = depositTransactionRepository.findAll()
         return depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
     }
 }

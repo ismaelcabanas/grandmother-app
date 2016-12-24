@@ -6,25 +6,29 @@ import cabanas.garcia.ismael.grandmother.controller.response.AccountResponse
 import cabanas.garcia.ismael.grandmother.controller.response.DepositsResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
+import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
+import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
-import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.util.UriComponentsBuilder
 import spock.lang.Unroll
 
 /**
  * Created by XI317311 on 12/12/2016.
  */
-@Transactional
+//@Transactional
 class AccountControllerITSpec extends RestIntegrationBaseSpec{
+
+    @Autowired
+    AccountRepository accountRepository
 
     @Autowired
     PersonRepository personRepository
@@ -33,7 +37,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     ChargeTypeRepository chargeTypeRepository
 
     @Autowired
-    AccountService accountService
+    DepositTransactionRepository depositTransactionRepository
 
     @Unroll
     def "should return status #statusCodeExpected when create a account with account number '#accountNumber' and balance #balance" (){
@@ -70,7 +74,6 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         new BigDecimal(30000) | new Person(name: "Isma") | parseDate("01/01/2010") | "Transferencia" | HttpStatus.NO_CONTENT
         null                  | new Person(name: "Isma") | parseDate("01/01/2010") | "Transferencia" | HttpStatus.BAD_REQUEST
         new BigDecimal(30000) | new Person(name: "Isma") | null                    | "Transferencia" | HttpStatus.BAD_REQUEST
-
     }
 
     @Unroll
@@ -107,21 +110,29 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     }
 
     def "should return deposit transactions and total for an account"(){
-        given: "a given account"
+        given: "an account in the system"
             Account account = openDefaultAccount()
-        and: "a given person"
+        and: "a given person in the system"
             Person person = persistPerson(new Person(name: "Ismael"))
         and: "that person does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: 10000, date: DateUtilTest.TODAY, description: "Transferencia a su favor", person: person)
             Deposit deposit20000 = new Deposit(amount: 20000, date: DateUtilTest.YESTERDAY, description: "Transferencia a su favor", person: person)
-            accountService.deposit(account.id, deposit10000)
-            accountService.deposit(account.id, deposit20000)
+            deposit(account, deposit10000)
+            deposit(account, deposit20000)
         when: "REST deposits on account url is hit"
             ResponseEntity<DepositsResponse> response =
                 restTemplate.getForEntity(serviceURI("/accounts/$account.id/deposits"), DepositsResponse.class)
         then:
-            totalAmountDepositsIsExpected(response.body, 30000)
+            totalAmountDepositsExpected(response.body, 30000)
             responseContainsDeposits(response.body, deposit10000, deposit20000)
+    }
+
+    def deposit(Account account, Deposit deposit) {
+        DepositTransaction depositTransaction =
+                new DepositTransaction(amount: deposit.amount, dateOfMovement: deposit.date,
+                    description: deposit.description, account: account,
+                    person: deposit.person)
+        depositTransactionRepository.save(depositTransaction)
     }
 
     def responseContainsDeposits(DepositsResponse response, Deposit... deposits) {
@@ -135,7 +146,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         })
     }
 
-    def totalAmountDepositsIsExpected(DepositsResponse response, BigDecimal totalExpected) {
+    def totalAmountDepositsExpected(DepositsResponse response, BigDecimal totalExpected) {
         response.total == totalExpected
     }
 
@@ -164,7 +175,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     }
 
     Account openDefaultAccount() {
-        return accountService.open("123123")
+        return accountRepository.save(new Account(accountNumber: "123"))
     }
 
     def persistPerson(Person person){

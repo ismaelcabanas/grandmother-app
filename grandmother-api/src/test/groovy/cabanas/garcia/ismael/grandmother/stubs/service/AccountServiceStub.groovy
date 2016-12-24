@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.stubs.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.service.AccountService
 
@@ -45,7 +46,7 @@ abstract class AccountServiceStub implements AccountService{
     }
 
     @Override
-    Collection<Deposit> getDepositTransactions(String accountId) {
+    Collection<DepositTransaction> getDepositTransactions(String accountId) {
         return null
     }
 }
