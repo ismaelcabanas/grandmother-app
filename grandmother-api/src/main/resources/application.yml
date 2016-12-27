@@ -12,7 +12,7 @@ logging:
         ismael:
           grandmother: DEBUG
     org:
-      hibernate: INFO
+      hibernate: DEBUG
 ---
 
 spring:
@@ -63,12 +63,41 @@ spring:
     hibernate:
       ddl-auto: create-drop
   datasource:
-    url: jdbc:postgresql://192.168.99.102:5432/grandmotherdb
+    url: jdbc:postgresql://192.168.99.100:5432/grandmotherdb
     username: postgres
     password: secret
     # Keep the connection alive if idle for a long time (needed in production)
     testWhileIdle: true
     validationQuery:  SELECT 1
 
+---
 
+spring:
+  profiles: staging-container-postgres
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        #javax.persistence.schema-generation.create-source: metadata
+        #javax.persistence.schema-generation.scripts.action: create
+        #javax.persistence.schema-generation.scripts.create-target:  create.sql
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://${MYPOSTGRES_PORT_5432_TCP_ADDR}:${MYPOSTGRES_PORT_5432_TCP_PORT}/grandmotherdb
+    username: postgres
+    password: ${MYPOSTGRES_ENV_POSTGRES_PASSWORD}
+    # Keep the connection alive if idle for a long time (needed in production)
+    testWhileIdle: true
+    validationQuery:  SELECT 1
+
+logging:
+  level:
+    cabanas:
+      garcia:
+        ismael:
+          grandmother: DEBUG
+    org:
+      hibernate: INFO
 
