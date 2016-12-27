@@ -7,6 +7,7 @@ import groovy.transform.builder.Builder
 import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
 
 /**
@@ -20,7 +21,7 @@ class Account {
     private static final BigDecimal ZERO_BALANCE = BigDecimal.ZERO
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id
 
     BigDecimal balance = BigDecimal.ZERO

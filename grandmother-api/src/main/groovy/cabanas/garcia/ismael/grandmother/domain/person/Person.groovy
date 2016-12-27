@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
 
 /**
@@ -20,7 +21,7 @@ import javax.persistence.Id
 class Person {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id
 
     @Column(nullable = false)
