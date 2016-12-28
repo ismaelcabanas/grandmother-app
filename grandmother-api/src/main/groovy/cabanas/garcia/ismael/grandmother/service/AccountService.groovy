@@ -15,16 +15,16 @@ interface AccountService {
     Account open(String accountNumber, BigDecimal balance)
 
     @Deprecated
-    Account deposit(String accountId, String personId, BigDecimal amount, Date date)
+    Account deposit(Long accountId, String personId, BigDecimal amount, Date date)
 
-    Account deposit(String accountId, Deposit deposit)
+    Account deposit(Long accountId, Deposit deposit)
 
     @Deprecated
-    Account payment(String accountId, String chargeTypeId, BigDecimal amount, Date date)
+    Account payment(Long accountId, String chargeTypeId, BigDecimal amount, Date date)
 
-    Account payment(String accountId, Payment payment)
+    Account payment(Long accountId, Payment payment)
 
-    Account get(String accountId)
+    Account get(Long accountId)
 
-    Collection<DepositTransaction> getDepositTransactions(String accountId)
+    Collection<DepositTransaction> getDepositTransactions(Long accountId)
 }

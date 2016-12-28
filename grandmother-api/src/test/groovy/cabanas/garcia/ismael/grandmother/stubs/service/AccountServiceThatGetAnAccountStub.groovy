@@ -12,12 +12,12 @@ class AccountServiceThatGetAnAccountStub extends AccountServiceStub implements A
     Account account
 
     @Override
-    Account get(String accountId) {
+    Account get(Long accountId) {
         return account
     }
 
     @Override
-    Collection<DepositTransaction> getDepositTransactions(String accountId) {
+    Collection<DepositTransaction> getDepositTransactions(Long accountId) {
         Comparator<DepositTransaction> byDateOfTransactionAscendingOrder =
                 {DepositTransaction transaction1, DepositTransaction transaction2 ->
                     transaction2.dateOfMovement.compareTo(transaction1.dateOfMovement)}

@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository
 /**
  * Created by XI317311 on 23/12/2016.
  */
-interface DepositTransactionRepository extends CrudRepository<DepositTransaction, String>{
-    Collection<DepositTransaction> findByAccountIdOrderByDateOfMovementAsc(String accountId)
+interface DepositTransactionRepository extends CrudRepository<DepositTransaction, Long>{
+    Collection<DepositTransaction> findByAccountIdOrderByDateOfMovementAsc(Long accountId)
 }

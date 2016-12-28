@@ -22,7 +22,7 @@ class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id
+    Long id
 
     @Column(nullable = false)
     @NotEmpty

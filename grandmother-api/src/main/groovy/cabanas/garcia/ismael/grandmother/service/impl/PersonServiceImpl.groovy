@@ -26,7 +26,7 @@ class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    Person findById(String id) {
+    Person findById(Long id) {
         personRepository.findOne(id)
     }
 

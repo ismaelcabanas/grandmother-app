@@ -55,7 +55,7 @@ class AccountController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/{id}/deposit")
-    ResponseEntity<Void> deposit(@PathVariable("id") String accountId, @Valid @RequestBody DepositRequestBody requestBody){
+    ResponseEntity<Void> deposit(@PathVariable("id") Long accountId, @Valid @RequestBody DepositRequestBody requestBody){
         log.debug("Updating account with data $requestBody")
         Deposit deposit = Deposit.builder()
                 .amount(requestBody.deposit)
@@ -72,7 +72,7 @@ class AccountController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/{id}/payment")
-    ResponseEntity<Void> payment(@PathVariable("id") String accountId, @Valid @RequestBody PaymentRequestBody requestBody){
+    ResponseEntity<Void> payment(@PathVariable("id") Long accountId, @Valid @RequestBody PaymentRequestBody requestBody){
         log.debug("Updating account with data $requestBody")
 
         Payment payment = Payment.builder()
@@ -91,7 +91,7 @@ class AccountController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
-    ResponseEntity<AccountResponse> read(@PathVariable("id") String accountId){
+    ResponseEntity<AccountResponse> read(@PathVariable("id") Long accountId){
         log.debug("Getting account $accountId")
 
         Account account = accountService.get(accountId)
@@ -106,7 +106,7 @@ class AccountController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}/deposits")
-    ResponseEntity<DepositsResponse> deposits(@PathVariable("id") String accountId){
+    ResponseEntity<DepositsResponse> deposits(@PathVariable("id") Long accountId){
         log.debug("Getting depositTransactions on account $accountId")
 
         Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactions(accountId)

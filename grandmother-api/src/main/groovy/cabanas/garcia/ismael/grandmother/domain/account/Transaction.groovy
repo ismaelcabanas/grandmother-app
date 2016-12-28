@@ -16,8 +16,8 @@ import javax.persistence.*
 abstract class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    String id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id
 
     @Column(nullable = false)
     BigDecimal amount

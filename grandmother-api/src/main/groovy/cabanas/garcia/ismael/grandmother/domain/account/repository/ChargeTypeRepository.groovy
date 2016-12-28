@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository
 /**
  * Created by XI317311 on 09/12/2016.
  */
-interface ChargeTypeRepository extends CrudRepository<PaymentType, String>{
+interface ChargeTypeRepository extends CrudRepository<PaymentType, Long>{
 
 }

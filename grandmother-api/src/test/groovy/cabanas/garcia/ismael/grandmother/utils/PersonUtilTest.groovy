@@ -7,6 +7,6 @@ import cabanas.garcia.ismael.grandmother.domain.person.Person
  */
 class PersonUtilTest {
     static Person getDefaultPerson() {
-        return Person.builder().id("1").name("Ismael").build()
+        return Person.builder().id(1).name("Ismael").build()
     }
 }

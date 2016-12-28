@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull
 class PaymentRequestBody {
 
     @NotNull
-    String paymentTypeId
+    Long paymentTypeId
 
     @NotNull
     BigDecimal amount

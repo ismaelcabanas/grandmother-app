@@ -6,6 +6,7 @@ import groovy.transform.builder.Builder
 import org.hibernate.validator.constraints.NotEmpty
 
 import javax.persistence.Column
+import javax.persistence.EmbeddedId
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -26,6 +27,6 @@ class PaymentType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id
+    Long id
 
 }

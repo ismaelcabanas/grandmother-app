@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull
 class DepositRequestBody {
 
     @NotNull
-    String personId
+    Long personId
 
     @NotNull
     BigDecimal deposit

@@ -13,5 +13,5 @@ import groovy.transform.builder.Builder
 class AccountResponse {
     BigDecimal balance
     String accountNumber
-    String id
+    Long id
 }

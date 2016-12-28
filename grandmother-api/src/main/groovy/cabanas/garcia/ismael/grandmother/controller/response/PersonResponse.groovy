@@ -11,6 +11,6 @@ import groovy.transform.builder.Builder
 @EqualsAndHashCode
 @Builder
 class PersonResponse {
-    String id
+    Long id
     String name
 }

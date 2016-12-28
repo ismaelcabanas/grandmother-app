@@ -23,7 +23,7 @@ class AccountServiceImpl implements AccountService{
     private DepositTransactionRepository depositTransactionRepository
 
     @Override
-    Account payment(String accountId, String chargeTypeId, BigDecimal amount, Date date) {
+    Account payment(Long accountId, String chargeTypeId, BigDecimal amount, Date date) {
         Account account = accountRepository.findOne(accountId)
         
         PaymentType chargeType = PaymentType.builder().id(chargeTypeId).build()
@@ -36,7 +36,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    Account payment(String accountId, Payment payment) {
+    Account payment(Long accountId, Payment payment) {
         Account account = accountRepository.findOne(accountId)
 
         account.charge(payment)
@@ -47,7 +47,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    Account deposit(String accountId, String personId, BigDecimal amount, Date date) {
+    Account deposit(Long accountId, String personId, BigDecimal amount, Date date) {
         Account account = accountRepository.findOne(accountId)
 
         Person person = Person.builder().id(personId).build()
@@ -60,7 +60,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    Account deposit(String accountId, Deposit deposit) {
+    Account deposit(Long accountId, Deposit deposit) {
         Account account = accountRepository.findOne(accountId)
 
         account.deposit(deposit)
@@ -87,7 +87,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    Account get(String accountId) {
+    Account get(Long accountId) {
         log.debug("Getting account $accountId")
 
         Account account = accountRepository.findOne(accountId)
@@ -98,7 +98,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    Collection<DepositTransaction> getDepositTransactions(String accountId) {
+    Collection<DepositTransaction> getDepositTransactions(Long accountId) {
         Collection<DepositTransaction> list  = depositTransactionRepository.findAll()
         return depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
     }

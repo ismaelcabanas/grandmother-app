@@ -9,9 +9,9 @@ class PaymentSpec extends Specification{
 
     def "build charges"(){
         when:
-            Payment charge = Payment.builder().amount(20).type(new PaymentType(name: "Agua")).build()
+            Payment payment = Payment.builder().amount(20).type(new PaymentType(name: "Agua")).build()
         then:
-            charge.amount == 20
-            charge.type == new PaymentType(name: "Agua")
+            payment.amount == 20
+            payment.type == new PaymentType(name: "Agua")
     }
 }

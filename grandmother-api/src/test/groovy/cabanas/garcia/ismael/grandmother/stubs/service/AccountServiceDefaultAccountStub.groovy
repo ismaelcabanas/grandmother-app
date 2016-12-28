@@ -23,27 +23,27 @@ class AccountServiceDefaultAccountStub extends AccountServiceStub{
     }
 
     @Override
-    Account deposit(String accountId, String personId, BigDecimal amount, Date date) {
+    Account deposit(Long accountId, String personId, BigDecimal amount, Date date) {
         return defaultAccount
     }
 
     @Override
-    Account payment(String accountId, String chargeTypeId, BigDecimal amount, Date date) {
+    Account payment(Long accountId, String chargeTypeId, BigDecimal amount, Date date) {
         return defaultAccount
     }
 
     @Override
-    Account get(String accountId) {
+    Account get(Long accountId) {
         return defaultAccount
     }
 
     @Override
-    Account deposit(String accountId, Deposit deposit) {
+    Account deposit(Long accountId, Deposit deposit) {
         return defaultAccount
     }
 
     @Override
-    Account payment(String accountId, Payment payment) {
+    Account payment(Long accountId, Payment payment) {
         return defaultAccount
     }
 }

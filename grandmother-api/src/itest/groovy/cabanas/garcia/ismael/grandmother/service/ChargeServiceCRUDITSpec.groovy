@@ -6,7 +6,9 @@ import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.PaymentTypeServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 import spock.lang.Stepwise
 
@@ -15,6 +17,8 @@ import spock.lang.Stepwise
  */
 @ContextConfiguration // not mentioned by docs, but had to include this for Spock to startup the Spring context
 @SpringBootTest
+@Transactional
+@DirtiesContext // What it does is mark the ApplicationContext as dirty, thus requiring it to be reloaded for the next integration test
 @Stepwise
 class ChargeServiceCRUDITSpec extends Specification{
     public static final String WATER_CHARGE = "Agua"

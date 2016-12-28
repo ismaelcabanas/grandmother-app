@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository
 /**
  * Created by XI317311 on 09/12/2016.
  */
-interface AccountRepository extends CrudRepository<Account, String>{
+interface AccountRepository extends CrudRepository<Account, Long>{
 
 }

@@ -4,11 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
 
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 /**
  * Created by XI317311 on 05/12/2016.
@@ -22,7 +18,7 @@ class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id
+    Long id
 
     BigDecimal balance = BigDecimal.ZERO
     

@@ -67,18 +67,18 @@ class AccountSpec extends Specification{
 
     def "build accounts"(){
         when:
-            Account account = Account.builder().id("1").accountNumber("123123").balance(30.000).build()
+            Account account = Account.builder().id(1L).accountNumber("123123").balance(30.000).build()
         then:
-            account.id == "1"
+            account.id == 1
             account.balance == 30.000
             account.accountNumber == "123123"
     }
 
     def "create an account without balance"(){
         when:
-            Account account = new Account(id: "1", accountNumber: "123123")
+            Account account = new Account(id: 1, accountNumber: "123123")
         then:
-            account.id == "1"
+            account.id == 1
             account.balance == BigDecimal.ZERO
             account.accountNumber == "123123"
     }

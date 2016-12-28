@@ -13,7 +13,7 @@ interface PersonService {
 
     def deleteAll()
 
-    Person findById(String id)
+    Person findById(Long id)
 
     def delete(Person person)
 

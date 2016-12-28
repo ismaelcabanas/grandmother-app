@@ -10,7 +10,7 @@ class AccountTestUtils {
 
     static BigDecimal DEFAULT_BALANCE = new BigDecimal(30000)
     static String DEFAULT_ACCOUNT_NUMBER = "123"
-    static String DEFAULT_ID = "1"
+    static Long DEFAULT_ID = 1L
 
     static Account getDefaultAccount() {
         Account.builder()

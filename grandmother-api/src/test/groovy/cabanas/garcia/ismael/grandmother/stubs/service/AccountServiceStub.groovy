@@ -21,32 +21,32 @@ abstract class AccountServiceStub implements AccountService{
     }
 
     @Override
-    Account deposit(String accountId, String personId, BigDecimal amount, Date date) {
+    Account deposit(Long accountId, String personId, BigDecimal amount, Date date) {
         return null
     }
 
     @Override
-    Account payment(String accountId, String chargeTypeId, BigDecimal amount, Date date) {
+    Account payment(Long accountId, String chargeTypeId, BigDecimal amount, Date date) {
         return null
     }
 
     @Override
-    Account get(String accountId) {
+    Account get(Long accountId) {
         return null
     }
 
     @Override
-    Account deposit(String accountId, Deposit deposit) {
+    Account deposit(Long accountId, Deposit deposit) {
         return null
     }
 
     @Override
-    Account payment(String accountId, Payment payment) {
+    Account payment(Long accountId, Payment payment) {
         return null
     }
 
     @Override
-    Collection<DepositTransaction> getDepositTransactions(String accountId) {
+    Collection<DepositTransaction> getDepositTransactions(Long accountId) {
         return null
     }
 }

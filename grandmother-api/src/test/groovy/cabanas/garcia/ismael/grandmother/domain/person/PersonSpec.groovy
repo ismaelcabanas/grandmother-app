@@ -9,9 +9,9 @@ class PersonSpec extends Specification {
 
     def "build person"(){
         when:
-            Person person = Person.builder().id("1").name("Ismael").build()
+            Person person = Person.builder().id(1).name("Ismael").build()
         then:
-            person.id == "1"
+            person.id == 1
             person.name == "Ismael"
     }
 }

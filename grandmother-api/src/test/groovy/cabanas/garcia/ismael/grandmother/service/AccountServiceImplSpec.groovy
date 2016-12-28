@@ -18,7 +18,7 @@ class AccountServiceImplSpec extends Specification{
 
     def "should update account in repository when does a payment the account"(){
         given:
-            String accountId = "1"
+            Long accountId = 1
         and:
             AccountRepository mockAccountRepository = Mock(AccountRepository)
             mockAccountRepository.findOne(accountId) >> AccountTestUtils.getDefaultAccount()
@@ -38,7 +38,7 @@ class AccountServiceImplSpec extends Specification{
 
     def "should find account in repository when gets account by identifier"(){
         given:
-            String accountId = "1"
+            Long accountId = 1
         and:
             AccountRepository mockAccountRepository = Mock(AccountRepository)
             AccountService accountService = new AccountServiceImpl(accountRepository: mockAccountRepository)
@@ -50,7 +50,7 @@ class AccountServiceImplSpec extends Specification{
 
     def "should return deposit transactions by date ordered ascending"(){
         given:
-            String accountId = "1"
+            Long accountId = 1
         and:
             AccountRepository accountRepository = Mock(AccountRepository)
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)

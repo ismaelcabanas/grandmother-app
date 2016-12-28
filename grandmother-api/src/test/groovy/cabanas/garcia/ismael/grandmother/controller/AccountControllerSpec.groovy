@@ -73,7 +73,7 @@ class AccountControllerSpec extends Specification{
 
     def "should get account details when hits the URL for getting an existing account with balance 0"(){
         given: "a given account with balance 0"
-            Account account = Account.builder().id("1").accountNumber("123").balance(0).build()
+            Account account = Account.builder().id(1L).accountNumber("123").balance(0).build()
         and: "account controller configured with his services"
             AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
             AccountController controller = new AccountController(accountService: accountService)
@@ -125,7 +125,7 @@ class AccountControllerSpec extends Specification{
             String accountId = defaultAccount.getId()
         and: "request body of deposit"
             DepositRequestBody depositRequestBody = DepositRequestBody.builder()
-                    .personId("1")
+                    .personId(1)
                     .deposit(defaultAccount.balance)
                     .dateOfDeposit(TODAY)
                     .description("Transferencia a su favor")
