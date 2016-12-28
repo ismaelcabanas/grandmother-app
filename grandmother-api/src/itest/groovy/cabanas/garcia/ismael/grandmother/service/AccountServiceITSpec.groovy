@@ -152,6 +152,35 @@ class AccountServiceITSpec extends Specification{
             }
     }
 
+    def "should return deposit transactions by person ordered in ascending by date"(){
+        given: "account service"
+            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
+                depositTransactionRepository: depositTransactionRepository)
+        and: "an account persisted in the system"
+            Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
+        and: "a ismael and bea persons persisted in the system"
+            Person ismael = personService.create(PersonUtilTest.getIsmael())
+            Person bea = personService.create(PersonUtilTest.getBea())
+        and: "that ismael does two deposits on account"
+            Deposit deposit10000 = new Deposit(amount: 10000, date: DateUtilTest.YESTERDAY, description: "Transferencia a su favor", person: ismael)
+            Deposit deposit20000 = new Deposit(amount: 20000, date: DateUtilTest.TODAY, description: "Transferencia a su favor", person: ismael)
+            accountService.deposit(account.id, deposit10000)
+            accountService.deposit(account.id, deposit20000)
+        and: "that bea does one deposit on account"
+            Deposit deposit5000 = new Deposit(amount: 5000, date: DateUtilTest.TODAY, description: "Transfere", person: bea)
+            accountService.deposit(account.id, deposit5000)
+        when:
+            Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactionsByPersonId(account.id, ismael.id)
+        then:
+            depositTransactions.size() == 2
+            with(depositTransactions.getAt(0)){
+                [amount, dateOfMovement, description, person.name] == [deposit10000.amount, deposit10000.date, deposit10000.description, deposit10000.person.name]
+            }
+            with(depositTransactions.getAt(1)){
+                [amount, dateOfMovement, description, person.name] == [deposit20000.amount, deposit20000.date, deposit20000.description, deposit20000.person.name]
+            }
+    }
+
     private def createChargeType(String name) {
         PaymentType waterCharge = new PaymentType(name: name)
         chargeTypeService.create(waterCharge)

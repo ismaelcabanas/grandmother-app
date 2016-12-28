@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.stubs.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
 
@@ -45,5 +46,10 @@ class AccountServiceDefaultAccountStub extends AccountServiceStub{
     @Override
     Account payment(Long accountId, Payment payment) {
         return defaultAccount
+    }
+
+    @Override
+    Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId) {
+        return null
     }
 }

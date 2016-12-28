@@ -8,4 +8,6 @@ import org.springframework.data.repository.CrudRepository
  */
 interface DepositTransactionRepository extends CrudRepository<DepositTransaction, Long>{
     Collection<DepositTransaction> findByAccountIdOrderByDateOfMovementAsc(Long accountId)
+
+    Collection<DepositTransaction> findByAccountIdAndPersonIdOrderByDateOfMovementAsc(Long accountId, Long personId)
 }

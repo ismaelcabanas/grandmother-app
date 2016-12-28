@@ -99,7 +99,10 @@ class AccountServiceImpl implements AccountService{
 
     @Override
     Collection<DepositTransaction> getDepositTransactions(Long accountId) {
-        Collection<DepositTransaction> list  = depositTransactionRepository.findAll()
         return depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
+    }
+
+    Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId) {
+        return depositTransactionRepository.findByAccountIdAndPersonIdOrderByDateOfMovementAsc(accountId, personId)
     }
 }

@@ -49,4 +49,9 @@ abstract class AccountServiceStub implements AccountService{
     Collection<DepositTransaction> getDepositTransactions(Long accountId) {
         return null
     }
+
+    @Override
+    Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId) {
+        return null
+    }
 }
