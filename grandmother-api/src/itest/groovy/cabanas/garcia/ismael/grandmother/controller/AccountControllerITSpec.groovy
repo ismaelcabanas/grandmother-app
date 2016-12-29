@@ -110,7 +110,6 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
             accountResponse.balance == account.balance
     }
 
-    @Ignore
     def "should return deposit transactions and total for an account"(){
         given: "an account in the system"
             Account account = openDefaultAccount()
