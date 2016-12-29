@@ -55,8 +55,4 @@ abstract class AccountServiceStub implements AccountService{
         return null
     }
 
-    @Override
-    Collection<DepositTransaction> getDepositTransactions(Long accountId, Map<String, Object> params) {
-        return null
-    }
 }

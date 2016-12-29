@@ -8,6 +8,8 @@ import cabanas.garcia.ismael.grandmother.service.AccountService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
 
 /**
  * Created by XI317311 on 09/12/2016.
@@ -23,6 +25,7 @@ class AccountServiceImpl implements AccountService{
     private DepositTransactionRepository depositTransactionRepository
 
     @Override
+    @Transactional
     Account payment(Long accountId, String chargeTypeId, BigDecimal amount, Date date) {
         Account account = accountRepository.findOne(accountId)
         
@@ -36,6 +39,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    @Transactional
     Account payment(Long accountId, Payment payment) {
         Account account = accountRepository.findOne(accountId)
 
@@ -47,6 +51,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    @Transactional
     Account deposit(Long accountId, String personId, BigDecimal amount, Date date) {
         Account account = accountRepository.findOne(accountId)
 
@@ -60,6 +65,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    @Transactional
     Account deposit(Long accountId, Deposit deposit) {
         Account account = accountRepository.findOne(accountId)
 
@@ -71,11 +77,13 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    @Transactional
     Account open(String accountNumber) {
         open(accountNumber, BigDecimal.ZERO)
     }
 
     @Override
+    @Transactional
     Account open(String accountNumber, BigDecimal balance) {
         Account account = Account.open(accountNumber, balance)
 
@@ -87,6 +95,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     Account get(Long accountId) {
         log.debug("Getting account $accountId")
 
@@ -98,17 +107,15 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     Collection<DepositTransaction> getDepositTransactions(Long accountId) {
         return depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
     }
 
     @Override
+    @Transactional(readOnly = true)
     Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId) {
         return depositTransactionRepository.findByAccountIdAndPersonIdOrderByDateOfMovementAsc(accountId, personId)
     }
 
-    @Override
-    Collection<DepositTransaction> getDepositTransactions(Long accountId, Map<String, Object> params) {
-        return null
-    }
 }
