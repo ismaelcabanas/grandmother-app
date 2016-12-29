@@ -106,17 +106,25 @@ class AccountController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}/deposits")
-    ResponseEntity<DepositsResponse> deposits(@PathVariable("id") Long accountId){
+    ResponseEntity<DepositsResponse> deposits(@PathVariable("id") Long accountId
+                                              , @RequestParam(value = "person_id", required = false) Long personId){
         log.debug("Getting depositTransactions on account $accountId")
 
-        Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactions(accountId)
+        Map<String, Object> params = new HashMap<String, Object>()
+        if(personId != null){
+            params.put("personId", personId)
+        }
+
+        Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactions(accountId, params)
+
+        log.debug("Deposit transactions returned $depositTransactions")
 
         BigDecimal totalOfDeposits = totalOfDepositTransactions(depositTransactions)
 
         DepositsResponse depositsResponse = DepositsResponse.builder()
-            .total(totalOfDeposits)
-            .deposits(transform(depositTransactions))
-            .build()
+                .total(totalOfDeposits)
+                .deposits(transform(depositTransactions))
+                .build()
 
         return new ResponseEntity<DepositsResponse>(depositsResponse, HttpStatus.OK)
     }

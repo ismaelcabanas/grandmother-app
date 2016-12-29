@@ -28,5 +28,7 @@ interface AccountService {
 
     Collection<DepositTransaction> getDepositTransactions(Long accountId)
 
+    Collection<DepositTransaction> getDepositTransactions(Long accountId, Map<String, Object> params)
+
     Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId)
 }

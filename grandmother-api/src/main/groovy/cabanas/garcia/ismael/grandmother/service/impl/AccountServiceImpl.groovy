@@ -102,7 +102,13 @@ class AccountServiceImpl implements AccountService{
         return depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
     }
 
+    @Override
     Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId) {
         return depositTransactionRepository.findByAccountIdAndPersonIdOrderByDateOfMovementAsc(accountId, personId)
+    }
+
+    @Override
+    Collection<DepositTransaction> getDepositTransactions(Long accountId, Map<String, Object> params) {
+        return null
     }
 }
