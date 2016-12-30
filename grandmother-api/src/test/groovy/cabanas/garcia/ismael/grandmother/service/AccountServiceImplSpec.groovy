@@ -59,7 +59,7 @@ class AccountServiceImplSpec extends Specification{
         when:
             Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactions(accountId)
         then:
-            1 * depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
+            1 * depositTransactionRepository.findByAccountIdOrderByTransactionDateAsc(accountId)
     }
 
     def "should return deposit transactions by person ordered ascending by date"(){
@@ -74,10 +74,10 @@ class AccountServiceImplSpec extends Specification{
             Collection<DepositTransaction> depositTransactions =
                     accountService.getDepositTransactionsByPersonId(accountId, personId)
         then:
-            1 * depositTransactionRepository.findByAccountIdAndPersonIdOrderByDateOfMovementAsc(accountId, personId)
+            1 * depositTransactionRepository.findByAccountIdAndPersonIdOrderByTransactionDateAsc(accountId, personId)
 
     }
-/*
+
     def "should return deposit transactions by person and year ordered ascending by date"(){
         given:
             Long accountId = 1
@@ -91,7 +91,7 @@ class AccountServiceImplSpec extends Specification{
             Collection<DepositTransaction> depositTransactions =
                     accountService.getDepositTransactionsByPersonId(accountId, personId)
         then:
-            1 * depositTransactionRepository.findByAccountIdAndPersonIdAndDOrderByDateOfMovementAsc(accountId, personId)
+            1 * depositTransactionRepository.findByAccountIdAndPersonIdAndTransactionDateBetweenOrderByTransactionDateAsc(_, _, _, _)
     }
-*/
+
 }
