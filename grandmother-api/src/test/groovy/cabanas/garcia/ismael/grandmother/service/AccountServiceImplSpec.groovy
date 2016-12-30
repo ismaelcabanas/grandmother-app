@@ -89,7 +89,7 @@ class AccountServiceImplSpec extends Specification{
                     depositTransactionRepository: depositTransactionRepository)
         when:
             Collection<DepositTransaction> depositTransactions =
-                    accountService.getDepositTransactionsByPersonId(accountId, personId)
+                    accountService.getDepositTransactionsByPersonIdAndYear(accountId, personId, year)
         then:
             1 * depositTransactionRepository.findByAccountIdAndPersonIdAndTransactionDateBetweenOrderByTransactionDateAsc(_, _, _, _)
     }

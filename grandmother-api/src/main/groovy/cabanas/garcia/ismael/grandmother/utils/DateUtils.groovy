@@ -12,4 +12,16 @@ class DateUtils {
         assert date != null
         DATE_FORMAT.format(date)
     }
+
+    static Date lastDayOfYear(int year) {
+        def calEndDate = Calendar.instance
+        calEndDate.set(year: year, month: Calendar.DECEMBER, date: 31)
+        calEndDate.time
+    }
+
+    static Date firstDateOfYear(int year) {
+        def calStartDate = Calendar.instance
+        calStartDate.set(year: year, month: Calendar.JANUARY, date: 1)
+        calStartDate.time
+    }
 }

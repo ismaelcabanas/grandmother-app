@@ -5,6 +5,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountReposi
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.AccountService
+import cabanas.garcia.ismael.grandmother.utils.DateUtils
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -120,6 +121,12 @@ class AccountServiceImpl implements AccountService{
 
     @Override
     Collection<DepositTransaction> getDepositTransactionsByPersonIdAndYear(Long accountId, Long personId, int year) {
-        return null
+        Date startDate = DateUtils.firstDateOfYear(year)
+
+        Date endDate = DateUtils.lastDayOfYear(year)
+
+        return depositTransactionRepository.findByAccountIdAndPersonIdAndTransactionDateBetweenOrderByTransactionDateAsc(accountId, personId, startDate, endDate)
     }
+
+
 }
