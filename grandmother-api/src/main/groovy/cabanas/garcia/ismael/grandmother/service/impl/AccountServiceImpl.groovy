@@ -119,7 +119,7 @@ class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    Collection<DepositTransaction> getDepositTransactionsByYear(Long accountId, int year) {
+    Collection<DepositTransaction> getDepositTransactionsByPersonIdAndYear(Long accountId, Long personId, int year) {
         return null
     }
 }

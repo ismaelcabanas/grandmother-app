@@ -86,7 +86,7 @@ class DepositsAccountControllerSpec extends Specification{
             depositTransactionReturnedAre(response, deposit10000) == true
     }
 
-    def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits for a given year" (){
+    def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits for a given year and person" (){
         given: "ismael and bea persons"
             Person ismael = PersonUtilTest.getIsmael()
             Person bea = PersonUtilTest.getBea()
@@ -103,12 +103,12 @@ class DepositsAccountControllerSpec extends Specification{
             DepositsAccountController controller = new DepositsAccountController(accountService: accountService)
         when: "REST deposits on account url is hit"
             int year = DateUtilTest.yearOf(YESTERDAY)
-            def response = sendGet(controller, "/accounts/$account.id/deposits?year=$year")
+            def response = sendGet(controller, "/accounts/$account.id/deposits?person_id=$ismael.id&year=$year")
         then:
             response.status == HttpStatus.OK.value()
             response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
         and:
-            1 * accountService.getDepositTransactionsByYear(_,_)
+            1 * accountService.getDepositTransactionsByPersonIdAndYear(_,_,_)
         and:
             totalDepositsAmount(response) == TWENTY_THOUSAND
             sizeOfDepositTransactions(response) == 1

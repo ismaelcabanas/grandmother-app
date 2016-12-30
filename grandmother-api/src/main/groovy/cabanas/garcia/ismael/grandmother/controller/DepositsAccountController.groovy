@@ -52,7 +52,7 @@ class DepositsAccountController {
     @RequestMapping(method = RequestMethod.GET, path = "/{id}/deposits", params = "person_id")
     ResponseEntity<DepositsResponse> depositsByPerson(@PathVariable("id") Long accountId,
                                                       @RequestParam(value = "person_id", required = true) Long personId){
-        log.debug("Getting depositTransactions on account $accountId")
+        log.debug("Getting depositTransactions by person on account $accountId and person identifier $personId")
 
         Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactionsByPersonId(accountId, personId)
 
@@ -68,12 +68,15 @@ class DepositsAccountController {
         return new ResponseEntity<DepositsResponse>(depositsResponse, HttpStatus.OK)
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/{id}/deposits", params = "year")
-    ResponseEntity<DepositsResponse> depositsByYear(@PathVariable("id") Long accountId,
-                                                      @RequestParam(value = "year", required = true) int year){
-        log.debug("Getting depositTransactions on account $accountId")
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}/deposits", params = ["person_id","year"])
+    ResponseEntity<DepositsResponse> depositsByPersonAndYear(@PathVariable("id") Long accountId,
+                                                        @RequestParam(value = "person_id", required = true) Long personId,
+                                                        @RequestParam(value = "year", required = true) int year){
+        log.debug("Getting depositTransactions by person and year on account $accountId for person identifier $personId " +
+                "and year $year")
 
-        Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactionsByYear(accountId, year)
+        Collection<DepositTransaction> depositTransactions =
+                accountService.getDepositTransactionsByPersonIdAndYear(accountId, personId, year)
 
         log.debug("Deposit transactions returned $depositTransactions")
 

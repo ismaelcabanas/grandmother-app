@@ -30,5 +30,5 @@ interface AccountService {
 
     Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId)
 
-    Collection<DepositTransaction> getDepositTransactionsByYear(Long accountId, int year)
+    Collection<DepositTransaction> getDepositTransactionsByPersonIdAndYear(Long accountId, Long personId, int year)
 }

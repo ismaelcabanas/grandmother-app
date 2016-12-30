@@ -45,7 +45,7 @@ class AccountServiceThatGetAnAccountStub extends AccountServiceStub implements A
     }
 
     @Override
-    Collection<DepositTransaction> getDepositTransactionsByYear(Long accountId, int year) {
+    Collection<DepositTransaction> getDepositTransactionsByPersonIdAndYear(Long accountId, Long personId, int year) {
         Comparator<DepositTransaction> byDateOfTransactionAscendingOrder =
                 {DepositTransaction transaction1, DepositTransaction transaction2 ->
                     transaction2.dateOfMovement.compareTo(transaction1.dateOfMovement)}
