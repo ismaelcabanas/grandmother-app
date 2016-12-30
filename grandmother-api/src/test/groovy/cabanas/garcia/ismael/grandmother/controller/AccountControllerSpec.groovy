@@ -43,7 +43,7 @@ class AccountControllerSpec extends Specification{
         given: "a given account identifier"
             Account account = getDefaultAccount()
         and: "account controller configured with stub service"
-            AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
+            AccountService accountService = new AccountServiceThatGetAnAccountStub(account)
             AccountController controller = new AccountController(accountService: accountService)
         when: "REST account get url is hit"
             def response = sendGet(controller, "/accounts/$account.id")
@@ -61,7 +61,7 @@ class AccountControllerSpec extends Specification{
             deposit(account, deposit15000)
             payment(account, TEN_THOUSAND, TODAY)
         and: "account controller configured with his services"
-            AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
+            AccountService accountService = new AccountServiceThatGetAnAccountStub(account)
             AccountController controller = new AccountController(accountService: accountService)
         when: "REST account get url is hit"
             def response = sendGet(controller, "/accounts/$account.id")
@@ -76,7 +76,7 @@ class AccountControllerSpec extends Specification{
         given: "a given account with balance 0"
             Account account = Account.builder().id(1L).accountNumber("123").balance(0).build()
         and: "account controller configured with his services"
-            AccountService accountService = new AccountServiceThatGetAnAccountStub(account: account)
+            AccountService accountService = new AccountServiceThatGetAnAccountStub(account)
             AccountController controller = new AccountController(accountService: accountService)
         when: "REST account get url is hit"
             def response = sendGet(controller, "/accounts/$account.id")
