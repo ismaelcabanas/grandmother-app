@@ -181,6 +181,26 @@ class AccountServiceITSpec extends Specification{
             }
     }
 
+    def "should return empty deposit transactions by person ordered in ascending by date"(){
+        given: "account service"
+            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
+                depositTransactionRepository: depositTransactionRepository)
+        and: "an account persisted in the system"
+            Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
+        and: "a ismael and bea persons persisted in the system"
+            Person ismael = personService.create(PersonUtilTest.getIsmael())
+            Person bea = personService.create(PersonUtilTest.getBea())
+        and: "that ismael does two deposits on account"
+            Deposit deposit10000 = new Deposit(amount: 10000, date: DateUtilTest.YESTERDAY, description: "Transferencia a su favor", person: ismael)
+            Deposit deposit20000 = new Deposit(amount: 20000, date: DateUtilTest.TODAY, description: "Transferencia a su favor", person: ismael)
+            accountService.deposit(account.id, deposit10000)
+            accountService.deposit(account.id, deposit20000)
+        when:
+            Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactionsByPersonId(account.id, bea.id)
+        then:
+            depositTransactions.size() == 0
+    }
+
     private def createChargeType(String name) {
         PaymentType waterCharge = new PaymentType(name: name)
         chargeTypeService.create(waterCharge)

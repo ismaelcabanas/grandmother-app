@@ -13,6 +13,10 @@ class AccountServiceThatGetAnAccountStub extends AccountServiceStub implements A
 
     Account account
 
+    AccountServiceThatGetAnAccountStub(Account account) {
+        this.account = account
+    }
+
     @Override
     Account get(Long accountId) {
         return account
@@ -40,4 +44,17 @@ class AccountServiceThatGetAnAccountStub extends AccountServiceStub implements A
                 .collect(Collectors.toList())
     }
 
+    @Override
+    Collection<DepositTransaction> getDepositTransactionsByYear(Long accountId, int year) {
+        Comparator<DepositTransaction> byDateOfTransactionAscendingOrder =
+                {DepositTransaction transaction1, DepositTransaction transaction2 ->
+                    transaction2.dateOfMovement.compareTo(transaction1.dateOfMovement)}
+        account.transactions.list
+                .sort(false, byDateOfTransactionAscendingOrder)
+                .stream()
+                .filter({t -> t instanceof DepositTransaction})
+                .map({t -> (DepositTransaction) t})
+                .filter({DepositTransaction dt -> dt.dateOfMovement[Calendar.YEAR] == year})
+                .collect(Collectors.toList())
+    }
 }

@@ -7,4 +7,15 @@ package cabanas.garcia.ismael.grandmother.utils
 class DateUtilTest {
     static Date TODAY = new Date()
     static Date YESTERDAY = new Date().previous()
+
+    static int yearOf(Date date) {
+        date[Calendar.YEAR]
+    }
+
+    static Date lastYearFrom(Date date){
+        Calendar calendar = Calendar.getInstance()
+        calendar.setTime(date)
+        calendar.add(Calendar.YEAR, -1)
+        return calendar.getTime()
+    }
 }

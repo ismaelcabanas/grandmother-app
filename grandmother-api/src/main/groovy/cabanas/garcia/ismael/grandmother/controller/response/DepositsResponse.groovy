@@ -11,6 +11,6 @@ import groovy.transform.builder.Builder
 @EqualsAndHashCode
 @Builder
 class DepositsResponse {
-    Collection<DepositResponse> deposits
     BigDecimal total
+    Collection<DepositResponse> deposits
 }

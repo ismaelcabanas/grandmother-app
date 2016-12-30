@@ -55,4 +55,8 @@ abstract class AccountServiceStub implements AccountService{
         return null
     }
 
+    @Override
+    Collection<DepositTransaction> getDepositTransactionsByYear(Long accountId, int year) {
+        return null
+    }
 }
