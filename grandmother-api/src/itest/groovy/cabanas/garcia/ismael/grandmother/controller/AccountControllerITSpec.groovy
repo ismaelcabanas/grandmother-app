@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.web.util.UriComponentsBuilder
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 /**
@@ -130,7 +129,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
 
     def deposit(Account account, Deposit deposit) {
         DepositTransaction depositTransaction =
-                new DepositTransaction(amount: deposit.amount, dateOfMovement: deposit.date,
+                new DepositTransaction(amount: deposit.amount, transactionDate: deposit.date,
                     description: deposit.description, account: account,
                     person: deposit.person)
         depositTransactionRepository.save(depositTransaction)

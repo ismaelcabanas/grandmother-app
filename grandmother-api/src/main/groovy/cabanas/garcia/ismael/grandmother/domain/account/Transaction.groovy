@@ -24,7 +24,7 @@ abstract class Transaction {
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    Date dateOfMovement
+    Date transactionDate
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)

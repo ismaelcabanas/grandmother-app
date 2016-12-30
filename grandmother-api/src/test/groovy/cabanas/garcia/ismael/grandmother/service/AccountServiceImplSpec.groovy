@@ -77,4 +77,21 @@ class AccountServiceImplSpec extends Specification{
             1 * depositTransactionRepository.findByAccountIdAndPersonIdOrderByDateOfMovementAsc(accountId, personId)
 
     }
+/*
+    def "should return deposit transactions by person and year ordered ascending by date"(){
+        given:
+            Long accountId = 1
+            Long personId = 1
+            int year = 2016
+        and:
+            DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
+            AccountService accountService = new AccountServiceImpl(
+                    depositTransactionRepository: depositTransactionRepository)
+        when:
+            Collection<DepositTransaction> depositTransactions =
+                    accountService.getDepositTransactionsByPersonId(accountId, personId)
+        then:
+            1 * depositTransactionRepository.findByAccountIdAndPersonIdAndDOrderByDateOfMovementAsc(accountId, personId)
+    }
+*/
 }

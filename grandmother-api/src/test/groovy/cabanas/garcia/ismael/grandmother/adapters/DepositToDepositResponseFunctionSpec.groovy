@@ -17,13 +17,13 @@ class DepositToDepositResponseFunctionSpec extends Specification{
     def "transform deposit object to deposit response object"(){
         given:
             DepositTransaction depositTransaction =
-                    new DepositTransaction(amount: 10000, dateOfMovement: DateUtilTest.TODAY,
+                    new DepositTransaction(amount: 10000, transactionDate: DateUtilTest.TODAY,
                         person: PersonUtilTest.getDefaultPerson(), description:  "Transferencia a su favor")
         when:
             DepositResponse depositResponse = function.apply(depositTransaction)
         then:
             depositResponse.amount == depositTransaction.amount
-            depositResponse.date == DateUtils.format(depositTransaction.dateOfMovement)
+            depositResponse.date == DateUtils.format(depositTransaction.transactionDate)
             depositResponse.person.id == depositTransaction.person.id
             depositResponse.person.name == depositTransaction.person.name
             depositResponse.description == depositTransaction.description

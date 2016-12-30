@@ -26,7 +26,7 @@ class AccountServiceThatGetAnAccountStub extends AccountServiceStub implements A
     Collection<DepositTransaction> getDepositTransactions(Long accountId) {
         Comparator<DepositTransaction> byDateOfTransactionAscendingOrder =
                 {DepositTransaction transaction1, DepositTransaction transaction2 ->
-                    transaction2.dateOfMovement.compareTo(transaction1.dateOfMovement)}
+                    transaction2.transactionDate.compareTo(transaction1.transactionDate)}
         return account.transactions.list.sort(false, byDateOfTransactionAscendingOrder)
     }
 
@@ -34,7 +34,7 @@ class AccountServiceThatGetAnAccountStub extends AccountServiceStub implements A
     Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId) {
         Comparator<DepositTransaction> byDateOfTransactionAscendingOrder =
                 {DepositTransaction transaction1, DepositTransaction transaction2 ->
-                    transaction2.dateOfMovement.compareTo(transaction1.dateOfMovement)}
+                    transaction2.transactionDate.compareTo(transaction1.transactionDate)}
         account.transactions.list
                 .sort(false, byDateOfTransactionAscendingOrder)
                 .stream()
@@ -48,13 +48,13 @@ class AccountServiceThatGetAnAccountStub extends AccountServiceStub implements A
     Collection<DepositTransaction> getDepositTransactionsByPersonIdAndYear(Long accountId, Long personId, int year) {
         Comparator<DepositTransaction> byDateOfTransactionAscendingOrder =
                 {DepositTransaction transaction1, DepositTransaction transaction2 ->
-                    transaction2.dateOfMovement.compareTo(transaction1.dateOfMovement)}
+                    transaction2.transactionDate.compareTo(transaction1.transactionDate)}
         account.transactions.list
                 .sort(false, byDateOfTransactionAscendingOrder)
                 .stream()
                 .filter({t -> t instanceof DepositTransaction})
                 .map({t -> (DepositTransaction) t})
-                .filter({DepositTransaction dt -> dt.dateOfMovement[Calendar.YEAR] == year})
+                .filter({DepositTransaction dt -> dt.transactionDate[Calendar.YEAR] == year})
                 .collect(Collectors.toList())
     }
 }

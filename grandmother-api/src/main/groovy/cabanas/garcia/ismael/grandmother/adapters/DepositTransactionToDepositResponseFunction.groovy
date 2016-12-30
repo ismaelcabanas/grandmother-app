@@ -16,7 +16,7 @@ class DepositTransactionToDepositResponseFunction implements Function<DepositTra
     DepositResponse apply(DepositTransaction depositTransaction) {
         def builder = DepositResponse.builder()
             .amount(depositTransaction.amount)
-            .date(DateUtils.format(depositTransaction.dateOfMovement))
+            .date(DateUtils.format(depositTransaction.transactionDate))
             .description(depositTransaction.description)
 
         if(depositTransaction.person != null)
