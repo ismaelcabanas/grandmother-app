@@ -12,7 +12,7 @@ class DateUtilTest {
         date[Calendar.YEAR]
     }
 
-    static Date lastYearFrom(Date date){
+    static Date oneYearBeforeFrom(Date date){
         Calendar calendar = Calendar.getInstance()
         calendar.setTime(date)
         calendar.add(Calendar.YEAR, -1)

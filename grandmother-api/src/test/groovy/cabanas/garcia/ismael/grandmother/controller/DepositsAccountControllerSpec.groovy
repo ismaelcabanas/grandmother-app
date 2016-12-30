@@ -92,8 +92,8 @@ class DepositsAccountControllerSpec extends Specification{
             Person bea = PersonUtilTest.getBea()
         and: "an account with unordered deposits"
             Account account = getDefaultAccount()
-            Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: lastYearFrom(TODAY), person: ismael)
-            Deposit deposit30000 = new Deposit(amount: THIRTY_THOUSAND, date: lastYearFrom(TODAY), person: ismael)
+            Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: oneYearBeforeFrom(TODAY), person: ismael)
+            Deposit deposit30000 = new Deposit(amount: THIRTY_THOUSAND, date: oneYearBeforeFrom(TODAY), person: ismael)
             Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: YESTERDAY, person: bea)
             deposit(account, deposit10000)
             deposit(account, deposit20000)
