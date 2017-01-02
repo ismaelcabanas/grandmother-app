@@ -110,13 +110,13 @@ class AccountServiceImpl implements AccountService{
     @Override
     @Transactional(readOnly = true)
     Collection<DepositTransaction> getDepositTransactions(Long accountId) {
-        return depositTransactionRepository.findByAccountIdOrderByTransactionDateAsc(accountId)
+        return depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
     }
 
     @Override
     @Transactional(readOnly = true)
     Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId) {
-        return depositTransactionRepository.findByAccountIdAndPersonIdOrderByTransactionDateAsc(accountId, personId)
+        return depositTransactionRepository.findByAccountIdAndPersonIdOrderByDateOfMovementAsc(accountId, personId)
     }
 
     @Override
@@ -125,7 +125,7 @@ class AccountServiceImpl implements AccountService{
 
         Date endDate = DateUtils.lastDayOfYear(year)
 
-        return depositTransactionRepository.findByAccountIdAndPersonIdAndTransactionDateBetweenOrderByTransactionDateAsc(accountId, personId, startDate, endDate)
+        return depositTransactionRepository.findByAccountIdAndPersonIdAndDateOfMovementBetweenOrderByDateOfMovementAsc(accountId, personId, startDate, endDate)
     }
 
 

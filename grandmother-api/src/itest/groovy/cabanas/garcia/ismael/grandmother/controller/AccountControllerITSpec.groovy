@@ -129,7 +129,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
 
     def deposit(Account account, Deposit deposit) {
         DepositTransaction depositTransaction =
-                new DepositTransaction(amount: deposit.amount, transactionDate: deposit.date,
+                new DepositTransaction(amount: deposit.amount, dateOfMovement: deposit.date,
                     description: deposit.description, account: account,
                     person: deposit.person)
         depositTransactionRepository.save(depositTransaction)

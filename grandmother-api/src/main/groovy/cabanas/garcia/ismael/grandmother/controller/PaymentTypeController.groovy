@@ -24,12 +24,13 @@ class PaymentTypeController {
     public static final String PAYMENT_TYPE_BASE_PATH = "/paymentTypes"
 
     @Autowired
-    PaymentTypeService chargeTypeService
+    PaymentTypeService paymentTypeService
 
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<Void> create(@Valid @RequestBody PaymentType paymentType){
         log.debug("Creating... $paymentType")
-        chargeTypeService.create(paymentType)
+        paymentTypeService.create(paymentType)
         new ResponseEntity<Void>(HttpStatus.CREATED)
     }
+
 }

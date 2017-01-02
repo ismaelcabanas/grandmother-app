@@ -152,10 +152,10 @@ class AccountServiceITSpec extends Specification{
         then:
             depositTransactions.size() == 2
             with(depositTransactions.getAt(0)){
-                [amount, transactionDate, description, person.name] == [deposit10000.amount, deposit10000.date, deposit10000.description, deposit10000.person.name]
+                [amount, dateOfMovement, description, person.name] == [deposit10000.amount, deposit10000.date, deposit10000.description, deposit10000.person.name]
             }
             with(depositTransactions.getAt(1)){
-                [amount, transactionDate, description, person.name] == [deposit20000.amount, deposit20000.date, deposit20000.description, deposit20000.person.name]
+                [amount, dateOfMovement, description, person.name] == [deposit20000.amount, deposit20000.date, deposit20000.description, deposit20000.person.name]
             }
     }
 
@@ -181,10 +181,10 @@ class AccountServiceITSpec extends Specification{
         then:
             depositTransactions.size() == 2
             with(depositTransactions.getAt(0)){
-                [amount, transactionDate, description, person.name] == [deposit10000.amount, deposit10000.date, deposit10000.description, deposit10000.person.name]
+                [amount, dateOfMovement, description, person.name] == [deposit10000.amount, deposit10000.date, deposit10000.description, deposit10000.person.name]
             }
             with(depositTransactions.getAt(1)){
-                [amount, transactionDate, description, person.name] == [deposit20000.amount, deposit20000.date, deposit20000.description, deposit20000.person.name]
+                [amount, dateOfMovement, description, person.name] == [deposit20000.amount, deposit20000.date, deposit20000.description, deposit20000.person.name]
             }
     }
 

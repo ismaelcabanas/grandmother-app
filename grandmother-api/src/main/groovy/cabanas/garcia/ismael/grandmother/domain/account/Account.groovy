@@ -38,7 +38,7 @@ class Account {
     def deposit(Deposit deposit){
         balance = balance.add(deposit.getAmount())
         DepositTransaction depositMovement = new DepositTransaction(amount: deposit.getAmount(),
-            transactionDate: deposit.getDate(), person: deposit.getPerson(), description: deposit.description)
+            dateOfMovement: deposit.getDate(), person: deposit.getPerson(), description: deposit.description)
         addTransaction(depositMovement)
     }
 
@@ -49,7 +49,7 @@ class Account {
     def charge(Payment payment){
         balance = balance.subtract(payment.getAmount())
         PaymentTransaction chargeMovement = new PaymentTransaction(amount: payment.getAmount(),
-            chargeType: payment.getType(), transactionDate: payment.getDate(), description: payment.description)
+            chargeType: payment.getType(), dateOfMovement: payment.getDate(), description: payment.description)
         addTransaction(chargeMovement)
     }
 
