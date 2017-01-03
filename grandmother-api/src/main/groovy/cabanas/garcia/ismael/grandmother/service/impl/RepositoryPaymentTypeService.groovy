@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
  * Created by XI317311 on 09/12/2016.
  */
 @Service
-class PaymentTypeServiceImpl implements PaymentTypeService{
+class RepositoryPaymentTypeService implements PaymentTypeService{
 
     @Autowired
     ChargeTypeRepository chargeTypeRepository
