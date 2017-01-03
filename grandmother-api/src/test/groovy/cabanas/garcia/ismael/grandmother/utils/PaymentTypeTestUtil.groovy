@@ -5,7 +5,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 /**
  * Created by XI317311 on 02/01/2017.
  */
-class PaymentTypeTestUtil {
+final class PaymentTypeTestUtil {
     private PaymentTypeTestUtil(){}
 
     static PaymentType getGasPayment() {

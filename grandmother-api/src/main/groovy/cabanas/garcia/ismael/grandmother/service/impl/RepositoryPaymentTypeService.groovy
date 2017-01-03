@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.grandmother.service.impl
 
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
-import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
+import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTypeRepository
 import cabanas.garcia.ismael.grandmother.service.PaymentTypeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -13,20 +13,20 @@ import org.springframework.stereotype.Service
 class RepositoryPaymentTypeService implements PaymentTypeService{
 
     @Autowired
-    ChargeTypeRepository chargeTypeRepository
+    PaymentTypeRepository paymentTypeRepository
 
     @Override
     def create(PaymentType chargeType) {
-        chargeTypeRepository.save(chargeType)
+        paymentTypeRepository.save(chargeType)
     }
 
     @Override
     List<PaymentType> findAll() {
-        chargeTypeRepository.findAll()
+        paymentTypeRepository.findAllByOrderByNameAsc()
     }
 
     @Override
     def deleteAll() {
-        chargeTypeRepository.deleteAll()
+        paymentTypeRepository.deleteAll()
     }
 }

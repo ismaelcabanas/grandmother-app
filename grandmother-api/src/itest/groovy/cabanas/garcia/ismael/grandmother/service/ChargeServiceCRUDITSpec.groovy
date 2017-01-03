@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.grandmother.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
-import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
+import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTypeRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryPaymentTypeService
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,11 +23,11 @@ import spock.lang.Stepwise
 class ChargeServiceCRUDITSpec extends Specification{
     public static final String WATER_CHARGE = "Agua"
     @Autowired
-    ChargeTypeRepository chargeTypeRepository
+    PaymentTypeRepository chargeTypeRepository
 
     def "remove all charge types"(){
         given: "payment type service"
-            PaymentTypeService chargeTypeService = new RepositoryPaymentTypeService(chargeTypeRepository: chargeTypeRepository)
+            PaymentTypeService chargeTypeService = new RepositoryPaymentTypeService(paymentTypeRepository: chargeTypeRepository)
         when: "delete all payment types"
             chargeTypeService.deleteAll()
         then:
@@ -39,7 +39,7 @@ class ChargeServiceCRUDITSpec extends Specification{
         given: "a payment type data"
             PaymentType chargeType = PaymentType.builder().name(WATER_CHARGE).build()
         and: "payment type service"
-            PaymentTypeService chargeTypeService = new RepositoryPaymentTypeService(chargeTypeRepository: chargeTypeRepository)
+            PaymentTypeService chargeTypeService = new RepositoryPaymentTypeService(paymentTypeRepository: chargeTypeRepository)
         when:
             chargeTypeService.create(chargeType)
         then:

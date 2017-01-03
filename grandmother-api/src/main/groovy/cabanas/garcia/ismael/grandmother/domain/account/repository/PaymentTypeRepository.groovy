@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository
 /**
  * Created by XI317311 on 09/12/2016.
  */
-interface ChargeTypeRepository extends CrudRepository<PaymentType, Long>{
+interface PaymentTypeRepository extends CrudRepository<PaymentType, Long>{
 
+    Collection<PaymentType> findAllByOrderByNameAsc()
 }

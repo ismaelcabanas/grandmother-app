@@ -9,7 +9,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
-import cabanas.garcia.ismael.grandmother.domain.account.repository.ChargeTypeRepository
+import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTypeRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
@@ -34,7 +34,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     PersonRepository personRepository
 
     @Autowired
-    ChargeTypeRepository chargeTypeRepository
+    PaymentTypeRepository chargeTypeRepository
 
     @Autowired
     DepositTransactionRepository depositTransactionRepository
