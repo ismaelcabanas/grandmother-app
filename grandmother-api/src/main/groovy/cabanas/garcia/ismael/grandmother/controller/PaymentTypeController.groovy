@@ -1,10 +1,13 @@
 package cabanas.garcia.ismael.grandmother.controller
 
+import cabanas.garcia.ismael.grandmother.controller.response.PaymentTypeResponse
+import cabanas.garcia.ismael.grandmother.controller.response.PaymentTypesResponse
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.service.PaymentTypeService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,7 +21,7 @@ import javax.validation.Valid
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/paymentTypes")
+@RequestMapping(value = "/paymentTypes", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 class PaymentTypeController {
 
     public static final String PAYMENT_TYPE_BASE_PATH = "/paymentTypes"
@@ -33,4 +36,35 @@ class PaymentTypeController {
         new ResponseEntity<Void>(HttpStatus.CREATED)
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    ResponseEntity<PaymentTypesResponse> readAll(){
+        List<PaymentType> paymentTypes = paymentTypeService.findAll()
+
+        log.debug("Payment Types entities returned by payment type service $paymentTypes")
+
+        PaymentTypesResponse paymentTypeResponse = mapEntitiesToResponse(paymentTypes)
+
+        log.debug("Payment type response $paymentTypeResponse")
+
+        new ResponseEntity<PaymentTypesResponse>(paymentTypeResponse, HttpStatus.OK)
+    }
+
+    private PaymentTypesResponse mapEntitiesToResponse(List<PaymentType> paymentTypes) {
+        Collection<PaymentTypeResponse> paymentTypeResponseList = new ArrayList<>()
+
+        paymentTypes.each {paymentType -> paymentTypeResponseList.add(mapEntityToResponse(paymentType))}
+        
+        PaymentTypesResponse paymentTypesResponse = PaymentTypesResponse.builder()
+            .paymentTypes(paymentTypeResponseList)
+            .build()
+
+        paymentTypesResponse
+    }
+
+    PaymentTypeResponse mapEntityToResponse(PaymentType paymentType) {
+        PaymentTypeResponse paymentTypeResponse = PaymentTypeResponse.builder()
+            .name(paymentType.name)
+            .build()
+        paymentTypeResponse
+    }
 }

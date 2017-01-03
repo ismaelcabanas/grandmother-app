@@ -25,6 +25,6 @@ class AllPaymentTypeService implements PaymentTypeService{
 
     @Override
     List<PaymentType> findAll() {
-        return paymentTypes
+        return paymentTypes.sort {it.name}
     }
 }

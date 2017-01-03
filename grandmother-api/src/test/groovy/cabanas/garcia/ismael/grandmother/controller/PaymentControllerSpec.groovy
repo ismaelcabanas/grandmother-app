@@ -31,7 +31,7 @@ class PaymentControllerSpec extends Specification {
             response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
     }
 
-    def "when hits URL for getting payments types, payment type service should get all payment types"(){
+    def "when hits URL for getting payments types, the payment type service should get all payment types"(){
         given:
             PaymentTypeService paymentTypeService = Mock(PaymentTypeService.class)
             PaymentTypeController controller = new PaymentTypeController(paymentTypeService: paymentTypeService)
@@ -58,14 +58,14 @@ class PaymentControllerSpec extends Specification {
             responsePaymentsTypeAre(getAguaPayment(), getEndesaPayment(), getGasPayment())
     }
 
-    def responsePaymentsTypeAre(PaymentType... paymentTypes) {
+    def void responsePaymentsTypeAre(PaymentType... paymentTypes) {
         def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
         paymentTypes.eachWithIndex { PaymentType paymentType, int i ->
-            assert jsonResponse.paymentTypes[i] == paymentType.name
+            assert jsonResponse.paymentTypes[i].name == paymentType.name
         }
     }
 
-    def responseSizeOfPaymentsTypeIs(int size) {
+    def void responseSizeOfPaymentsTypeIs(int size) {
         def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
         assert jsonResponse.paymentTypes.size == size
     }
