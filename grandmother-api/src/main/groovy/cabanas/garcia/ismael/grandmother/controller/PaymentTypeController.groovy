@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller
 
-import cabanas.garcia.ismael.grandmother.controller.response.PaymentTypeResponse
+import cabanas.garcia.ismael.grandmother.controller.adapter.PaymentTypeAdapter
 import cabanas.garcia.ismael.grandmother.controller.response.PaymentTypesResponse
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.service.PaymentTypeService
@@ -42,29 +42,12 @@ class PaymentTypeController {
 
         log.debug("Payment Types entities returned by payment type service $paymentTypes")
 
-        PaymentTypesResponse paymentTypeResponse = mapEntitiesToResponse(paymentTypes)
+        PaymentTypesResponse paymentTypeResponse = PaymentTypeAdapter.mapEntitiesToResponse(paymentTypes)
 
         log.debug("Payment type response $paymentTypeResponse")
 
         new ResponseEntity<PaymentTypesResponse>(paymentTypeResponse, HttpStatus.OK)
     }
 
-    private PaymentTypesResponse mapEntitiesToResponse(List<PaymentType> paymentTypes) {
-        Collection<PaymentTypeResponse> paymentTypeResponseList = new ArrayList<>()
 
-        paymentTypes.each {paymentType -> paymentTypeResponseList.add(mapEntityToResponse(paymentType))}
-        
-        PaymentTypesResponse paymentTypesResponse = PaymentTypesResponse.builder()
-            .paymentTypes(paymentTypeResponseList)
-            .build()
-
-        paymentTypesResponse
-    }
-
-    PaymentTypeResponse mapEntityToResponse(PaymentType paymentType) {
-        PaymentTypeResponse paymentTypeResponse = PaymentTypeResponse.builder()
-            .name(paymentType.name)
-            .build()
-        paymentTypeResponse
-    }
 }
