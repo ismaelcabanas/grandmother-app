@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
  * Created by XI317311 on 05/12/2016.
  */
 @Service
-class PersonServiceImpl implements PersonService {
+class RepositoryPersonService implements PersonService {
 
     @Autowired
     private PersonRepository personRepository

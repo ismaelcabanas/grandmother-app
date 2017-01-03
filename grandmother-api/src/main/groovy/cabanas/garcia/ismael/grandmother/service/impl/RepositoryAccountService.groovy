@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service
 @Slf4j
-class AccountServiceImpl implements AccountService{
+class RepositoryAccountService implements AccountService{
 
     @Autowired
     private AccountRepository accountRepository

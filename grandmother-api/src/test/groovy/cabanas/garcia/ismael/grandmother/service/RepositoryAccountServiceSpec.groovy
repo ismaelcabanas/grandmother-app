@@ -4,7 +4,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
-import cabanas.garcia.ismael.grandmother.service.impl.AccountServiceImpl
+import cabanas.garcia.ismael.grandmother.service.impl.RepositoryAccountService
 import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
 import spock.lang.Specification
 
@@ -14,7 +14,7 @@ import static cabanas.garcia.ismael.grandmother.utils.PaymentTypeUtilTest.*
 /**
  * Created by XI317311 on 20/12/2016.
  */
-class AccountServiceImplSpec extends Specification{
+class RepositoryAccountServiceSpec extends Specification{
 
     def "should update account in repository when does a payment the account"(){
         given:
@@ -22,7 +22,7 @@ class AccountServiceImplSpec extends Specification{
         and:
             AccountRepository mockAccountRepository = Mock(AccountRepository)
             mockAccountRepository.findOne(accountId) >> AccountTestUtils.getDefaultAccount()
-            AccountService accountService = new AccountServiceImpl(accountRepository: mockAccountRepository)
+            AccountService accountService = new RepositoryAccountService(accountRepository: mockAccountRepository)
         and:
             Payment paymentData = Payment.builder()
                     .amount(2000)
@@ -41,7 +41,7 @@ class AccountServiceImplSpec extends Specification{
             Long accountId = 1
         and:
             AccountRepository mockAccountRepository = Mock(AccountRepository)
-            AccountService accountService = new AccountServiceImpl(accountRepository: mockAccountRepository)
+            AccountService accountService = new RepositoryAccountService(accountRepository: mockAccountRepository)
         when:
             accountService.get(accountId)
         then:
@@ -54,7 +54,7 @@ class AccountServiceImplSpec extends Specification{
         and:
             AccountRepository accountRepository = Mock(AccountRepository)
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
-            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
+            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         when:
             Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactions(accountId)
@@ -68,7 +68,7 @@ class AccountServiceImplSpec extends Specification{
             Long personId = 1
         and:
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
-            AccountService accountService = new AccountServiceImpl(
+            AccountService accountService = new RepositoryAccountService(
                     depositTransactionRepository: depositTransactionRepository)
         when:
             Collection<DepositTransaction> depositTransactions =
@@ -85,7 +85,7 @@ class AccountServiceImplSpec extends Specification{
             int year = 2016
         and:
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
-            AccountService accountService = new AccountServiceImpl(
+            AccountService accountService = new RepositoryAccountService(
                     depositTransactionRepository: depositTransactionRepository)
         when:
             Collection<DepositTransaction> depositTransactions =

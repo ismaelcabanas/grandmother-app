@@ -8,7 +8,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
-import cabanas.garcia.ismael.grandmother.service.impl.AccountServiceImpl
+import cabanas.garcia.ismael.grandmother.service.impl.RepositoryAccountService
 import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
 import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
 import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
@@ -60,7 +60,7 @@ class AccountServiceITSpec extends Specification{
         given: "an account number"
             String accountNumber = ACCOUNT_NUMBER
         and: "the account service"
-            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository)
+            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository)
         when: "create account"
             Account account = accountService.open(accountNumber)
         then:
@@ -71,7 +71,7 @@ class AccountServiceITSpec extends Specification{
 
     def "a person does a deposit on given account"(){
         given: "an new account"
-            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository)
+            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository)
             Account account = accountService.open(ACCOUNT_NUMBER)
         and: "a given existing person in the system"
             Person ismael = createPerson("Ismael")
@@ -89,7 +89,7 @@ class AccountServiceITSpec extends Specification{
 
     def "a charge on given account"(){
         given: "an new account"
-            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository)
+            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository)
             Account account = accountService.open(ACCOUNT_NUMBER)
         and: "a given existing amount in the system"
             PaymentType waterCharge = createChargeType(WATER_CHARGE_TYPE)
@@ -106,7 +106,7 @@ class AccountServiceITSpec extends Specification{
 
     def "deposits and charges generates movements on an account "(){
         given: "an open account"
-            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository)
+            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository)
             Account account = accountService.open(ACCOUNT_NUMBER)
         and: "two persons: ismael and bea"
             Person ismael = createPerson("Ismael")
@@ -136,7 +136,7 @@ class AccountServiceITSpec extends Specification{
     @Ignore
     def "should return deposit transactions ordered in ascending by date"(){
         given: "account service"
-            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
+            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                     depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
             Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
@@ -161,7 +161,7 @@ class AccountServiceITSpec extends Specification{
 
     def "should return deposit transactions by person ordered in ascending by date"(){
         given: "account service"
-            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
+            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
             Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
@@ -190,7 +190,7 @@ class AccountServiceITSpec extends Specification{
 
     def "should return empty deposit transactions by person ordered in ascending by date"(){
         given: "account service"
-            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
+            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
             Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
@@ -210,7 +210,7 @@ class AccountServiceITSpec extends Specification{
 
     def "should return deposit transactions by person and year on account ordered in ascending by date"(){
         given: "account service"
-            AccountService accountService = new AccountServiceImpl(accountRepository: accountRepository,
+            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
             Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)

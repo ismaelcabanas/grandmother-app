@@ -2,7 +2,7 @@ package cabanas.garcia.ismael.grandmother.service
 
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
-import cabanas.garcia.ismael.grandmother.service.impl.PersonServiceImpl
+import cabanas.garcia.ismael.grandmother.service.impl.RepositoryPersonService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
@@ -24,7 +24,7 @@ class PersonServiceCRUDITSpec extends Specification{
 
     def "remove all persons"(){
         given: "person service"
-            PersonService personService = new PersonServiceImpl(personRepository: personRepository)
+            PersonService personService = new RepositoryPersonService(personRepository: personRepository)
         when: "delete all persons"
             personService.deleteAll()
         then:
@@ -36,7 +36,7 @@ class PersonServiceCRUDITSpec extends Specification{
         given: "a person data"
             Person ismael = new Person(name: ISMAEL_NAME)
         and: "person service"
-            PersonService personService = new PersonServiceImpl(personRepository: personRepository)
+            PersonService personService = new RepositoryPersonService(personRepository: personRepository)
         when:
             personService.create(ismael)
         then:
@@ -53,7 +53,7 @@ class PersonServiceCRUDITSpec extends Specification{
     def "find one person" (){
         given: "a new person"
             Person ismael = new Person(name: ISMAEL_NAME)
-            PersonService personService = new PersonServiceImpl(personRepository: personRepository)
+            PersonService personService = new RepositoryPersonService(personRepository: personRepository)
             personService.create(ismael)
         when: "find person by identifier"
             Person person = personService.findById(ismael.getId())
@@ -66,7 +66,7 @@ class PersonServiceCRUDITSpec extends Specification{
     def "delete a person"(){
         given: "a new person"
             Person ismael = new Person(name: ISMAEL_NAME)
-            PersonService personService = new PersonServiceImpl(personRepository: personRepository)
+            PersonService personService = new RepositoryPersonService(personRepository: personRepository)
             personService.create(ismael)
         when: "delete the person"
             personService.delete(ismael)
@@ -79,7 +79,7 @@ class PersonServiceCRUDITSpec extends Specification{
     def "update a person" (){
         given: "a new person"
             Person ismael = new Person(name: ISMAEL_NAME)
-            PersonService personService = new PersonServiceImpl(personRepository: personRepository)
+            PersonService personService = new RepositoryPersonService(personRepository: personRepository)
             personService.create(ismael)
         and: "update his name"
             ismael.changeName("Bea")
