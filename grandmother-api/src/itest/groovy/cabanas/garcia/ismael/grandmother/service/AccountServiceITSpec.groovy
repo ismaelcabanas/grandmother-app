@@ -35,7 +35,7 @@ import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.oneYearBefore
 @ContextConfiguration // not mentioned by docs, but had to include this for Spock to startup the Spring context
 @SpringBootTest
 @Transactional
-@DirtiesContext // What it does is mark the ApplicationContext as dirty, thus requiring it to be reloaded for the next integration test
+//@DirtiesContext // What it does is mark the ApplicationContext as dirty, thus requiring it to be reloaded for the next integration test
 class AccountServiceITSpec extends Specification{
 
     public static final String WATER_CHARGE_TYPE = "Agua"
