@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
+import cabanas.garcia.ismael.grandmother.domain.account.PaymentTransaction
 
 /**
  * Created by XI317311 on 09/12/2016.
@@ -31,4 +32,6 @@ interface AccountService {
     Collection<DepositTransaction> getDepositTransactionsByPersonId(Long accountId, Long personId)
 
     Collection<DepositTransaction> getDepositTransactionsByPersonIdAndYear(Long accountId, Long personId, int year)
+
+    Collection<PaymentTransaction> getPaymentTransactionsByYearAndMonth(Long accountId, int year, int month)
 }

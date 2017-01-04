@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.utils
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 import groovy.json.JsonSlurper
 import org.springframework.mock.web.MockHttpServletResponse
@@ -31,6 +32,10 @@ class AccountTestUtils {
 
     static deposit(Account account, Deposit deposit) {
         account.deposit(deposit)
+    }
+
+    static payment(Account account, Payment payment) {
+        account.charge(payment)
     }
 
 

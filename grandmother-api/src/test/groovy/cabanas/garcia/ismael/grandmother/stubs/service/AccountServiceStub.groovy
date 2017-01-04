@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
+import cabanas.garcia.ismael.grandmother.domain.account.PaymentTransaction
 import cabanas.garcia.ismael.grandmother.service.AccountService
 
 /**
@@ -57,6 +58,11 @@ abstract class AccountServiceStub implements AccountService{
 
     @Override
     Collection<DepositTransaction> getDepositTransactionsByPersonIdAndYear(Long accountId, Long personId, int year) {
+        return null
+    }
+
+    @Override
+    Collection<PaymentTransaction> getPaymentTransactionsByYearAndMonth(Long accountId, int year, int month) {
         return null
     }
 }

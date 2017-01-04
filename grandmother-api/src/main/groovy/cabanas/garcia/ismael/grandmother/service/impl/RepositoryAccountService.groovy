@@ -128,5 +128,8 @@ class RepositoryAccountService implements AccountService{
         return depositTransactionRepository.findByAccountIdAndPersonIdAndDateOfMovementBetweenOrderByDateOfMovementAsc(accountId, personId, startDate, endDate)
     }
 
-
+    @Override
+    Collection<PaymentTransaction> getPaymentTransactionsByYearAndMonth(Long accountId, int year, int month) {
+        return null
+    }
 }
