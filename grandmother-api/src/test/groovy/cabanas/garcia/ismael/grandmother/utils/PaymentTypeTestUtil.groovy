@@ -9,14 +9,14 @@ final class PaymentTypeTestUtil {
     private PaymentTypeTestUtil(){}
 
     static PaymentType getGasPayment() {
-        PaymentType.builder().name("Gas Natural").build()
+        PaymentType.builder().id(1).name("Gas Natural").build()
     }
 
     static PaymentType getEndesaPayment() {
-        PaymentType.builder().name("Endesa Electricidad").build()
+        PaymentType.builder().id(2).name("Endesa Electricidad").build()
     }
 
     static PaymentType getAguaPayment() {
-        return PaymentType.builder().name("Agua").build()
+        return PaymentType.builder().id(3).name("Agua").build()
     }
 }

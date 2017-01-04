@@ -27,6 +27,7 @@ final class PaymentTypeAdapter {
     static PaymentTypeResponse mapEntityToResponse(PaymentType paymentType) {
         PaymentTypeResponse paymentTypeResponse = PaymentTypeResponse.builder()
                 .name(paymentType.name)
+                .id(paymentType.id)
                 .build()
         paymentTypeResponse
     }

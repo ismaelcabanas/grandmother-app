@@ -62,6 +62,7 @@ class PaymentControllerSpec extends Specification {
         def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
         paymentTypes.eachWithIndex { PaymentType paymentType, int i ->
             assert jsonResponse.paymentTypes[i].name == paymentType.name
+            assert jsonResponse.paymentTypes[i].id != null
         }
     }
 

@@ -11,5 +11,6 @@ import groovy.transform.builder.Builder
 @Builder
 @EqualsAndHashCode
 class PaymentTypeResponse {
+    Long id
     String name
 }
