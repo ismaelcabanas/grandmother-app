@@ -1,41 +1,21 @@
 package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
-import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
-import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
-import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
-import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
-import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
 import cabanas.garcia.ismael.grandmother.utils.DateUtils
-import cabanas.garcia.ismael.grandmother.utils.PaymentTypeTestUtil
-import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
 import groovy.json.JsonSlurper
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.*
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.TWENTY_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.deposit
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.deposit
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.deposit
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.getDefaultAccount
 import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.getTEN_THOUSAND
 import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.getTHIRTY_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.getTWENTY_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.getTWENTY_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.TODAY
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.getTODAY
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.getTODAY
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.getYESTERDAY
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.getYESTERDAY
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.oneYearBeforeFrom
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.oneYearBeforeFrom
 import static cabanas.garcia.ismael.grandmother.utils.PaymentTypeTestUtil.*
 import static cabanas.garcia.ismael.grandmother.utils.RestUtilsTest.sendGet
 
@@ -47,7 +27,8 @@ class PaymentsAccountControllerSpec extends Specification{
     @Shared
     MockHttpServletResponse response
 
-    def "should return paymens response ordered ascending by date when hits URL for getting payments on an account for a given year and month" (){
+    @Unroll
+    def "should return paymens response ordered ascending by date when hits URL for getting payments on an account for a given year #year and month #month" (){
         given: "an account"
             Account account = getDefaultAccount()
         and: "some payments on account in diferent dates"
@@ -55,24 +36,24 @@ class PaymentsAccountControllerSpec extends Specification{
             payment(account, paymentAguaOf10000Fron1August2011())
             payment(account, paymentAguaOf10000Fron8August2011())
         and: "account controller configured with his services"
-            AccountService accountService = Mock(AccountService)
-            PaymentsAccountController controller = new PaymentsAccountController()
+            AccountService accountService = Spy(AccountServiceThatGetAnAccountStub, constructorArgs: [account])
+            PaymentsAccountController controller = new PaymentsAccountController(accountService: accountService)
         when: "REST payments on account url is hit"
-            def response = sendGet(controller, "/accounts/$account.id/payments?year=$year&month=$month")
+            response = sendGet(controller, "/accounts/$account.id/payments?year=$year&month=$month")
         then:
             response.status == HttpStatus.OK.value()
             response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
         and:
             1 * accountService.getPaymentTransactionsByYearAndMonth(_,_,_)
         and:
-            responseSizeOfPaymentsIs(result.size())
-            totalPaymensTransactionsAre(THIRTY_THOUSAND)
-            paymentTransactionsReturnedAre(result)
+            responseSizeOfPaymentsIs(payments.size())
+            totalPaymensTransactionsAre(totalAmount)
+            paymentTransactionsReturnedAre(payments)
         where:
-        year | month | result
-        2010 | 1     | []
-        2001 | 8     | []
-        2011 | 8     | [paymentAguaOf10000Fron1August2011(), paymentAguaOf10000Fron8August2011()]
+        year | month | payments                                                                   | totalAmount
+        2010 | 1     | []                                                                         | 0
+        2001 | 8     | []                                                                         | 0
+        2011 | 8     | [paymentAguaOf10000Fron1August2011(), paymentAguaOf10000Fron8August2011()] | -20000
 
     }
 
