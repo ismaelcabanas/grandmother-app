@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.grandmother.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
+import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryAccountService
@@ -45,21 +46,7 @@ class RepositoryAccountServiceSpec extends Specification{
         when:
             accountService.get(accountId)
         then:
-        1 * mockAccountRepository.findOne(accountId)
-    }
-
-    def "should return deposit transactions by date ordered ascending"(){
-        given:
-            Long accountId = 1
-        and:
-            AccountRepository accountRepository = Mock(AccountRepository)
-            DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
-            AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
-                depositTransactionRepository: depositTransactionRepository)
-        when:
-            Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactions(accountId)
-        then:
-            1 * depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(accountId)
+            1 * mockAccountRepository.findOne(accountId)
     }
 
     def "should return deposit transactions by person ordered ascending by date"(){
@@ -71,8 +58,7 @@ class RepositoryAccountServiceSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(
                     depositTransactionRepository: depositTransactionRepository)
         when:
-            Collection<DepositTransaction> depositTransactions =
-                    accountService.getDepositTransactionsByPersonId(accountId, personId)
+            accountService.getDepositTransactionsByPersonId(accountId, personId)
         then:
             1 * depositTransactionRepository.findByAccountIdAndPersonIdOrderByDateOfMovementAsc(accountId, personId)
 
@@ -88,8 +74,7 @@ class RepositoryAccountServiceSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(
                     depositTransactionRepository: depositTransactionRepository)
         when:
-            Collection<DepositTransaction> depositTransactions =
-                    accountService.getDepositTransactionsByPersonIdAndYear(accountId, personId, year)
+            accountService.getDepositTransactionsByPersonIdAndYear(accountId, personId, year)
         then:
             1 * depositTransactionRepository.findByAccountIdAndPersonIdAndDateOfMovementBetweenOrderByDateOfMovementAsc(_, _, _, _)
     }
