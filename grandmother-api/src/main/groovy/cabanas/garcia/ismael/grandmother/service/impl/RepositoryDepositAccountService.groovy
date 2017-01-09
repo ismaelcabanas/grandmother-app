@@ -33,4 +33,14 @@ class RepositoryDepositAccountService implements DepositAccountService {
 
         transactions
     }
+
+    @Override
+    Transactions getDepositTransactionsByPersonId(Long accountId, Long personId) {
+        return null
+    }
+
+    @Override
+    Transactions getDepositTransactionsByPersonIdAndYear(Long accountId, Long personId, int year) {
+        return null
+    }
 }

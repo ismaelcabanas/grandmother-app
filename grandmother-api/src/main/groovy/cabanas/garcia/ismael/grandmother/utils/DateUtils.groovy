@@ -32,4 +32,5 @@ final class DateUtils {
         assert date != null
         DATE_FORMAT.parse(date)
     }
+
 }

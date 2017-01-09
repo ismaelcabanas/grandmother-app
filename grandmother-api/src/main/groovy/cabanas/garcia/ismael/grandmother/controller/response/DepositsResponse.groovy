@@ -12,5 +12,5 @@ import groovy.transform.builder.Builder
 @Builder
 class DepositsResponse {
     BigDecimal total
-    Collection<DepositResponse> deposits
+    Collection<DepositResponse> deposits = new ArrayList<>()
 }

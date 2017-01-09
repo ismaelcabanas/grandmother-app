@@ -8,4 +8,8 @@ import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 interface DepositAccountService {
 
     Transactions getDepositTransactions(Long accountId)
+
+    Transactions getDepositTransactionsByPersonId(Long accountId, Long personId)
+
+    Transactions getDepositTransactionsByPersonIdAndYear(Long accountId, Long personId, int year)
 }

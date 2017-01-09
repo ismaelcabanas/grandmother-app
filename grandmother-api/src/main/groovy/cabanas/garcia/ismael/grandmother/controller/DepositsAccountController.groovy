@@ -1,24 +1,16 @@
 package cabanas.garcia.ismael.grandmother.controller
 
-import cabanas.garcia.ismael.grandmother.adapters.DepositTransactionToDepositResponseFunction
-import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
+import cabanas.garcia.ismael.grandmother.controller.adapter.TransactionsAdapter
 import cabanas.garcia.ismael.grandmother.controller.response.DepositsResponse
-import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
+import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 import cabanas.garcia.ismael.grandmother.service.AccountService
+import cabanas.garcia.ismael.grandmother.service.DepositAccountService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-
-import java.util.function.BinaryOperator
-import java.util.function.Function
-import java.util.stream.Collectors
+import org.springframework.web.bind.annotation.*
 
 /**
  * Created by XI317311 on 30/12/2016.
@@ -31,20 +23,18 @@ class DepositsAccountController {
     @Autowired
     AccountService accountService
 
+    @Autowired
+    DepositAccountService depositAccountService
+
     @RequestMapping(method = RequestMethod.GET, path = "/{id}/deposits")
     ResponseEntity<DepositsResponse> deposits(@PathVariable("id") Long accountId){
         log.debug("Getting depositTransactions on account $accountId")
 
-        Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactions(accountId)
+        Transactions depositTransactions = depositAccountService.getDepositTransactions(accountId)
 
         log.debug("Deposit transactions returned $depositTransactions")
 
-        BigDecimal totalOfDeposits = totalOfDepositTransactions(depositTransactions)
-
-        DepositsResponse depositsResponse = DepositsResponse.builder()
-                .total(totalOfDeposits)
-                .deposits(transform(depositTransactions))
-                .build()
+        DepositsResponse depositsResponse = TransactionsAdapter.mapDepositTransactionsEntityToResponse(depositTransactions)
 
         return new ResponseEntity<DepositsResponse>(depositsResponse, HttpStatus.OK)
     }
@@ -54,16 +44,11 @@ class DepositsAccountController {
                                                       @RequestParam(value = "person_id", required = true) Long personId){
         log.debug("Getting depositTransactions by person on account $accountId and person identifier $personId")
 
-        Collection<DepositTransaction> depositTransactions = accountService.getDepositTransactionsByPersonId(accountId, personId)
+        Transactions depositTransactions = depositAccountService.getDepositTransactionsByPersonId(accountId, personId)
 
         log.debug("Deposit transactions returned $depositTransactions")
 
-        BigDecimal totalOfDeposits = totalOfDepositTransactions(depositTransactions)
-
-        DepositsResponse depositsResponse = DepositsResponse.builder()
-                .total(totalOfDeposits)
-                .deposits(transform(depositTransactions))
-                .build()
+        DepositsResponse depositsResponse = TransactionsAdapter.mapDepositTransactionsEntityToResponse(depositTransactions)
 
         return new ResponseEntity<DepositsResponse>(depositsResponse, HttpStatus.OK)
     }
@@ -75,36 +60,13 @@ class DepositsAccountController {
         log.debug("Getting depositTransactions by person and year on account $accountId for person identifier $personId " +
                 "and year $year")
 
-        Collection<DepositTransaction> depositTransactions =
-                accountService.getDepositTransactionsByPersonIdAndYear(accountId, personId, year)
+        Transactions depositTransactions = depositAccountService.getDepositTransactionsByPersonIdAndYear(accountId, personId, year)
 
         log.debug("Deposit transactions returned $depositTransactions")
 
-        BigDecimal totalOfDeposits = totalOfDepositTransactions(depositTransactions)
-
-        DepositsResponse depositsResponse = DepositsResponse.builder()
-                .total(totalOfDeposits)
-                .deposits(transform(depositTransactions))
-                .build()
+        DepositsResponse depositsResponse = TransactionsAdapter.mapDepositTransactionsEntityToResponse(depositTransactions)
 
         return new ResponseEntity<DepositsResponse>(depositsResponse, HttpStatus.OK)
-    }
-
-    private Collection<DepositResponse> transform(Collection<DepositTransaction> depositTransactions) {
-        assert depositTransactions != null
-        Function depositToDepositResponse = new DepositTransactionToDepositResponseFunction()
-        return depositTransactions.stream().map(depositToDepositResponse).collect(Collectors.<DepositResponse>toList())
-    }
-
-    private BigDecimal totalOfDepositTransactions(Collection<DepositTransaction> transactions) {
-        assert transactions != null
-        BinaryOperator<BigDecimal> addOperator = { s1, s2 -> s1.add(s2)}
-        BigDecimal total = transactions.stream()
-                .filter(Objects.&nonNull) // de la colleción, no cojas los objetos nulos. En Groovy el operador .& equivale a :: en Java
-                .filter({transaction -> transaction.amount != null}) // de cada elemento de la colección, no cojas aquellos cuyo atributo amount sea nulo
-                .map({transaction -> transaction.amount}) // de la colección, mapeamela a una colección de objetos amount
-                .reduce(BigDecimal.ZERO, addOperator) // aplica el operador a cada elemento de la colección para reducirmelo a un valor
-        return total
     }
 
 }

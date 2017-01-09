@@ -15,7 +15,6 @@ import spock.lang.Unroll
 
 import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.*
 import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.getTEN_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.getTHIRTY_THOUSAND
 import static cabanas.garcia.ismael.grandmother.utils.PaymentTypeTestUtil.*
 import static cabanas.garcia.ismael.grandmother.utils.RestUtilsTest.sendGet
 
@@ -32,9 +31,9 @@ class PaymentsAccountControllerSpec extends Specification{
         given: "an account"
             Account account = getDefaultAccount()
         and: "some payments on account in diferent dates"
-            payment(account, paymentAguaOf10000FronJune2010())
-            payment(account, paymentAguaOf10000Fron1August2011())
-            payment(account, paymentAguaOf10000Fron8August2011())
+            payment(account, paymentAguaOf10000FromJune2010())
+            payment(account, paymentAguaOf10000From1August2011())
+            payment(account, paymentAguaOf10000From8August2011())
         and: "account controller configured with his services"
             AccountService accountService = Spy(AccountServiceThatGetAnAccountStub, constructorArgs: [account])
             PaymentsAccountController controller = new PaymentsAccountController(accountService: accountService)
@@ -53,7 +52,7 @@ class PaymentsAccountControllerSpec extends Specification{
         year | month | payments                                                                   | totalAmount
         2010 | 1     | []                                                                         | 0
         2001 | 8     | []                                                                         | 0
-        2011 | 8     | [paymentAguaOf10000Fron1August2011(), paymentAguaOf10000Fron8August2011()] | -20000
+        2011 | 8     | [paymentAguaOf10000From1August2011(), paymentAguaOf10000From8August2011()] | -20000
 
     }
 
@@ -76,17 +75,17 @@ class PaymentsAccountControllerSpec extends Specification{
         assert jsonResponse.payments.size == size
     }
 
-    Payment paymentAguaOf10000FronJune2010(){
+    Payment paymentAguaOf10000FromJune2010(){
         Date june2010 = DateUtils.parse("2010-06-01 00:00:00.0")
         new Payment(amount: TEN_THOUSAND, date: june2010, type: getAguaPayment(), description: "")
     }
 
-    Payment paymentAguaOf10000Fron1August2011(){
+    Payment paymentAguaOf10000From1August2011(){
         Date august2011Day1 = DateUtils.parse("2011-08-01 00:00:00.0")
         new Payment(amount: TEN_THOUSAND, date: august2011Day1, type: getAguaPayment(), description: "")
     }
 
-    Payment paymentAguaOf10000Fron8August2011(){
+    Payment paymentAguaOf10000From8August2011(){
         Date august2011Day10 = DateUtils.parse("2011-08-10 00:00:00.0")
         new Payment(amount: TEN_THOUSAND, date: august2011Day10, type: getAguaPayment(), description: "")
     }
