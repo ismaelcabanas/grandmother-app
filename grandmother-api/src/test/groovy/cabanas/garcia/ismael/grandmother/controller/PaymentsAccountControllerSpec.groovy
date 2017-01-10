@@ -3,7 +3,9 @@ package cabanas.garcia.ismael.grandmother.controller
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.service.AccountService
+import cabanas.garcia.ismael.grandmother.service.PaymentAccountService
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
+import cabanas.garcia.ismael.grandmother.stubs.service.PaymentAccountServiceWithPaymentsInAccountStub
 import cabanas.garcia.ismael.grandmother.utils.DateUtils
 import groovy.json.JsonSlurper
 import org.springframework.http.HttpStatus
@@ -35,15 +37,13 @@ class PaymentsAccountControllerSpec extends Specification{
             payment(account, paymentAguaOf10000From1August2011())
             payment(account, paymentAguaOf10000From8August2011())
         and: "account controller configured with his services"
-            AccountService accountService = Spy(AccountServiceThatGetAnAccountStub, constructorArgs: [account])
-            PaymentsAccountController controller = new PaymentsAccountController(accountService: accountService)
+            PaymentAccountService paymentAccountService =
+                    new PaymentAccountServiceWithPaymentsInAccountStub(account)
+            PaymentsAccountController controller = new PaymentsAccountController(paymentAccountService: paymentAccountService)
         when: "REST payments on account url is hit"
             response = sendGet(controller, "/accounts/$account.id/payments?year=$year&month=$month")
         then:
-            response.status == HttpStatus.OK.value()
-            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
-        and:
-            1 * accountService.getPaymentTransactionsByYearAndMonth(_,_,_)
+            responseIsOk()
         and:
             responseSizeOfPaymentsIs(payments.size())
             totalPaymensTransactionsAre(totalAmount)
@@ -52,16 +52,21 @@ class PaymentsAccountControllerSpec extends Specification{
         year | month | payments                                                                   | totalAmount
         2010 | 1     | []                                                                         | 0
         2001 | 8     | []                                                                         | 0
-        2011 | 8     | [paymentAguaOf10000From1August2011(), paymentAguaOf10000From8August2011()] | -20000
+        2011 | 8     | [paymentAguaOf10000From8August2011(), paymentAguaOf10000From1August2011()] | 20000
 
+    }
+
+    def void responseIsOk() {
+        response.status == HttpStatus.OK.value()
+        response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
     }
 
     def void paymentTransactionsReturnedAre(List<Payment> payments) {
         def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
         payments.eachWithIndex { Payment payment, int i ->
             assert jsonResponse.payments[i].amount == payment.amount
-            assert jsonResponse.payments[i].date == payment.date
-            assert jsonResponse.payments[i].type.name == payment.type.name
+            assert jsonResponse.payments[i].date == DateUtils.format(payment.date)
+            assert jsonResponse.payments[i].paymentType.name == payment.type.name
         }
     }
 
@@ -86,7 +91,7 @@ class PaymentsAccountControllerSpec extends Specification{
     }
 
     Payment paymentAguaOf10000From8August2011(){
-        Date august2011Day10 = DateUtils.parse("2011-08-10 00:00:00.0")
+        Date august2011Day10 = DateUtils.parse("2011-08-08 00:00:00.0")
         new Payment(amount: TEN_THOUSAND, date: august2011Day10, type: getAguaPayment(), description: "")
     }
 

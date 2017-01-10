@@ -18,4 +18,8 @@ class DateUtilTest {
         calendar.add(Calendar.YEAR, -1)
         return calendar.getTime()
     }
+
+    static int monthOf(Date date) {
+        date[Calendar.MONTH]
+    }
 }

@@ -11,4 +11,8 @@ import groovy.transform.builder.Builder
 @EqualsAndHashCode
 @Builder
 class PaymentResponse {
+    BigDecimal amount
+    String description
+    String date
+    PaymentTypeResponse paymentType
 }
