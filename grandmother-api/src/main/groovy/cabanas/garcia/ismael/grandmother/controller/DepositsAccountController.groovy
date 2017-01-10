@@ -3,7 +3,6 @@ package cabanas.garcia.ismael.grandmother.controller
 import cabanas.garcia.ismael.grandmother.controller.adapter.TransactionsAdapter
 import cabanas.garcia.ismael.grandmother.controller.response.DepositsResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Transactions
-import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.service.DepositAccountService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,9 +18,6 @@ import org.springframework.web.bind.annotation.*
 @RestController()
 @RequestMapping(value = "/accounts", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 class DepositsAccountController {
-
-    @Autowired
-    AccountService accountService
 
     @Autowired
     DepositAccountService depositAccountService
