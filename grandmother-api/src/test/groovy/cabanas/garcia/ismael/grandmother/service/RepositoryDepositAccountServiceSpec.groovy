@@ -5,6 +5,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
+import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryAccountService
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryDepositAccountService
 import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
@@ -60,4 +61,52 @@ class RepositoryDepositAccountServiceSpec extends Specification{
             depositTransactions.areEmpty() == true
     }
 
+    def "should return deposits transactions for given account and person in ascending order by date"(){
+        given: "given account"
+            Account account = Account.builder().id(1).build()
+        and: "a person called ismael"
+            Person ismael = getIsmael()
+        and: "deposit transactions made for ismael in given account"
+            Collection<DepositTransaction> depositTransactionsInRepository = new ArrayList<>()
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TEN_THOUSAND, dateOfMovement: TODAY, person: ismael))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TEN_THOUSAND, dateOfMovement: YESTERDAY, person: ismael))
+        and: "the deposit account service"
+            DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
+            DepositAccountService depositAccountService =
+                    new RepositoryDepositAccountService(depositTransactionRepository: depositTransactionRepository)
+        when: "get deposit transactions made from ismael for given account"
+            Transactions depositTransactions = depositAccountService.getDepositTransactionsByPersonId(account.id, ismael.id)
+        then:
+            1 * depositTransactionRepository.findByAccountIdAndPersonIdOrderByDateOfMovementAsc(account.id, ismael.id) >> depositTransactionsInRepository
+        and:
+            depositTransactions.total == TWENTY_THOUSAND
+            depositTransactions.areEmpty() == false
+            depositTransactions.list != null
+            depositTransactions.count() == 2
+    }
+
+    def "should return deposits transactions for given account, person and year in ascending order by date"(){
+        given: "given account"
+            Account account = Account.builder().id(1).build()
+        and: "a person called ismael"
+            Person ismael = getIsmael()
+        and: "deposit transactions made for ismael in given account at this year"
+            Collection<DepositTransaction> depositTransactionsInRepository = new ArrayList<>()
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TEN_THOUSAND, dateOfMovement: TODAY, person: ismael))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TWENTY_THOUSAND, dateOfMovement: YESTERDAY, person: ismael))
+        and: "the deposit account service"
+            DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
+            DepositAccountService depositAccountService =
+                new RepositoryDepositAccountService(depositTransactionRepository: depositTransactionRepository)
+            int year = DateUtilTest.yearOf(TODAY)
+        when: "get deposit transactions made from ismael for given account and this year"
+            Transactions depositTransactions = depositAccountService.getDepositTransactionsByPersonIdAndYear(account.id, ismael.id, year)
+        then:
+            1 * depositTransactionRepository.findByAccountIdAndPersonIdAndDateOfMovementBetweenOrderByDateOfMovementAsc(account.id, ismael.id, _, _) >> depositTransactionsInRepository
+        and:
+        depositTransactions.total == THIRTY_THOUSAND
+        depositTransactions.areEmpty() == false
+        depositTransactions.list != null
+        depositTransactions.count() == 2
+    }
 }
