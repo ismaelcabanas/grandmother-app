@@ -1,10 +1,10 @@
-package cabanas.garcia.ismael.grandmother.utils
+package cabanas.garcia.ismael.grandmother.utils.test
 /**
  * Utility test class for managing dates.
  *
  * Created by XI317311 on 20/12/2016.
  */
-class DateUtilTest {
+class DateUtil {
     static Date TODAY = new Date()
     static Date YESTERDAY = new Date().previous()
 

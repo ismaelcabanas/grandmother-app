@@ -3,7 +3,7 @@ package cabanas.garcia.ismael.grandmother.service
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTypeRepository
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryPaymentTypeService
-import static cabanas.garcia.ismael.grandmother.utils.PaymentTypeTestUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.*
 import spock.lang.Specification
 
 

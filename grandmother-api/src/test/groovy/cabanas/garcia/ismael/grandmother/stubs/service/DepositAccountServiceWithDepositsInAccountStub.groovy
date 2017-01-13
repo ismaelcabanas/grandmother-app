@@ -4,8 +4,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 import cabanas.garcia.ismael.grandmother.service.DepositAccountService
-import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
-import cabanas.garcia.ismael.grandmother.utils.DateUtils
+import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
 
 /**
  * Created by XI317311 on 05/01/2017.
@@ -51,7 +50,7 @@ class DepositAccountServiceWithDepositsInAccountStub implements DepositAccountSe
         Collection<DepositTransaction> depositTransactionsByPersonAndYear =
                 depositTransactions.findAll {DepositTransaction dt ->
                     (dt.person.id.equals(personId) &&
-                            DateUtilTest.yearOf(dt.dateOfMovement) == year)}
+                            DateUtil.yearOf(dt.dateOfMovement) == year)}
 
         Transactions transactions = new Transactions()
 

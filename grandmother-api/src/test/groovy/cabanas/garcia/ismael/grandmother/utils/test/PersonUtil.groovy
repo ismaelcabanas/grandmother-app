@@ -1,11 +1,11 @@
-package cabanas.garcia.ismael.grandmother.utils
+package cabanas.garcia.ismael.grandmother.utils.test
 
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 
 /**
  * Created by XI317311 on 22/12/2016.
  */
-class PersonUtilTest {
+class PersonUtil {
     static Person getDefaultPerson() {
         return Person.builder().id(1).name("Ismael").build()
     }

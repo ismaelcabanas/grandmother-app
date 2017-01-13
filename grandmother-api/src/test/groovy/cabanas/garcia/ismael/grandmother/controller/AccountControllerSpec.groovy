@@ -6,13 +6,10 @@ import cabanas.garcia.ismael.grandmother.controller.request.PaymentRequestBody
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
-import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceDefaultAccountStub
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
-import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
-import cabanas.garcia.ismael.grandmother.utils.DateUtils
-import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
+import cabanas.garcia.ismael.grandmother.utils.test.AccountUtil
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.http.HttpStatus
@@ -22,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.*
+import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
@@ -67,9 +64,9 @@ class AccountControllerSpec extends Specification{
             def response = sendGet(controller, "/accounts/$account.id")
         then:
             def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
-            jsonResponse.balance == AccountTestUtils.getDefaultAccount().balance.add(15000)
-            jsonResponse.accountNumber == AccountTestUtils.getDefaultAccount().accountNumber
-            jsonResponse.id == AccountTestUtils.getDefaultAccount().id
+            jsonResponse.balance == AccountUtil.getDefaultAccount().balance.add(15000)
+            jsonResponse.accountNumber == AccountUtil.getDefaultAccount().accountNumber
+            jsonResponse.id == AccountUtil.getDefaultAccount().id
     }
 
     def "should get account details when hits the URL for getting an existing account with balance 0"(){
@@ -93,7 +90,7 @@ class AccountControllerSpec extends Specification{
             AccountController controller = new AccountController(accountService: accountService)
         and: "a body with account data"
             AccountRequestBody accountRequestBody = AccountRequestBody.builder()
-                .accountNumber(AccountTestUtils.DEFAULT_ACCOUNT_NUMBER)
+                .accountNumber(AccountUtil.DEFAULT_ACCOUNT_NUMBER)
                 .build()
         when: "REST account post url is hit"
             def response = sendPost(controller, "/accounts", accountRequestBody)
@@ -109,7 +106,7 @@ class AccountControllerSpec extends Specification{
             AccountController controller = new AccountController(accountService: accountService)
         and: "a body with account data with empty account number"
             AccountRequestBody accountRequestBody = AccountRequestBody.builder()
-                .balance(AccountTestUtils.DEFAULT_BALANCE)
+                .balance(AccountUtil.DEFAULT_BALANCE)
                 .build()
         when: "REST account post url is hit"
             def response = sendPost(controller, "/accounts", accountRequestBody)
@@ -122,7 +119,7 @@ class AccountControllerSpec extends Specification{
             AccountService accountService = Mock(AccountService)
             AccountController controller = new AccountController(accountService: accountService)
         and: "a account identifier"
-            Account defaultAccount = AccountTestUtils.getDefaultAccount()
+            Account defaultAccount = AccountUtil.getDefaultAccount()
             String accountId = defaultAccount.getId()
         and: "request body of deposit"
             DepositRequestBody depositRequestBody = DepositRequestBody.builder()
@@ -144,7 +141,7 @@ class AccountControllerSpec extends Specification{
             AccountService accountService = Mock(AccountService)
             AccountController controller = new AccountController(accountService: accountService)
         and: "a account identifier"
-            Account defaultAccount = AccountTestUtils.getDefaultAccount()
+            Account defaultAccount = AccountUtil.getDefaultAccount()
             String accountId = defaultAccount.getId()
         and: "data of deposit"
             DepositRequestBody depositRequestBody = new DepositRequestBody(personId: personId, deposit: amount, dateOfDeposit: date)
@@ -164,7 +161,7 @@ class AccountControllerSpec extends Specification{
          AccountService accountService = Mock(AccountService)
             AccountController controller = new AccountController(accountService: accountService)
         and: "a account identifier"
-            Account defaultAccount = AccountTestUtils.getDefaultAccount()
+            Account defaultAccount = AccountUtil.getDefaultAccount()
             String accountId = defaultAccount.getId()
         and: "data of payment"
             Date date = TODAY
@@ -186,7 +183,7 @@ class AccountControllerSpec extends Specification{
             AccountService accountService = Mock(AccountService)
             AccountController controller = new AccountController(accountService: accountService)
         and: "a account identifier"
-            Account defaultAccount = AccountTestUtils.getDefaultAccount()
+            Account defaultAccount = AccountUtil.getDefaultAccount()
             String accountId = defaultAccount.getId()
         and: "data of payment"
             PaymentRequestBody paymentRequestBody = new PaymentRequestBody(paymentTypeId: paymentTypeId, amount: amount, dateOfPayment: date)
@@ -252,7 +249,7 @@ class AccountControllerSpec extends Specification{
     }
 
     def Account getDefaultAccount() {
-        AccountTestUtils.getDefaultAccount()
+        AccountUtil.getDefaultAccount()
     }
 
     def deposit(Account account, Deposit deposit) {

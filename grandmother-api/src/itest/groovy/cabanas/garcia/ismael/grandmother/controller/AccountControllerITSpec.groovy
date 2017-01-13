@@ -13,7 +13,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTypeRe
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
-import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
+import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.RequestEntity
@@ -115,8 +115,8 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         and: "a given person in the system"
             Person person = persistPerson(new Person(name: "Ismael"))
         and: "that person does two deposits on account"
-            Deposit deposit10000 = new Deposit(amount: 10000, date: DateUtilTest.TODAY, description: "Transferencia a su favor", person: person)
-            Deposit deposit20000 = new Deposit(amount: 20000, date: DateUtilTest.YESTERDAY, description: "Transferencia a su favor", person: person)
+            Deposit deposit10000 = new Deposit(amount: 10000, date: DateUtil.TODAY, description: "Transferencia a su favor", person: person)
+            Deposit deposit20000 = new Deposit(amount: 20000, date: DateUtil.YESTERDAY, description: "Transferencia a su favor", person: person)
             deposit(account, deposit10000)
             deposit(account, deposit20000)
         when: "REST deposits on account url is hit"

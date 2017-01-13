@@ -2,7 +2,7 @@ package cabanas.garcia.ismael.grandmother.stubs.service
 
 import cabanas.garcia.ismael.grandmother.domain.account.*
 import cabanas.garcia.ismael.grandmother.service.PaymentAccountService
-import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
+import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
 
 /**
  * Created by XI317311 on 10/01/2017.
@@ -25,8 +25,8 @@ class PaymentAccountServiceWithPaymentsInAccountStub implements PaymentAccountSe
 
         Collection<DepositTransaction> paymentTransactionsByYearAndMonth =
                 paymentTransactions.findAll { PaymentTransaction dt ->
-                    (DateUtilTest.yearOf(dt.dateOfMovement) == year
-                        && DateUtilTest.monthOf(dt.dateOfMovement) == month-1)}
+                    (DateUtil.yearOf(dt.dateOfMovement) == year
+                        && DateUtil.monthOf(dt.dateOfMovement) == month-1)}
 
         Transactions transactions = new Transactions()
 

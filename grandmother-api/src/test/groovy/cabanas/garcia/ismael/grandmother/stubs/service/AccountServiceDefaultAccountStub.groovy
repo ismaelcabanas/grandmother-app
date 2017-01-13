@@ -4,14 +4,14 @@ import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
-import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
+import cabanas.garcia.ismael.grandmother.utils.test.AccountUtil
 
 /**
  * Created by XI317311 on 18/12/2016.
  */
 class AccountServiceDefaultAccountStub extends AccountServiceStub{
 
-    Account defaultAccount = AccountTestUtils.getDefaultAccount()
+    Account defaultAccount = AccountUtil.getDefaultAccount()
 
     @Override
     Account open(String accountNumber) {

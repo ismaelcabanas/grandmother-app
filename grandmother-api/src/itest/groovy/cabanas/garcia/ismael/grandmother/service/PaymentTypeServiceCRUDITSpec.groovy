@@ -4,17 +4,14 @@ import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTypeRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryPaymentTypeService
-import cabanas.garcia.ismael.grandmother.utils.PaymentTypeTestUtil
-import groovy.json.JsonSlurper
+import cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
-import spock.lang.Stepwise
 
-import static cabanas.garcia.ismael.grandmother.utils.PaymentTypeTestUtil.*
+import static PaymentTypeUtil.*
 
 /**
  * Created by XI317311 on 09/12/2016.

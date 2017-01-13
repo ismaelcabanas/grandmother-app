@@ -9,12 +9,11 @@ import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountReposi
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryAccountService
-import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
-import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
-import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
+import cabanas.garcia.ismael.grandmother.utils.test.AccountUtil
+import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
+import cabanas.garcia.ismael.grandmother.utils.test.PersonUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Ignore
@@ -22,12 +21,12 @@ import spock.lang.Specification
 
 import java.time.Instant
 
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.TEN_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.THIRTY_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.TWENTY_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.TODAY
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.YESTERDAY
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.oneYearBeforeFrom
+import static AccountUtil.TEN_THOUSAND
+import static AccountUtil.THIRTY_THOUSAND
+import static AccountUtil.TWENTY_THOUSAND
+import static DateUtil.TODAY
+import static DateUtil.YESTERDAY
+import static DateUtil.oneYearBeforeFrom
 
 /**
  * Created by XI317311 on 09/12/2016.
@@ -139,9 +138,9 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                     depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
+            Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
         and: "a given person persisted in the system"
-            Person person = personService.create(PersonUtilTest.getDefaultPerson())
+            Person person = personService.create(PersonUtil.getDefaultPerson())
         and: "that person does two deposits on account with unordered dates"
             Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: person)
             Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: person)
@@ -164,10 +163,10 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
+            Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
         and: "a ismael and bea persons persisted in the system"
-            Person ismael = personService.create(PersonUtilTest.getIsmael())
-            Person bea = personService.create(PersonUtilTest.getBea())
+            Person ismael = personService.create(PersonUtil.getIsmael())
+            Person bea = personService.create(PersonUtil.getBea())
         and: "that ismael does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: ismael)
             Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: ismael)
@@ -193,10 +192,10 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
+            Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
         and: "a ismael and bea persons persisted in the system"
-            Person ismael = personService.create(PersonUtilTest.getIsmael())
-            Person bea = personService.create(PersonUtilTest.getBea())
+            Person ismael = personService.create(PersonUtil.getIsmael())
+            Person bea = personService.create(PersonUtil.getBea())
         and: "that ismael does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: ismael)
             Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: ismael)
@@ -213,10 +212,10 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountTestUtils.getDefaultAccount().accountNumber)
+            Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
         and: "a ismael and bea persons persisted in the system"
-            Person ismael = personService.create(PersonUtilTest.getIsmael())
-            Person bea = personService.create(PersonUtilTest.getBea())
+            Person ismael = personService.create(PersonUtil.getIsmael())
+            Person bea = personService.create(PersonUtil.getBea())
         and: "that ismael does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: YESTERDAY, description: "Transferencia a su favor", person: ismael)
             Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: TODAY, description: "Transferencia a su favor", person: ismael)
@@ -225,7 +224,7 @@ class AccountServiceITSpec extends Specification{
             accountService.deposit(account.id, deposit20000)
             accountService.deposit(account.id, deposit30000)
         when:
-            def year = DateUtilTest.yearOf(TODAY)
+            def year = DateUtil.yearOf(TODAY)
             Collection<DepositTransaction> depositTransactions =
                     accountService.getDepositTransactionsByPersonIdAndYear(account.id, ismael.id, year)
         then:

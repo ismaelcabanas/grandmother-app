@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.grandmother.utils
+package cabanas.garcia.ismael.grandmother.utils.test
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
@@ -10,7 +10,7 @@ import org.springframework.mock.web.MockHttpServletResponse
 /**
  * Created by XI317311 on 15/12/2016.
  */
-class AccountTestUtils {
+class AccountUtil {
 
     static final BigDecimal DEFAULT_BALANCE = new BigDecimal(30000)
     static final String DEFAULT_ACCOUNT_NUMBER = "123"

@@ -2,9 +2,9 @@ package cabanas.garcia.ismael.grandmother.adapters
 
 import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
-import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
+import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
 import cabanas.garcia.ismael.grandmother.utils.DateUtils
-import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
+import cabanas.garcia.ismael.grandmother.utils.test.PersonUtil
 import spock.lang.Specification
 
 /**
@@ -17,8 +17,8 @@ class DepositToDepositResponseFunctionSpec extends Specification{
     def "transform deposit object to deposit response object"(){
         given:
             DepositTransaction depositTransaction =
-                    new DepositTransaction(amount: 10000, dateOfMovement: DateUtilTest.TODAY,
-                        person: PersonUtilTest.getDefaultPerson(), description:  "Transferencia a su favor")
+                    new DepositTransaction(amount: 10000, dateOfMovement: DateUtil.TODAY,
+                        person: PersonUtil.getDefaultPerson(), description:  "Transferencia a su favor")
         when:
             DepositResponse depositResponse = function.apply(depositTransaction)
         then:

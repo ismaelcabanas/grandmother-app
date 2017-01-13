@@ -3,19 +3,16 @@ package cabanas.garcia.ismael.grandmother.service
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Transactions
-import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
-import cabanas.garcia.ismael.grandmother.service.impl.RepositoryAccountService
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryDepositAccountService
-import cabanas.garcia.ismael.grandmother.utils.AccountTestUtils
-import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
-import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
-import spock.lang.Specification
+import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
 
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.*
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.*
-import static cabanas.garcia.ismael.grandmother.utils.PersonUtilTest.*
+import static cabanas.garcia.ismael.grandmother.utils.test.AccountUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.PersonUtil.*
+import spock.lang.Specification
 
 /**
  * Created by XI317311 on 05/01/2017.
@@ -98,7 +95,7 @@ class RepositoryDepositAccountServiceSpec extends Specification{
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
             DepositAccountService depositAccountService =
                 new RepositoryDepositAccountService(depositTransactionRepository: depositTransactionRepository)
-            int year = DateUtilTest.yearOf(TODAY)
+            int year = yearOf(TODAY)
         when: "get deposit transactions made from ismael for given account and this year"
             Transactions depositTransactions = depositAccountService.getDepositTransactionsByPersonIdAndYear(account.id, ismael.id, year)
         then:

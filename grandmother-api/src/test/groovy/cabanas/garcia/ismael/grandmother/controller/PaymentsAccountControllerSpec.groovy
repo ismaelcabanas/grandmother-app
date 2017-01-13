@@ -2,9 +2,7 @@ package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Payment
-import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.service.PaymentAccountService
-import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
 import cabanas.garcia.ismael.grandmother.stubs.service.PaymentAccountServiceWithPaymentsInAccountStub
 import cabanas.garcia.ismael.grandmother.utils.DateUtils
 import groovy.json.JsonSlurper
@@ -15,10 +13,10 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.*
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.getTEN_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.PaymentTypeTestUtil.*
-import static cabanas.garcia.ismael.grandmother.utils.RestUtilsTest.sendGet
+import static cabanas.garcia.ismael.grandmother.utils.test.AccountUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.AccountUtil.getTEN_THOUSAND
+import static cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.RestUtil.sendGet
 
 /**
  * Created by XI317311 on 04/01/2017.
@@ -29,7 +27,7 @@ class PaymentsAccountControllerSpec extends Specification{
     MockHttpServletResponse response
 
     @Unroll
-    def "should return paymens response ordered ascending by date when hits URL for getting payments on an account for a given year #year and month #month" (){
+    def "should return payments response ordered ascending by date when hits URL for getting payments on an account for a given year #year and month #month" (){
         given: "an account"
             Account account = getDefaultAccount()
         and: "some payments on account in diferent dates"

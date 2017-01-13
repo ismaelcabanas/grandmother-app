@@ -10,8 +10,8 @@ import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static cabanas.garcia.ismael.grandmother.utils.PaymentTypeTestUtil.*
-import static cabanas.garcia.ismael.grandmother.utils.RestUtilsTest.sendGet
+import static cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.RestUtil.sendGet
 
 /**
  * Created by XI317311 on 02/01/2017.

@@ -1,12 +1,14 @@
-package cabanas.garcia.ismael.grandmother.utils
+package cabanas.garcia.ismael.grandmother.utils.test
 
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 
 /**
  * Created by XI317311 on 02/01/2017.
  */
-final class PaymentTypeTestUtil {
-    private PaymentTypeTestUtil(){}
+final class PaymentTypeUtil {
+    public static PaymentType WATER_PAYMENT = PaymentType.builder().name("Agua").build()
+
+    private PaymentTypeUtil(){}
 
     static PaymentType getGasPayment() {
         PaymentType.builder().id(1).name("Gas Natural").build()

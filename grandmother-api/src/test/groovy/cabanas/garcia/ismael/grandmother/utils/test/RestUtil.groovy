@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.grandmother.utils
+package cabanas.garcia.ismael.grandmother.utils.test
 
 import groovy.json.JsonSlurper
 import org.springframework.http.HttpStatus
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 /**
  * Created by XI317311 on 30/12/2016.
  */
-final class RestUtilsTest {
+final class RestUtil {
 
     static sendGet(controller, path) {
         MockMvc mockMvc = standaloneSetup(controller).build()
@@ -40,6 +40,6 @@ final class RestUtilsTest {
     static boolean notExistDepositsInAccount(MockHttpServletResponse response) {
         def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
         jsonResponse.deposits.size == 0
-        jsonResponse.total == AccountTestUtils.ZERO
+        jsonResponse.total == AccountUtil.ZERO
     }
 }

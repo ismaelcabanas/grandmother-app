@@ -3,13 +3,14 @@ package cabanas.garcia.ismael.grandmother.controller
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.person.Person
-import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.service.DepositAccountService
-import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
 import cabanas.garcia.ismael.grandmother.stubs.service.DepositAccountServiceWithDepositsInAccountStub
-import cabanas.garcia.ismael.grandmother.utils.DateUtilTest
+import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
+
+import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
 import cabanas.garcia.ismael.grandmother.utils.DateUtils
-import cabanas.garcia.ismael.grandmother.utils.PersonUtilTest
+import cabanas.garcia.ismael.grandmother.utils.test.PersonUtil
 import groovy.json.JsonSlurper
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -17,9 +18,8 @@ import org.springframework.mock.web.MockHttpServletResponse
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static cabanas.garcia.ismael.grandmother.utils.AccountTestUtils.*
-import static cabanas.garcia.ismael.grandmother.utils.DateUtilTest.*
-import static cabanas.garcia.ismael.grandmother.utils.RestUtilsTest.sendGet
+import static cabanas.garcia.ismael.grandmother.utils.test.AccountUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.RestUtil.sendGet
 
 /**
  * Created by XI317311 on 30/12/2016.
@@ -46,7 +46,7 @@ class DepositsAccountControllerSpec extends Specification{
     def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits" (){
         given: "an account with unordered deposits"
             Account account = getDefaultAccount()
-            Person ismael = PersonUtilTest.getIsmael()
+            Person ismael = PersonUtil.getIsmael()
             Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: TODAY, person: ismael)
             Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: YESTERDAY, person: ismael)
             deposit(account, deposit10000)
@@ -66,8 +66,8 @@ class DepositsAccountControllerSpec extends Specification{
 
     def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits for a given person" (){
         given: "ismael and bea persons"
-            Person ismael = PersonUtilTest.getIsmael()
-            Person bea = PersonUtilTest.getBea()
+            Person ismael = PersonUtil.getIsmael()
+            Person bea = PersonUtil.getBea()
         and: "an account with unordered deposits"
             Account account = getDefaultAccount()
             Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: TODAY, person: ismael)
@@ -89,8 +89,8 @@ class DepositsAccountControllerSpec extends Specification{
 
     def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits for a given year and person" (){
         given: "ismael and bea persons"
-            Person ismael = PersonUtilTest.getIsmael()
-            Person bea = PersonUtilTest.getBea()
+            Person ismael = PersonUtil.getIsmael()
+            Person bea = PersonUtil.getBea()
         and: "an account with unordered deposits"
             Account account = getDefaultAccount()
             Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: oneYearBeforeFrom(TODAY), person: ismael)
@@ -103,7 +103,7 @@ class DepositsAccountControllerSpec extends Specification{
             DepositAccountService depositAccountService = new DepositAccountServiceWithDepositsInAccountStub(account: account)
             DepositsAccountController controller = new DepositsAccountController(depositAccountService: depositAccountService)
         when: "REST deposits on account url is hit"
-            int year = DateUtilTest.yearOf(YESTERDAY)
+            int year = yearOf(YESTERDAY)
             response = sendGet(controller, "/accounts/$account.id/deposits?person_id=$bea.id&year=$year")
         then:
             responseIsOk()
