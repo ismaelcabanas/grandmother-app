@@ -434,6 +434,13 @@
             <version>${swagger.version}</version>
         </dependency>
 
+        <!-- Joda Time dependency -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.7</version>
+        </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
