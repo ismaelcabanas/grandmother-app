@@ -17,7 +17,15 @@ class PersonUtil {
         return Person.builder().id(999).name(DEFAULT_PERSON_NAME).build()
     }
 
-    static Person getBea() {
+    static Person getPersistedBea() {
         return Person.builder().id(998).name("Bea").build()
+    }
+
+    static Person getIsmael() {
+        Person.builder().name(DEFAULT_PERSON_NAME).build()
+    }
+
+    static Person getBea() {
+        return Person.builder().name("Bea").build()
     }
 }
