@@ -22,7 +22,7 @@ class RepositoryDepositAccountServiceSpec extends Specification{
             Account account = Account.builder().id(1).build()
         and: "deposit transactions for given account in repository"
             Collection<DepositTransaction> depositTransactionsInRepository = new ArrayList<>()
-            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: TODAY, person: getIsmael()))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: TODAY, person: getPersistedIsmael()))
             depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: YESTERDAY, person: getBea()))
         and: "the deposit account service"
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
@@ -60,7 +60,7 @@ class RepositoryDepositAccountServiceSpec extends Specification{
         given: "given account"
             Account account = Account.builder().id(1).build()
         and: "a person called ismael"
-            Person ismael = getIsmael()
+            Person ismael = getPersistedIsmael()
         and: "deposit transactions made for ismael in given account"
             Collection<DepositTransaction> depositTransactionsInRepository = new ArrayList<>()
             depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: TODAY, person: ismael))
@@ -84,7 +84,7 @@ class RepositoryDepositAccountServiceSpec extends Specification{
         given: "given account"
             Account account = Account.builder().id(1).build()
         and: "a person called ismael"
-            Person ismael = getIsmael()
+            Person ismael = getPersistedIsmael()
         and: "deposit transactions made for ismael in given account at this year"
             Collection<DepositTransaction> depositTransactionsInRepository = new ArrayList<>()
             depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: TODAY, person: ismael))

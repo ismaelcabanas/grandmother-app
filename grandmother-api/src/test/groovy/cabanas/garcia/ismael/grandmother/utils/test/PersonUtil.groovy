@@ -6,12 +6,15 @@ import cabanas.garcia.ismael.grandmother.domain.person.Person
  * Created by XI317311 on 22/12/2016.
  */
 class PersonUtil {
-    static Person getDefaultPerson() {
-        return Person.builder().id(1).name("Ismael").build()
+
+    public static final String DEFAULT_PERSON_NAME = "Ismael"
+
+    static Person getDefaultPersistedPerson() {
+        return Person.builder().id(1).name(DEFAULT_PERSON_NAME).build()
     }
 
-    static Person getIsmael() {
-        return Person.builder().id(999).name("Ismael").build()
+    static Person getPersistedIsmael() {
+        return Person.builder().id(999).name(DEFAULT_PERSON_NAME).build()
     }
 
     static Person getBea() {
