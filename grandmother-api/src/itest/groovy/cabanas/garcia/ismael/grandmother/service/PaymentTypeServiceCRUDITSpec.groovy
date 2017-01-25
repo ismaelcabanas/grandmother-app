@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 import static PaymentTypeUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.*
 
 /**
  * Created by XI317311 on 09/12/2016.
@@ -58,9 +59,9 @@ class PaymentTypeServiceCRUDITSpec extends Specification{
         given: "payment type service"
             PaymentTypeService paymentTypeService = new RepositoryPaymentTypeService(paymentTypeRepository: chargeTypeRepository)
         and: "tipos de pago dados de alta en el sistema"
-            paymentTypeService.create(getGasPayment())
-            paymentTypeService.create(getEndesaPayment())
-            paymentTypeService.create(getAguaPayment())
+            paymentTypeService.create(WATER_PAYMENT)
+            paymentTypeService.create(GAS_PAYMENT)
+            paymentTypeService.create(ENDESA_PAYMENT)
         when:
             List<PaymentType> paymentTypes = paymentTypeService.findAll()
         then:

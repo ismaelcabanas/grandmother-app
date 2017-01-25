@@ -7,6 +7,8 @@ import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
  */
 final class PaymentTypeUtil {
     public static PaymentType WATER_PAYMENT = PaymentType.builder().name("Agua").build()
+    public static PaymentType GAS_PAYMENT = PaymentType.builder().name("Gas Natural").build()
+    public static PaymentType ENDESA_PAYMENT = PaymentType.builder().name("Endesa Electricidad").build()
 
     private PaymentTypeUtil(){}
 

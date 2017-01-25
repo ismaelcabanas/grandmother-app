@@ -19,12 +19,11 @@ import javax.persistence.OneToMany
 class Transactions {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
-    Collection<Transaction> list
+    Collection<Transaction> list = new ArrayList<Transaction>()
 
     BigDecimal total = BigDecimal.ZERO
 
     Transactions(){
-        list = new ArrayList<Transaction>()
     }
 
     def add(Transaction movement) {

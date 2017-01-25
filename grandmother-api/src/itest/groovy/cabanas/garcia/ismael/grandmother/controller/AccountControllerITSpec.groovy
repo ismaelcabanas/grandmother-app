@@ -80,12 +80,12 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     def "should return status #statusCodeExpected when there is a payment #paymentType.name of #amount€ at #date"(){
         given: "a given account"
             Account account = openDefaultAccount()
-        and: "an amount type in the system"
+        and: "a payment type in the system"
             persistChargeType(paymentType)
-        when: "deposits a given amount"
-            def depositRequestBody = getBody(paymentType, amount, date, description)
+        when: "does a payment on given account"
+            def paymentRequestBody = getBody(paymentType, amount, date, description)
             RequestEntity<DepositRequestBody> requestEntity =
-                    RequestEntity.put(serviceURI("/accounts/$account.id/payment")).body(depositRequestBody)
+                    RequestEntity.put(serviceURI("/accounts/$account.id/payment")).body(paymentRequestBody)
             ResponseEntity<Void> response = restTemplate.exchange(requestEntity, Void.class)
         then:
             response.statusCode == statusCodeExpected
@@ -109,7 +109,7 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
             accountResponse.balance == account.balance
     }
 
-    def "should return deposit transactions and total for an account"(){
+    def "should return deposit transactions and total when hits the URL for getting deposits for an account"(){
         given: "an account in the system"
             Account account = openDefaultAccount()
         and: "a given person in the system"

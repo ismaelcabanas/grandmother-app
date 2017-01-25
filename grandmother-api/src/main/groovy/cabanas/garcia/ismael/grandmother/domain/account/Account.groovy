@@ -25,14 +25,13 @@ class Account {
     String accountNumber
 
     @Embedded
-    Transactions transactions
+    Transactions transactions = new Transactions()
 
     static Account open(String accountNumber, BigDecimal balance = BigDecimal.ZERO) {
         return new Account(balance: balance, accountNumber: accountNumber)
     }
 
     Account(){
-        transactions = new Transactions()
     }
 
     def deposit(Deposit deposit){

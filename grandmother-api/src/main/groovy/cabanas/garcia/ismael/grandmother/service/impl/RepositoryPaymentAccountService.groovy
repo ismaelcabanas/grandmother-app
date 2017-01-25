@@ -7,12 +7,17 @@ import cabanas.garcia.ismael.grandmother.service.PaymentAccountService
 import groovy.util.logging.Slf4j
 import org.joda.time.DateTime
 import org.joda.time.Months
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
 /**
  * Created by XI317311 on 17/01/2017.
  */
 @Slf4j
+@Service
 class RepositoryPaymentAccountService implements PaymentAccountService {
+
+    @Autowired
     PaymentTransactionRepository paymentTransactionRepository
 
     @Override
