@@ -6,10 +6,8 @@ import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryDepositAccountService
-import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
+import cabanas.garcia.ismael.grandmother.utils.test.AmountUtil
 
-import static cabanas.garcia.ismael.grandmother.utils.test.AccountUtil.*
-import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
 import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
 import static cabanas.garcia.ismael.grandmother.utils.test.PersonUtil.*
 import spock.lang.Specification
@@ -24,8 +22,8 @@ class RepositoryDepositAccountServiceSpec extends Specification{
             Account account = Account.builder().id(1).build()
         and: "deposit transactions for given account in repository"
             Collection<DepositTransaction> depositTransactionsInRepository = new ArrayList<>()
-            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TEN_THOUSAND, dateOfMovement: TODAY, person: getIsmael()))
-            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TEN_THOUSAND, dateOfMovement: YESTERDAY, person: getBea()))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: TODAY, person: getIsmael()))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: YESTERDAY, person: getBea()))
         and: "the deposit account service"
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
             DepositAccountService depositAccountService =
@@ -35,7 +33,7 @@ class RepositoryDepositAccountServiceSpec extends Specification{
         then:
             1 * depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(account.id) >> depositTransactionsInRepository
         and:
-            depositTransactions.total == TWENTY_THOUSAND
+            depositTransactions.total == AmountUtil.TWENTY_THOUSAND
             depositTransactions.list != null
             depositTransactions.count() == 2
             depositTransactions.areEmpty() == false
@@ -65,8 +63,8 @@ class RepositoryDepositAccountServiceSpec extends Specification{
             Person ismael = getIsmael()
         and: "deposit transactions made for ismael in given account"
             Collection<DepositTransaction> depositTransactionsInRepository = new ArrayList<>()
-            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TEN_THOUSAND, dateOfMovement: TODAY, person: ismael))
-            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TEN_THOUSAND, dateOfMovement: YESTERDAY, person: ismael))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: TODAY, person: ismael))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: YESTERDAY, person: ismael))
         and: "the deposit account service"
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
             DepositAccountService depositAccountService =
@@ -76,7 +74,7 @@ class RepositoryDepositAccountServiceSpec extends Specification{
         then:
             1 * depositTransactionRepository.findByAccountIdAndPersonIdOrderByDateOfMovementAsc(account.id, ismael.id) >> depositTransactionsInRepository
         and:
-            depositTransactions.total == TWENTY_THOUSAND
+            depositTransactions.total == AmountUtil.TWENTY_THOUSAND
             depositTransactions.areEmpty() == false
             depositTransactions.list != null
             depositTransactions.count() == 2
@@ -89,8 +87,8 @@ class RepositoryDepositAccountServiceSpec extends Specification{
             Person ismael = getIsmael()
         and: "deposit transactions made for ismael in given account at this year"
             Collection<DepositTransaction> depositTransactionsInRepository = new ArrayList<>()
-            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TEN_THOUSAND, dateOfMovement: TODAY, person: ismael))
-            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: TWENTY_THOUSAND, dateOfMovement: YESTERDAY, person: ismael))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: TODAY, person: ismael))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TWENTY_THOUSAND, dateOfMovement: YESTERDAY, person: ismael))
         and: "the deposit account service"
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
             DepositAccountService depositAccountService =
@@ -101,7 +99,7 @@ class RepositoryDepositAccountServiceSpec extends Specification{
         then:
             1 * depositTransactionRepository.findByAccountIdAndPersonIdAndDateOfMovementBetweenOrderByDateOfMovementAsc(account.id, ismael.id, _, _) >> depositTransactionsInRepository
         and:
-        depositTransactions.total == THIRTY_THOUSAND
+        depositTransactions.total == AmountUtil.THIRTY_THOUSAND
         depositTransactions.areEmpty() == false
         depositTransactions.list != null
         depositTransactions.count() == 2

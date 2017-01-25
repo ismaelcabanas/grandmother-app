@@ -5,9 +5,8 @@ import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.DepositAccountService
 import cabanas.garcia.ismael.grandmother.stubs.service.DepositAccountServiceWithDepositsInAccountStub
-import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
+import cabanas.garcia.ismael.grandmother.utils.test.AmountUtil
 
-import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
 import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
 import cabanas.garcia.ismael.grandmother.utils.DateUtils
 import cabanas.garcia.ismael.grandmother.utils.test.PersonUtil
@@ -47,8 +46,8 @@ class DepositsAccountControllerSpec extends Specification{
         given: "an account with unordered deposits"
             Account account = getDefaultAccount()
             Person ismael = PersonUtil.getIsmael()
-            Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: TODAY, person: ismael)
-            Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: YESTERDAY, person: ismael)
+            Deposit deposit10000 = new Deposit(amount: AmountUtil.TEN_THOUSAND, date: TODAY, person: ismael)
+            Deposit deposit20000 = new Deposit(amount: AmountUtil.TWENTY_THOUSAND, date: YESTERDAY, person: ismael)
             deposit(account, deposit10000)
             deposit(account, deposit20000)
         and: "account controller configured with his services"
@@ -60,7 +59,7 @@ class DepositsAccountControllerSpec extends Specification{
             responseIsOk()
         and:
             sizeOfDepositTransactionsIs(2)
-            totalDepositsAmount(THIRTY_THOUSAND)
+            totalDepositsAmount(AmountUtil.THIRTY_THOUSAND)
             depositTransactionReturnedAre(deposit10000, deposit20000)
     }
 
@@ -70,8 +69,8 @@ class DepositsAccountControllerSpec extends Specification{
             Person bea = PersonUtil.getBea()
         and: "an account with unordered deposits"
             Account account = getDefaultAccount()
-            Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: TODAY, person: ismael)
-            Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: YESTERDAY, person: bea)
+            Deposit deposit10000 = new Deposit(amount: AmountUtil.TEN_THOUSAND, date: TODAY, person: ismael)
+            Deposit deposit20000 = new Deposit(amount: AmountUtil.TWENTY_THOUSAND, date: YESTERDAY, person: bea)
             deposit(account, deposit10000)
             deposit(account, deposit20000)
         and: "account controller configured with his services"
@@ -83,7 +82,7 @@ class DepositsAccountControllerSpec extends Specification{
             responseIsOk()
         and:
             sizeOfDepositTransactionsIs(1)
-            totalDepositsAmount(TEN_THOUSAND)
+            totalDepositsAmount(AmountUtil.TEN_THOUSAND)
             depositTransactionReturnedAre(deposit10000)
     }
 
@@ -93,9 +92,9 @@ class DepositsAccountControllerSpec extends Specification{
             Person bea = PersonUtil.getBea()
         and: "an account with unordered deposits"
             Account account = getDefaultAccount()
-            Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: oneYearBeforeFrom(TODAY), person: ismael)
-            Deposit deposit30000 = new Deposit(amount: THIRTY_THOUSAND, date: oneYearBeforeFrom(TODAY), person: ismael)
-            Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: YESTERDAY, person: bea)
+            Deposit deposit10000 = new Deposit(amount: AmountUtil.TEN_THOUSAND, date: oneYearBeforeFrom(TODAY), person: ismael)
+            Deposit deposit30000 = new Deposit(amount: AmountUtil.THIRTY_THOUSAND, date: oneYearBeforeFrom(TODAY), person: ismael)
+            Deposit deposit20000 = new Deposit(amount: AmountUtil.TWENTY_THOUSAND, date: YESTERDAY, person: bea)
             deposit(account, deposit10000)
             deposit(account, deposit20000)
             deposit(account, deposit30000)
@@ -109,7 +108,7 @@ class DepositsAccountControllerSpec extends Specification{
             responseIsOk()
         and:
             sizeOfDepositTransactionsIs(1)
-            totalDepositsAmount(TWENTY_THOUSAND)
+            totalDepositsAmount(AmountUtil.TWENTY_THOUSAND)
             depositTransactionReturnedAre(deposit20000)
     }
 

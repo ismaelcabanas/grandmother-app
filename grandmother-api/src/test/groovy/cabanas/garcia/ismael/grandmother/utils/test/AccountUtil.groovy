@@ -16,10 +16,6 @@ class AccountUtil {
     static final String DEFAULT_ACCOUNT_NUMBER = "123"
     static final Long DEFAULT_ID = 1L
 
-    static final BigDecimal ZERO = BigDecimal.ZERO
-    static final BigDecimal TEN_THOUSAND = new BigDecimal(10000)
-    static final BigDecimal TWENTY_THOUSAND = new BigDecimal(20000)
-    static final BigDecimal THIRTY_THOUSAND = new BigDecimal(30000)
 
     static Account getDefaultAccount() {
         Account.builder()
