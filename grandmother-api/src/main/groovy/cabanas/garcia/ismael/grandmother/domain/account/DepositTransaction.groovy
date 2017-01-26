@@ -5,6 +5,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
 
+import javax.persistence.CascadeType
 import javax.persistence.DiscriminatorValue
 import javax.persistence.Entity
 import javax.persistence.ManyToOne
@@ -18,7 +19,7 @@ import javax.persistence.ManyToOne
 @Entity
 @DiscriminatorValue("DEPOSIT")
 class DepositTransaction extends Transaction{
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     Person person
 
 }

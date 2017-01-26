@@ -45,7 +45,7 @@ class DepositsAccountControllerSpec extends Specification{
     def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits" (){
         given: "an account with unordered deposits"
             Account account = getDefaultAccount()
-            Person ismael = PersonUtil.getIsmael()
+            Person ismael = PersonUtil.getPersistedIsmael()
             Deposit deposit10000 = new Deposit(amount: AmountUtil.TEN_THOUSAND, date: TODAY, person: ismael)
             Deposit deposit20000 = new Deposit(amount: AmountUtil.TWENTY_THOUSAND, date: YESTERDAY, person: ismael)
             deposit(account, deposit10000)
@@ -65,8 +65,8 @@ class DepositsAccountControllerSpec extends Specification{
 
     def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits for a given person" (){
         given: "ismael and bea persons"
-            Person ismael = PersonUtil.getIsmael()
-            Person bea = PersonUtil.getBea()
+            Person ismael = PersonUtil.getPersistedIsmael()
+            Person bea = PersonUtil.getPersistedBea()
         and: "an account with unordered deposits"
             Account account = getDefaultAccount()
             Deposit deposit10000 = new Deposit(amount: AmountUtil.TEN_THOUSAND, date: TODAY, person: ismael)
@@ -88,8 +88,8 @@ class DepositsAccountControllerSpec extends Specification{
 
     def "should return deposits response ordered ascending by date when hits URL for getting deposits on an account with deposits for a given year and person" (){
         given: "ismael and bea persons"
-            Person ismael = PersonUtil.getIsmael()
-            Person bea = PersonUtil.getBea()
+            Person ismael = PersonUtil.getPersistedIsmael()
+            Person bea = PersonUtil.getPersistedBea()
         and: "an account with unordered deposits"
             Account account = getDefaultAccount()
             Deposit deposit10000 = new Deposit(amount: AmountUtil.TEN_THOUSAND, date: oneYearBeforeFrom(TODAY), person: ismael)

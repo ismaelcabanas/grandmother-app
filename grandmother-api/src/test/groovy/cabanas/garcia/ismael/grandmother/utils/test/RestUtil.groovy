@@ -40,6 +40,6 @@ final class RestUtil {
     static boolean notExistDepositsInAccount(MockHttpServletResponse response) {
         def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
         jsonResponse.deposits.size == 0
-        jsonResponse.total == AccountUtil.ZERO
+        jsonResponse.total == AmountUtil.ZERO
     }
 }

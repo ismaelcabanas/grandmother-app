@@ -16,14 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import java.time.Instant
 
-import static AccountUtil.TEN_THOUSAND
-import static AccountUtil.THIRTY_THOUSAND
-import static AccountUtil.TWENTY_THOUSAND
+import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.TEN_THOUSAND
+import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.THIRTY_THOUSAND
+import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.TWENTY_THOUSAND
 import static DateUtil.TODAY
 import static DateUtil.YESTERDAY
 import static DateUtil.oneYearBeforeFrom
@@ -132,7 +131,6 @@ class AccountServiceITSpec extends Specification{
             account.transactions.count() == 3
     }
 
-    @Ignore
     def "should return deposit transactions ordered in ascending by date"(){
         given: "account service"
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
@@ -140,7 +138,7 @@ class AccountServiceITSpec extends Specification{
         and: "an account persisted in the system"
             Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
         and: "a given person persisted in the system"
-            Person person = personService.create(PersonUtil.getDefaultPerson())
+            Person person = personService.create(PersonUtil.getDefaultPersistedPerson())
         and: "that person does two deposits on account with unordered dates"
             Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: person)
             Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: person)
@@ -165,8 +163,8 @@ class AccountServiceITSpec extends Specification{
         and: "an account persisted in the system"
             Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
         and: "a ismael and bea persons persisted in the system"
-            Person ismael = personService.create(PersonUtil.getIsmael())
-            Person bea = personService.create(PersonUtil.getBea())
+            Person ismael = personService.create(PersonUtil.getPersistedIsmael())
+            Person bea = personService.create(PersonUtil.getPersistedBea())
         and: "that ismael does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: ismael)
             Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: ismael)
@@ -194,8 +192,8 @@ class AccountServiceITSpec extends Specification{
         and: "an account persisted in the system"
             Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
         and: "a ismael and bea persons persisted in the system"
-            Person ismael = personService.create(PersonUtil.getIsmael())
-            Person bea = personService.create(PersonUtil.getBea())
+            Person ismael = personService.create(PersonUtil.getPersistedIsmael())
+            Person bea = personService.create(PersonUtil.getPersistedBea())
         and: "that ismael does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: ismael)
             Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: ismael)
@@ -214,8 +212,8 @@ class AccountServiceITSpec extends Specification{
         and: "an account persisted in the system"
             Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
         and: "a ismael and bea persons persisted in the system"
-            Person ismael = personService.create(PersonUtil.getIsmael())
-            Person bea = personService.create(PersonUtil.getBea())
+            Person ismael = personService.create(PersonUtil.getPersistedIsmael())
+            Person bea = personService.create(PersonUtil.getPersistedBea())
         and: "that ismael does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: YESTERDAY, description: "Transferencia a su favor", person: ismael)
             Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: TODAY, description: "Transferencia a su favor", person: ismael)

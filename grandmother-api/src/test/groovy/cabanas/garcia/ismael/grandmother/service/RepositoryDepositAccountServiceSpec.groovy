@@ -23,7 +23,7 @@ class RepositoryDepositAccountServiceSpec extends Specification{
         and: "deposit transactions for given account in repository"
             Collection<DepositTransaction> depositTransactionsInRepository = new ArrayList<>()
             depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: TODAY, person: getPersistedIsmael()))
-            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: YESTERDAY, person: getBea()))
+            depositTransactionsInRepository.add(new DepositTransaction(account: account, amount: AmountUtil.TEN_THOUSAND, dateOfMovement: YESTERDAY, person: getPersistedBea()))
         and: "the deposit account service"
             DepositTransactionRepository depositTransactionRepository = Mock(DepositTransactionRepository)
             DepositAccountService depositAccountService =
