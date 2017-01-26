@@ -11,7 +11,7 @@ import cabanas.garcia.ismael.grandmother.utils.test.AccountUtil
  */
 class AccountServiceDefaultAccountStub extends AccountServiceStub{
 
-    Account defaultAccount = AccountUtil.getDefaultAccount()
+    Account defaultAccount = AccountUtil.getDefaultAccountPersisted()
 
     @Override
     Account open(String accountNumber) {

@@ -136,9 +136,9 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                     depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
+            Account account = accountService.open(AccountUtil.getDefaultAccountPersisted().accountNumber)
         and: "a given person persisted in the system"
-            Person person = personService.create(PersonUtil.getDefaultPersistedPerson())
+            Person person = personService.create(PersonUtil.getDefaultPersonPersisted())
         and: "that person does two deposits on account with unordered dates"
             Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: person)
             Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: person)
@@ -161,7 +161,7 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
+            Account account = accountService.open(AccountUtil.getDefaultAccountPersisted().accountNumber)
         and: "a ismael and bea persons persisted in the system"
             Person ismael = personService.create(PersonUtil.getPersistedIsmael())
             Person bea = personService.create(PersonUtil.getPersistedBea())
@@ -190,7 +190,7 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
+            Account account = accountService.open(AccountUtil.getDefaultAccountPersisted().accountNumber)
         and: "a ismael and bea persons persisted in the system"
             Person ismael = personService.create(PersonUtil.getPersistedIsmael())
             Person bea = personService.create(PersonUtil.getPersistedBea())
@@ -210,7 +210,7 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountUtil.getDefaultAccount().accountNumber)
+            Account account = accountService.open(AccountUtil.getDefaultAccountPersisted().accountNumber)
         and: "a ismael and bea persons persisted in the system"
             Person ismael = personService.create(PersonUtil.getPersistedIsmael())
             Person bea = personService.create(PersonUtil.getPersistedBea())

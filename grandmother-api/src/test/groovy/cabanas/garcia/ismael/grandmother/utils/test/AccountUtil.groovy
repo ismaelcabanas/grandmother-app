@@ -17,7 +17,7 @@ class AccountUtil {
     static final Long DEFAULT_ID = 1L
 
 
-    static Account getDefaultAccount() {
+    static Account getDefaultAccountPersisted() {
         Account.builder()
             .id(DEFAULT_ID)
             .balance(DEFAULT_BALANCE)
@@ -33,6 +33,5 @@ class AccountUtil {
     static payment(Account account, Payment payment) {
         account.charge(payment)
     }
-
 
 }

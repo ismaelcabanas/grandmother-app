@@ -10,6 +10,8 @@ import cabanas.garcia.ismael.grandmother.domain.person.Person
 class PersonAdapter {
     static PersonResponse mapPersonEntityToResponse(Person person) {
         PersonResponse.builder()
+            .id(person.id)
+            .name(person.name)
             .build()
     }
 }

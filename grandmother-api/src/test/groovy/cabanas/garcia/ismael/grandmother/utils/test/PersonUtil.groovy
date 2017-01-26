@@ -9,7 +9,7 @@ class PersonUtil {
 
     public static final String DEFAULT_PERSON_NAME = "Ismael"
 
-    static Person getDefaultPersistedPerson() {
+    static Person getDefaultPersonPersisted() {
         return Person.builder().id(1).name(DEFAULT_PERSON_NAME).build()
     }
 

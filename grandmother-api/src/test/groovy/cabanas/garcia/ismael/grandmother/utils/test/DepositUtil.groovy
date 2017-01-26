@@ -6,6 +6,9 @@ import cabanas.garcia.ismael.grandmother.domain.account.Deposit
  * Created by XI317311 on 25/01/2017.
  */
 final class DepositUtil {
+
+    static String DEFAULT_DESCRIPTION = "Transferencia a su favor"
+
     static Deposit depositFromIsmaelOf10000Today() {
         Deposit.builder()
                 .amount(AmountUtil.TEN_THOUSAND)

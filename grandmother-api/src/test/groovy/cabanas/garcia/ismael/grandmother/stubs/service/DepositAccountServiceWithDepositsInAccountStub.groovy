@@ -13,7 +13,7 @@ class DepositAccountServiceWithDepositsInAccountStub implements DepositAccountSe
     Account account
 
     private Comparator<DepositTransaction> byDateOfTransactionAscendingOrder = { DepositTransaction transaction1, DepositTransaction transaction2 ->
-        transaction2.dateOfMovement.compareTo(transaction1.dateOfMovement)
+        transaction1.dateOfMovement.compareTo(transaction2.dateOfMovement)
     }
 
     @Override

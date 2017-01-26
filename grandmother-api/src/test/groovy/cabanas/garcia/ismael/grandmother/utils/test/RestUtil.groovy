@@ -29,12 +29,12 @@ final class RestUtil {
         return response
     }
 
-    static boolean responseStatusCodeIsOk(MockHttpServletResponse response) {
-        response.status == HttpStatus.OK.value()
+    static void responseStatusCodeIs200(MockHttpServletResponse response) {
+        assert response.status == HttpStatus.OK.value()
     }
 
-    static boolean responseContentTypeIsJson(MockHttpServletResponse response) {
-        response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+    static void responseContentTypeIsJson(MockHttpServletResponse response) {
+        assert response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
     }
 
     static boolean notExistDepositsInAccount(MockHttpServletResponse response) {

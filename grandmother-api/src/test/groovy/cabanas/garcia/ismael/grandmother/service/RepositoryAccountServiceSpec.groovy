@@ -20,7 +20,7 @@ class RepositoryAccountServiceSpec extends Specification{
             Long accountId = 1
         and:
             AccountRepository mockAccountRepository = Mock(AccountRepository)
-            mockAccountRepository.findOne(accountId) >> AccountUtil.getDefaultAccount()
+            mockAccountRepository.findOne(accountId) >> AccountUtil.getDefaultAccountPersisted()
             AccountService accountService = new RepositoryAccountService(accountRepository: mockAccountRepository)
         and:
             Payment paymentData = Payment.builder()

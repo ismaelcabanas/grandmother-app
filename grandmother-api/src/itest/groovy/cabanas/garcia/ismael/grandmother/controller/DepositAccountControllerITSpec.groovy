@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller
 
+import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
 import cabanas.garcia.ismael.grandmother.controller.response.DepositsResponse
 import cabanas.garcia.ismael.grandmother.domain.account.Account
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
@@ -10,9 +11,18 @@ import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
 import cabanas.garcia.ismael.grandmother.util.AccountITUtil
 import cabanas.garcia.ismael.grandmother.util.PersonITUtil
+import cabanas.garcia.ismael.grandmother.utils.DateUtils
+import cabanas.garcia.ismael.grandmother.utils.test.AccountUtil
+import cabanas.garcia.ismael.grandmother.utils.test.AmountUtil
 import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
+import cabanas.garcia.ismael.grandmother.utils.test.DepositUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+
+import static cabanas.garcia.ismael.grandmother.utils.DateUtils.*
+import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.DepositUtil.*
 
 /**
  * Created by XI317311 on 25/01/2017.
@@ -20,45 +30,62 @@ import org.springframework.http.ResponseEntity
 class DepositAccountControllerITSpec extends RestIntegrationBaseSpec {
 
     @Autowired
-    AccountRepository accountRepository
+    AccountITUtil accountITUtil
 
     @Autowired
-    PersonRepository personRepository
+    PersonITUtil personITUtil
 
     @Autowired
     DepositTransactionRepository depositTransactionRepository
 
     def "should return deposit transactions with total amount when hits the URL for getting deposits for an account"(){
         given: "an account in the system"
-            Account account = AccountITUtil.createDefault(accountRepository)
+            Account defaultAccount = accountITUtil.createDefault()
         and: "a given person in the system"
-            Person person = PersonITUtil.createDefault(personRepository)
-        and: "that person does two deposits on account"
-            Deposit deposit10000 = new Deposit(amount: 10000, date: DateUtil.TODAY, description: "Transferencia a su favor", person: person)
-            Deposit deposit20000 = new Deposit(amount: 20000, date: DateUtil.YESTERDAY, description: "Transferencia a su favor", person: person)
-            deposit(account, deposit10000)
-            deposit(account, deposit20000)
+            Person defaultPerson = personITUtil.createDefault()
+        and: "that person did a deposit of 10000 today on account"
+            Deposit depositFromDefaultPersonOf10000AtToday =
+                    Deposit.builder()
+                        .amount(TEN_THOUSAND)
+                        .date(TODAY)
+                        .description(DEFAULT_DESCRIPTION)
+                        .person(defaultPerson)
+                        .build()
+            defaultAccount.deposit(depositFromDefaultPersonOf10000AtToday)
+        and: "that person did a deposit of 20000 yesterday on account"
+            Deposit depositFromDefaultPersonOf20000Yesterday =
+                Deposit.builder()
+                        .amount(TWENTY_THOUSAND)
+                        .date(YESTERDAY)
+                        .description(DEFAULT_DESCRIPTION)
+                        .person(defaultPerson)
+                        .build()
+            defaultAccount.deposit(depositFromDefaultPersonOf20000Yesterday)
+        and: "persist deposits in the system"
+            accountITUtil.update(defaultAccount)
         when: "REST deposits on account url is hit"
             ResponseEntity<DepositsResponse> response =
-                    restTemplate.getForEntity(serviceURI("/accounts/$account.id/deposits"), DepositsResponse.class)
+                    restTemplate.getForEntity(serviceURI("/accounts/$defaultAccount.id/deposits"), DepositsResponse.class)
         then:
             totalAmountDepositsExpected(response.body, 30000)
-            responseContainsDeposits(response.body, deposit10000, deposit20000)
+            responseContainsDeposits(response.body,
+                    depositFromDefaultPersonOf20000Yesterday,
+                    depositFromDefaultPersonOf10000AtToday)
     }
 
-    def totalAmountDepositsExpected(DepositsResponse response, BigDecimal totalExpected) {
-        response.total == totalExpected
+    void totalAmountDepositsExpected(DepositsResponse response, BigDecimal totalExpected) {
+        assert response.total == totalExpected
     }
 
-    def responseContainsDeposits(DepositsResponse response, Deposit... deposits) {
-        response.deposits.size() == deposits.size()
-        response.deposits.forEach({depositResponse ->
-            deposits.contains(new Deposit(
-                    amount: depositResponse.amount,
-                    date: depositResponse.date,
-                    description: depositResponse.description,
-                    person: new Person(name: depositResponse.person.name)))
-        })
+    void responseContainsDeposits(DepositsResponse response, Deposit... deposits) {
+        assert response.deposits.size() == deposits.size()
+        response.deposits.eachWithIndex { DepositResponse depositResponse, int i ->
+            assert depositResponse.amount == deposits[i].amount
+            assert depositResponse.description == deposits[i].description
+            assert depositResponse.date == format(deposits[i].date)
+            assert depositResponse.person.id == deposits[i].person.id
+            assert depositResponse.person.name == deposits[i].person.name
+        }
     }
 
     def deposit(Account account, Deposit deposit) {

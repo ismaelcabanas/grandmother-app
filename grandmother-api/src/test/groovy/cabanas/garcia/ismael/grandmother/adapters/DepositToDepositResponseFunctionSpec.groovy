@@ -18,7 +18,7 @@ class DepositToDepositResponseFunctionSpec extends Specification{
         given:
             DepositTransaction depositTransaction =
                     new DepositTransaction(amount: 10000, dateOfMovement: DateUtil.TODAY,
-                        person: PersonUtil.getDefaultPersistedPerson(), description:  "Transferencia a su favor")
+                        person: PersonUtil.getDefaultPersonPersisted(), description:  "Transferencia a su favor")
         when:
             DepositResponse depositResponse = function.apply(depositTransaction)
         then:

@@ -29,7 +29,7 @@ class PaymentsAccountControllerSpec extends Specification{
     @Unroll
     def "should return payments response ordered ascending by date when hits URL for getting payments on an account for a given year #year and month #month" (){
         given: "an account"
-            Account account = getDefaultAccount()
+            Account account = getDefaultAccountPersisted()
         and: "some payments on account in diferent dates"
             payment(account, paymentAguaOf10000FromJune2010())
             payment(account, paymentAguaOf10000From1August2011())

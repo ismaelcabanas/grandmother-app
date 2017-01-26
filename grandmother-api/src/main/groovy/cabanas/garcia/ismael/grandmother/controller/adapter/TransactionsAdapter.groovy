@@ -33,6 +33,7 @@ final class TransactionsAdapter {
         DepositResponse.builder()
             .amount(transaction.amount)
             .date(DateUtils.format(transaction.dateOfMovement))
+            .description(transaction.description)
             .person(PersonAdapter.mapPersonEntityToResponse(depositTransaction.person))
             .build()
     }
