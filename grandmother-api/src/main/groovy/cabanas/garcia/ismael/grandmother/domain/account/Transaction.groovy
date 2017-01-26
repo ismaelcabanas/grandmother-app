@@ -26,7 +26,7 @@ abstract class Transaction {
     @Temporal(TemporalType.TIMESTAMP)
     Date dateOfMovement
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(nullable = false)
     Account account
 
