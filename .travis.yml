@@ -7,12 +7,5 @@ install: true # skip the installation step
 git:
   depth: 3 # Travis CI clones git repos to a depth of 50 commits
 
-# safelist
-branches:
-  only:
-  - master
-  - development
-
 script:
   mvn clean verify
-
