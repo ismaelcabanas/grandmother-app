@@ -42,10 +42,25 @@
                 <configuration>
                     <providerSelection>${gmavenProviderSelection}</providerSelection>
                     <sourceEncoding>UTF-8</sourceEncoding>
+                    <testSources>
+                        <testSource>
+                            <directory>${project.basedir}/src/test/groovy</directory>
+                            <includes>
+                                <include>**/*.groovy</include>
+                            </includes>
+                        </testSource>
+                        <testSource>
+                            <directory>${project.basedir}/src/itest/groovy</directory>
+                            <includes>
+                                <include>**/*.groovy</include>
+                            </includes>
+                        </testSource>
+                    </testSources>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
+                            <goal>addTestSources</goal>
                             <goal>generateStubs</goal>
                             <goal>compile</goal>
                             <goal>testGenerateStubs</goal>
