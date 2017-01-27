@@ -6,19 +6,24 @@ import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.utils.test.AccountUtil
 import cabanas.garcia.ismael.grandmother.utils.test.DepositUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 /**
  * Created by XI317311 on 25/01/2017.
  */
 @ContextConfiguration // not mentioned by docs, but had to include this for Spock to startup the Spring context
-@SpringBootTest
+@DataJpaTest
+//@Transactional(propagation = Propagation.NOT_SUPPORTED) if you want disable transactional, but then, you can't use TestEntityManager
 class DepositTransactionRepositoryITSpec extends Specification{
 
     @Autowired
-    AccountRepository accountRepository
+    TestEntityManager testEntityManager
 
     @Autowired
     DepositTransactionRepository depositTransactionRepository
@@ -32,7 +37,7 @@ class DepositTransactionRepositoryITSpec extends Specification{
             account.deposit(depositFromIsmaelOf10000Today)
             account.deposit(depositFromBeaOf20000Yesterday)
         and: "persist account in repository"
-            accountRepository.save(account)
+            testEntityManager.persist(account)
         when: "find deposits on account"
             Collection<DepositTransaction> deposits =
                 depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(account.id)
@@ -46,7 +51,7 @@ class DepositTransactionRepositoryITSpec extends Specification{
         given: "an account without deposits on it"
             Account account = new Account(accountNumber: AccountUtil.DEFAULT_ACCOUNT_NUMBER)
         and: "persist account in repository"
-            accountRepository.save(account)
+            testEntityManager.persist(account)
         when: "find deposits on account"
             Collection<DepositTransaction> deposits =
                 depositTransactionRepository.findByAccountIdOrderByDateOfMovementAsc(account.id)

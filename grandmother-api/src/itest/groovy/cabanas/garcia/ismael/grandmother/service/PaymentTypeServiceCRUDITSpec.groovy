@@ -4,22 +4,19 @@ import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTypeRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryPaymentTypeService
-import cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-import static PaymentTypeUtil.*
 import static cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.*
 
 /**
  * Created by XI317311 on 09/12/2016.
  */
 @ContextConfiguration // not mentioned by docs, but had to include this for Spock to startup the Spring context
-@SpringBootTest
-@Transactional // con esta anotación indicamos que cada test se ejecute en una transacción e inmediatamente después de la ejecución del test se hará un rollback
+@DataJpaTest
+//@Transactional // con esta anotación indicamos que cada test se ejecute en una transacción e inmediatamente después de la ejecución del test se hará un rollback
 //@DirtiesContext // What it does is mark the ApplicationContext as dirty, thus requiring it to be reloaded for the next integration test
 class PaymentTypeServiceCRUDITSpec extends Specification{
     public static final String WATER_CHARGE = "Agua"
@@ -67,7 +64,7 @@ class PaymentTypeServiceCRUDITSpec extends Specification{
         then:
             paymentTypes != null
             paymentTypes.size() == 3
-            paymentTypesAre(paymentTypes, getAguaPayment(), getEndesaPayment(), getGasPayment())
+            paymentTypesAre(paymentTypes, getAguaPersistedPayment(), getEndesaPersistedPayment(), getGasPersistedPayment())
     }
 
     def void paymentTypesAre(List<PaymentType> result, PaymentType... paymentTypes) {

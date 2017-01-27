@@ -9,35 +9,28 @@ import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountReposi
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryAccountService
-import cabanas.garcia.ismael.grandmother.utils.test.AccountUtil
+import cabanas.garcia.ismael.grandmother.util.TestEntityManagerUtil
 import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
-import cabanas.garcia.ismael.grandmother.utils.test.PersonUtil
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-import java.time.Instant
-
-import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.TEN_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.THIRTY_THOUSAND
-import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.TWENTY_THOUSAND
-import static DateUtil.TODAY
-import static DateUtil.YESTERDAY
-import static DateUtil.oneYearBeforeFrom
+import static cabanas.garcia.ismael.grandmother.utils.test.AccountUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.*
+import static cabanas.garcia.ismael.grandmother.utils.test.PersonUtil.*
 
 /**
  * Created by XI317311 on 09/12/2016.
  */
 @ContextConfiguration // not mentioned by docs, but had to include this for Spock to startup the Spring context
-@SpringBootTest
-@Transactional
+@DataJpaTest
 //@DirtiesContext // What it does is mark the ApplicationContext as dirty, thus requiring it to be reloaded for the next integration test
 class AccountServiceITSpec extends Specification{
 
-    public static final String WATER_CHARGE_TYPE = "Agua"
-    public static final BigDecimal AMOUNT = 30.000
     public static final String DATE_FORMAT_PATTERN = "dd/MM/yyyy"
 
     @Autowired
@@ -47,36 +40,37 @@ class AccountServiceITSpec extends Specification{
     DepositTransactionRepository depositTransactionRepository
 
     @Autowired
-    PersonService personService
+    TestEntityManager testEntityManager
 
-    @Autowired
-    PaymentTypeService chargeTypeService
+    private TestEntityManagerUtil testEntityManagerUtil
 
-    private static final String ACCOUNT_NUMBER = "ES6401820474280201551793"
+    def setup(){
+        testEntityManagerUtil = new TestEntityManagerUtil(testEntityManager: testEntityManager)
+    }
 
     def "open an account in the system"(){
         given: "an account number"
-            String accountNumber = ACCOUNT_NUMBER
+            String accountNumber = DEFAULT_ACCOUNT_NUMBER
         and: "the account service"
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository)
         when: "create account"
             Account account = accountService.open(accountNumber)
         then:
-            account.balance() == 0.000
-            account.accountNumber() == ACCOUNT_NUMBER
+            account.balance() == ZERO
+            account.accountNumber() == DEFAULT_ACCOUNT_NUMBER
             account.getId() != null
     }
 
     def "a person does a deposit on given account"(){
         given: "an new account"
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository)
-            Account account = accountService.open(ACCOUNT_NUMBER)
+            Account account = accountService.open(DEFAULT_ACCOUNT_NUMBER)
         and: "a given existing person in the system"
-            Person ismael = createPerson("Ismael")
+            Person ismael = testEntityManagerUtil.persist(getIsmael())
         and: "an amount"
-            BigDecimal depositAmount = AMOUNT
+            BigDecimal depositAmount = THIRTY_THOUSAND
         and: "date of deposit"
-            Date dateOfDeposit = now()
+            Date dateOfDeposit = TODAY
         when: "deposits on account"
             Deposit deposit = new Deposit(amount: depositAmount, date: dateOfDeposit, person: ismael, description: "Transferencia a su favor")
             account = accountService.deposit(account.getId(), deposit)
@@ -88,13 +82,13 @@ class AccountServiceITSpec extends Specification{
     def "a charge on given account"(){
         given: "an new account"
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository)
-            Account account = accountService.open(ACCOUNT_NUMBER)
+            Account account = accountService.open(DEFAULT_ACCOUNT_NUMBER)
         and: "a given existing amount in the system"
-            PaymentType waterCharge = createChargeType(WATER_CHARGE_TYPE)
+            PaymentType waterCharge = testEntityManagerUtil.persist(getWaterPayment())
         and: "an amount amount"
-            BigDecimal paymentAmount = AMOUNT
+            BigDecimal paymentAmount = THIRTY_THOUSAND
         and: "date of amount"
-            Date dateOfCharge = now()
+            Date dateOfCharge = TODAY
         when: "debits on account"
             Payment payment = new Payment(amount: paymentAmount, date: dateOfCharge, description: "El Agua", type: waterCharge)
             account = accountService.payment(account.getId(), payment)
@@ -105,28 +99,28 @@ class AccountServiceITSpec extends Specification{
     def "deposits and charges generates movements on an account "(){
         given: "an open account"
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository)
-            Account account = accountService.open(ACCOUNT_NUMBER)
+            Account account = accountService.open(DEFAULT_ACCOUNT_NUMBER)
         and: "two persons: ismael and bea"
-            Person ismael = createPerson("Ismael")
-            Person bea = createPerson("Bea")
+            Person ismael = testEntityManagerUtil.persist(getIsmael())
+            Person bea = testEntityManagerUtil.persist(getBea())
         and: "a deposit done on account by ismael"
-            BigDecimal amountDepositedByIsmael = 20.000
+            BigDecimal amountDepositedByIsmael = TWENTY_THOUSAND
             Date dateOfDepositByIsmael = Date.parse(DATE_FORMAT_PATTERN, "01/07/2016")
             Deposit despositIsmael = new Deposit(amount: amountDepositedByIsmael, date: dateOfDepositByIsmael, person: ismael, description: "Transferencia a su favor")
             account = accountService.deposit(account.getId(), despositIsmael)
         and: "a deposit done on account by Bea"
-            BigDecimal amountDepositedByBea = 10.000
+            BigDecimal amountDepositedByBea = TEN_THOUSAND
             Date dateOfDepositByBea = Date.parse(DATE_FORMAT_PATTERN, "01/08/2016")
             Deposit depositBea = new Deposit(amount: amountDepositedByBea, date: dateOfDepositByBea, person: bea, description: "Transferencia a su favor")
             account = accountService.deposit(account.getId(), depositBea)
         and: "a water's amount on account"
-            BigDecimal waterChargeAmount = 20.000
-            PaymentType waterCharge = createChargeType(WATER_CHARGE_TYPE)
+            BigDecimal waterChargeAmount = TWENTY_THOUSAND
+            PaymentType waterCharge = testEntityManagerUtil.persist(getWaterPayment())
             Date dateOfCharge = Date.parse(DATE_FORMAT_PATTERN, "15/07/2016")
             Payment waterPayment = new Payment(amount: waterChargeAmount, date: dateOfCharge, type: waterCharge, description: "El agua")
             account = accountService.payment(account.getId(), waterPayment)
         expect:
-            account.balance == 10.000
+            account.balance == TEN_THOUSAND
         and:
             account.transactions.count() == 3
     }
@@ -136,12 +130,12 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                     depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountUtil.getDefaultAccountPersisted().accountNumber)
+            Account account = accountService.open(DEFAULT_ACCOUNT_NUMBER)
         and: "a given person persisted in the system"
-            Person person = personService.create(PersonUtil.getDefaultPersonPersisted())
+            Person person = testEntityManagerUtil.persist(getDefaultPerson())
         and: "that person does two deposits on account with unordered dates"
-            Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: person)
-            Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: person)
+            Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: YESTERDAY, description: "Transferencia a su favor", person: person)
+            Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: TODAY, description: "Transferencia a su favor", person: person)
             accountService.deposit(account.id, deposit10000)
             accountService.deposit(account.id, deposit20000)
         when:
@@ -161,10 +155,10 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountUtil.getDefaultAccountPersisted().accountNumber)
+            Account account = accountService.open(getDefaultAccountPersisted().accountNumber)
         and: "a ismael and bea persons persisted in the system"
-            Person ismael = personService.create(PersonUtil.getPersistedIsmael())
-            Person bea = personService.create(PersonUtil.getPersistedBea())
+            Person ismael = testEntityManagerUtil.persist(getIsmael())
+            Person bea = testEntityManagerUtil.persist(getBea())
         and: "that ismael does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: ismael)
             Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: ismael)
@@ -190,10 +184,10 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountUtil.getDefaultAccountPersisted().accountNumber)
+            Account account = accountService.open(getDefaultAccountPersisted().accountNumber)
         and: "a ismael and bea persons persisted in the system"
-            Person ismael = personService.create(PersonUtil.getPersistedIsmael())
-            Person bea = personService.create(PersonUtil.getPersistedBea())
+            Person ismael = testEntityManagerUtil.persist(getIsmael())
+            Person bea = testEntityManagerUtil.persist(getBea())
         and: "that ismael does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: 10000, date: YESTERDAY, description: "Transferencia a su favor", person: ismael)
             Deposit deposit20000 = new Deposit(amount: 20000, date: TODAY, description: "Transferencia a su favor", person: ismael)
@@ -210,10 +204,10 @@ class AccountServiceITSpec extends Specification{
             AccountService accountService = new RepositoryAccountService(accountRepository: accountRepository,
                 depositTransactionRepository: depositTransactionRepository)
         and: "an account persisted in the system"
-            Account account = accountService.open(AccountUtil.getDefaultAccountPersisted().accountNumber)
+            Account account = accountService.open(getDefaultAccountPersisted().accountNumber)
         and: "a ismael and bea persons persisted in the system"
-            Person ismael = personService.create(PersonUtil.getPersistedIsmael())
-            Person bea = personService.create(PersonUtil.getPersistedBea())
+            Person ismael = testEntityManagerUtil.persist(getIsmael())
+            Person bea = testEntityManagerUtil.persist(getBea())
         and: "that ismael does two deposits on account"
             Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: YESTERDAY, description: "Transferencia a su favor", person: ismael)
             Deposit deposit20000 = new Deposit(amount: TWENTY_THOUSAND, date: TODAY, description: "Transferencia a su favor", person: ismael)
@@ -229,16 +223,4 @@ class AccountServiceITSpec extends Specification{
             depositTransactions.size() == 2
     }
 
-    private def createChargeType(String name) {
-        PaymentType waterCharge = new PaymentType(name: name)
-        chargeTypeService.create(waterCharge)
-    }
-
-    private def createPerson(String name){
-        Person aPerson = new Person(name: name)
-        personService.create(aPerson)
-    }
-    private Date now() {
-        Date.from(Instant.now())
-    }
 }

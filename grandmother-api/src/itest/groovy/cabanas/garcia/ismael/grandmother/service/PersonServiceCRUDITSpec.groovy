@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryPersonService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -13,7 +14,7 @@ import spock.lang.Stepwise
  * Created by XI317311 on 05/12/2016.
  */
 @ContextConfiguration // not mentioned by docs, but had to include this for Spock to startup the Spring context
-@SpringBootTest
+@DataJpaTest
 //@Stepwise
 class PersonServiceCRUDITSpec extends Specification{
 

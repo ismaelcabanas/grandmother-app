@@ -28,4 +28,8 @@ class PersonUtil {
     static Person getBea() {
         return Person.builder().name("Bea").build()
     }
+
+    static Person getDefaultPerson(){
+        Person.builder().name(DEFAULT_PERSON_NAME).build()
+    }
 }

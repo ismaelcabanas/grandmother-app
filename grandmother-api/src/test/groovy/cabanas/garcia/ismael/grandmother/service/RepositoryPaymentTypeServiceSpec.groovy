@@ -25,9 +25,9 @@ class RepositoryPaymentTypeServiceSpec extends Specification{
     def "findAll() should return a payment type list ordered by name in ascending order"(){
         given:
             List<PaymentType> paymentTypes = new ArrayList<>()
-            paymentTypes.add(getEndesaPayment())
-            paymentTypes.add(getGasPayment())
-            paymentTypes.add(getAguaPayment())
+            paymentTypes.add(getEndesaPersistedPayment())
+            paymentTypes.add(getGasPersistedPayment())
+            paymentTypes.add(getAguaPersistedPayment())
         and:
             PaymentTypeRepository paymentTypeRepository = Mock(PaymentTypeRepository)
             paymentTypeRepository.findAllByOrderByNameAsc() >> paymentTypes.sort {it.name}
@@ -37,7 +37,7 @@ class RepositoryPaymentTypeServiceSpec extends Specification{
         then:
             paymentTypesResult != null
             paymentTypesResult.size() == 3
-            paymentTypesAre(paymentTypesResult, getAguaPayment(), getEndesaPayment(), getGasPayment())
+            paymentTypesAre(paymentTypesResult, getAguaPersistedPayment(), getEndesaPersistedPayment(), getGasPersistedPayment())
     }
 
     def void paymentTypesAre(List<PaymentType> result, PaymentType... paymentTypes) {

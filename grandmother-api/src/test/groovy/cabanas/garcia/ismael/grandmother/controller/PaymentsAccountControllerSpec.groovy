@@ -80,17 +80,17 @@ class PaymentsAccountControllerSpec extends Specification{
 
     Payment paymentAguaOf10000FromJune2010(){
         Date june2010 = DateUtils.parse("2010-06-01 00:00:00.0")
-        new Payment(amount: AmountUtil.TEN_THOUSAND, date: june2010, type: getAguaPayment(), description: "")
+        new Payment(amount: AmountUtil.TEN_THOUSAND, date: june2010, type: getAguaPersistedPayment(), description: "")
     }
 
     Payment paymentAguaOf10000From1August2011(){
         Date august2011Day1 = DateUtils.parse("2011-08-01 00:00:00.0")
-        new Payment(amount: AmountUtil.TEN_THOUSAND, date: august2011Day1, type: getAguaPayment(), description: "")
+        new Payment(amount: AmountUtil.TEN_THOUSAND, date: august2011Day1, type: getAguaPersistedPayment(), description: "")
     }
 
     Payment paymentAguaOf10000From8August2011(){
         Date august2011Day10 = DateUtils.parse("2011-08-08 00:00:00.0")
-        new Payment(amount: AmountUtil.TEN_THOUSAND, date: august2011Day10, type: getAguaPayment(), description: "")
+        new Payment(amount: AmountUtil.TEN_THOUSAND, date: august2011Day10, type: getAguaPersistedPayment(), description: "")
     }
 
 }

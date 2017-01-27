@@ -44,9 +44,9 @@ class PaymentControllerSpec extends Specification {
     def "should return payment type ordered by payment name list when hits URL for getting payments types"(){
         given:
             List<PaymentType> paymentTypeList = new ArrayList<>()
-            paymentTypeList.add(getGasPayment())
-            paymentTypeList.add(getEndesaPayment())
-            paymentTypeList.add(getAguaPayment())
+            paymentTypeList.add(getGasPersistedPayment())
+            paymentTypeList.add(getEndesaPersistedPayment())
+            paymentTypeList.add(getAguaPersistedPayment())
         and:
             PaymentTypeService paymentTypeService = new AllPaymentTypeService(paymentTypeList)
             PaymentTypeController controller = new PaymentTypeController(paymentTypeService: paymentTypeService)
@@ -55,7 +55,7 @@ class PaymentControllerSpec extends Specification {
         then:
             responseContentIsNotEmpty()
             responseSizeOfPaymentsTypeIs(3)
-            responsePaymentsTypeAre(getAguaPayment(), getEndesaPayment(), getGasPayment())
+            responsePaymentsTypeAre(getAguaPersistedPayment(), getEndesaPersistedPayment(), getGasPersistedPayment())
     }
 
     def void responsePaymentsTypeAre(PaymentType... paymentTypes) {
