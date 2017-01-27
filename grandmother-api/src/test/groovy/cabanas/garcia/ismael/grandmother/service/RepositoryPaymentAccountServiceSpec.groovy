@@ -6,6 +6,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTransactionRepository
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryPaymentAccountService
 import cabanas.garcia.ismael.grandmother.utils.test.AmountUtil
+import cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil
 import spock.lang.Specification
 
 import static cabanas.garcia.ismael.grandmother.utils.DateUtils.parse
@@ -21,8 +22,8 @@ class RepositoryPaymentAccountServiceSpec extends Specification{
         given: "a given account with transactions"
             Account account = Account.builder().id(1).balance(BigDecimal.ZERO).transactions(new Transactions())build()
             Collection<PaymentTransaction> paymentsTransactions = new ArrayList<>()
-            PaymentTransaction aguaPayment = new PaymentTransaction(amount: AmountUtil.TEN_THOUSAND, chargeType: aguaPersistedPayment(), dateOfMovement: parse("2016-01-01 00:00:00.0"))
-            PaymentTransaction gasPayment = new PaymentTransaction(amount: AmountUtil.TWENTY_THOUSAND, chargeType: gasPersistedPayment(), dateOfMovement: parse("2016-01-20 00:00:00.0"))
+            PaymentTransaction aguaPayment = new PaymentTransaction(amount: AmountUtil.TEN_THOUSAND, chargeType: PaymentTypeUtil.aguaPersistedPayment, dateOfMovement: parse("2016-01-01 00:00:00.0"))
+            PaymentTransaction gasPayment = new PaymentTransaction(amount: AmountUtil.TWENTY_THOUSAND, chargeType: PaymentTypeUtil.gasPersistedPayment, dateOfMovement: parse("2016-01-20 00:00:00.0"))
             paymentsTransactions.add(aguaPayment)
             paymentsTransactions.add(gasPayment)
             /*def aguaPayment = new Payment(amount: TEN_THOUSAND, type: getAguaPersistedPayment(), date: parse("2016-01-01 00:00:00.0"))

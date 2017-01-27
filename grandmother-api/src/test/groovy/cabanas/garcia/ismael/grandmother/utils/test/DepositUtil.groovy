@@ -7,7 +7,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Deposit
  */
 final class DepositUtil {
 
-    static String DEFAULT_DESCRIPTION = "Transferencia a su favor"
+    public static String DEFAULT_DESCRIPTION = "Transferencia a su favor"
 
     static Deposit depositFromIsmaelOf10000Today() {
         Deposit.builder()

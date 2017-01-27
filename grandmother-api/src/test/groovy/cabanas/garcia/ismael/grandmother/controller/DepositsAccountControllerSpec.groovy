@@ -5,6 +5,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Deposit
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.service.DepositAccountService
 import cabanas.garcia.ismael.grandmother.stubs.service.DepositAccountServiceWithDepositsInAccountStub
+import cabanas.garcia.ismael.grandmother.utils.test.DepositUtil
 import cabanas.garcia.ismael.grandmother.utils.test.PersonUtil
 import groovy.json.JsonSlurper
 import org.springframework.mock.web.MockHttpServletResponse
@@ -15,7 +16,6 @@ import static cabanas.garcia.ismael.grandmother.utils.DateUtils.format
 import static cabanas.garcia.ismael.grandmother.utils.test.AccountUtil.getDefaultAccountPersisted
 import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.*
 import static cabanas.garcia.ismael.grandmother.utils.test.DateUtil.*
-import static cabanas.garcia.ismael.grandmother.utils.test.DepositUtil.getDEFAULT_DESCRIPTION
 import static cabanas.garcia.ismael.grandmother.utils.test.PersonUtil.getDefaultPersonPersisted
 import static cabanas.garcia.ismael.grandmother.utils.test.RestUtil.*
 
@@ -54,7 +54,7 @@ class DepositsAccountControllerSpec extends Specification{
                     Deposit.builder()
                             .amount(TEN_THOUSAND)
                             .date(TODAY)
-                            .description(DEFAULT_DESCRIPTION)
+                            .description(DepositUtil.DEFAULT_DESCRIPTION)
                             .person(defaultPerson)
                             .build()
             defaultAccount.deposit(depositFromDefaultPersonOf10000AtToday)
@@ -63,7 +63,7 @@ class DepositsAccountControllerSpec extends Specification{
                     Deposit.builder()
                             .amount(TWENTY_THOUSAND)
                             .date(YESTERDAY)
-                            .description(DEFAULT_DESCRIPTION)
+                            .description(DepositUtil.DEFAULT_DESCRIPTION)
                             .person(defaultPerson)
                             .build()
             defaultAccount.deposit(depositFromDefaultPersonOf20000Yesterday)
@@ -93,7 +93,7 @@ class DepositsAccountControllerSpec extends Specification{
                 Deposit.builder()
                         .amount(TEN_THOUSAND)
                         .date(TODAY)
-                        .description(DEFAULT_DESCRIPTION)
+                        .description(DepositUtil.DEFAULT_DESCRIPTION)
                         .person(ismael)
                         .build()
             defaultAccount.deposit(depositFromIsmaelOf10000AtToday)
@@ -102,7 +102,7 @@ class DepositsAccountControllerSpec extends Specification{
                     Deposit.builder()
                             .amount(TWENTY_THOUSAND)
                             .date(YESTERDAY)
-                            .description(DEFAULT_DESCRIPTION)
+                            .description(DepositUtil.DEFAULT_DESCRIPTION)
                             .person(ismael)
                             .build()
             defaultAccount.deposit(depositFromIsmaelOf20000Yesterday)
@@ -112,7 +112,7 @@ class DepositsAccountControllerSpec extends Specification{
                 Deposit.builder()
                         .amount(TWENTY_THOUSAND)
                         .date(TODAY)
-                        .description(DEFAULT_DESCRIPTION)
+                        .description(DepositUtil.DEFAULT_DESCRIPTION)
                         .person(bea)
                         .build()
             defaultAccount.deposit(depositFromBeaOf20000Today)
@@ -143,7 +143,7 @@ class DepositsAccountControllerSpec extends Specification{
                     Deposit.builder()
                             .amount(TEN_THOUSAND)
                             .date(TODAY)
-                            .description(DEFAULT_DESCRIPTION)
+                            .description(DepositUtil.DEFAULT_DESCRIPTION)
                             .person(ismael)
                             .build()
             defaultAccount.deposit(depositFromIsmaelOf10000ThisYear)
@@ -152,7 +152,7 @@ class DepositsAccountControllerSpec extends Specification{
                     Deposit.builder()
                             .amount(TWENTY_THOUSAND)
                             .date(oneYearBeforeFrom(TODAY))
-                            .description(DEFAULT_DESCRIPTION)
+                            .description(DepositUtil.DEFAULT_DESCRIPTION)
                             .person(ismael)
                             .build()
             defaultAccount.deposit(depositFromIsmaelOf20000LastYear)
@@ -162,7 +162,7 @@ class DepositsAccountControllerSpec extends Specification{
                     Deposit.builder()
                             .amount(TWENTY_THOUSAND)
                             .date(oneYearBeforeFrom(TODAY))
-                            .description(DEFAULT_DESCRIPTION)
+                            .description(DepositUtil.DEFAULT_DESCRIPTION)
                             .person(bea)
                             .build()
             defaultAccount.deposit(depositFromBeaOf20000LastYear)
