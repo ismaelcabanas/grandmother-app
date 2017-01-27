@@ -3,7 +3,8 @@
 ## Dockerización de la aplicación
 
 Para ejecutar la aplicación de una forma totalmente aislada, sin dependencias, 
-se da la opción de desplegar la aplicación en contenedores Docker.
+se da la opción de desplegar la aplicación en contenedores Docker, además, esto
+me servirá como formación en Docker :).
 
 En este caso, las dependencias que existen en la aplicación son el mecanismo de persistencia (base de datos) y 
 la propia aplicación en sí misma. 
@@ -36,6 +37,9 @@ Y con la instrucción
 En este caso, la base de datos a utilizar será una PostgreSQL. Para crearnos una 
 imagen de éste basta con ejecutar la instrucción docker `docker pull postgres:9.6.1` y nos 
 descarga la imagen Docker de PostgreSQL versión 9.6.1.
+
+
+## Conectando contenedores
 
 El objetivo es demostrar cómo desplegar la 
 aplicación en contenedores Docker. Esto se puede llevar a cabo de dos formas distintas:
