@@ -1,3 +1,14 @@
+Travis CI:
+[![Build Status](https://travis-ci.org/ismaelcabanas/grandmother-app.svg?branch=development)](https://travis-ci.org/ismaelcabanas/grandmother-app)
+
+Coverity Scan:
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/11594/badge.svg)](https://scan.coverity.com/projects/11594)
+
+<a href="https://scan.coverity.com/projects/ismaelcabanas-grandmother-app">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/11594/badge.svg"/>
+</a>
+
 # Aplicación de gestión de gastos del piso de mi abuela
 
 ## Dockerización de la aplicación
