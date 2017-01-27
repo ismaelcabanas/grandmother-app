@@ -2,7 +2,7 @@ language: groovy
 
 jdk:
   - oraclejdk8
-  
+
 sudo: false # build faster
 
 install: true # skip the installation step
