@@ -8,4 +8,4 @@ git:
   depth: 3 # Travis CI clones git repos to a depth of 50 commits
 
 script:
-  mvn clean verify
+  mvn clean test
