@@ -11,9 +11,9 @@ spring:
         #javax.persistence.schema-generation.scripts.action: create
         #javax.persistence.schema-generation.scripts.create-target:  create.sql
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
   datasource:
-    url: jdbc:postgresql://192.168.99.100:5432/grandmotherdb
+    url: jdbc:postgresql://192.168.99.100:5432/postgres
     username: postgres
     password: secret
     # Keep the connection alive if idle for a long time (needed in production)
