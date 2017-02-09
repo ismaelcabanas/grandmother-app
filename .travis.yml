@@ -12,3 +12,4 @@ git:
 
 script:
   mvn clean verify
+
