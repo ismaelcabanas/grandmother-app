@@ -349,7 +349,7 @@
                         <featureStartMessage>update ${project.artifactId} for feature branch</featureStartMessage>
                         <featureFinishMessage>update ${project.artifactId} for development branch</featureFinishMessage>
 
-                        <hotfixStartMessage>update ${projecct.artifactId} for hotfix</hotfixStartMessage>
+                        <hotfixStartMessage>update ${project.artifactId} for hotfix</hotfixStartMessage>
                         <hotfixFinishMessage>update for next development ${project.artifactId}</hotfixFinishMessage>
 
                         <releaseStartMessage>update ${project.artifactId} for release</releaseStartMessage>
