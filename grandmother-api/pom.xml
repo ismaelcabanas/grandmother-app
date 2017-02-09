@@ -33,6 +33,7 @@
     </properties>
 
     <build>
+        <finalName>grandmother-api</finalName>
         <plugins>
             <!-- Plugin para compilar groovy -->
             <plugin>
