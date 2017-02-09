@@ -1,5 +1,5 @@
 Travis CI:
-[![Build Status](https://travis-ci.org/ismaelcabanas/grandmother-app.svg?branch=master)](https://travis-ci.org/ismaelcabanas/grandmother-app)
+[![Build Status](https://travis-ci.org/ismaelcabanas/grandmother-app.svg?branch=development)](https://travis-ci.org/ismaelcabanas/grandmother-app)
 
 Coverity Scan:
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/11594/badge.svg)](https://scan.coverity.com/projects/11594)

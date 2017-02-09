@@ -6,7 +6,7 @@
 
     <groupId>cabanas.garcia.ismael.grandmother</groupId>
     <artifactId>grandmother-api</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -328,6 +328,38 @@
                 </configuration>
             </plugin>
             -->
+            <!-- To use the plugin goals in your POM or parent POM -->
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.3.1</version>
+                <configuration>
+                    <gitFlowConfig>
+                        <productionBranch>master</productionBranch>
+                        <developmentBranch>development</developmentBranch>
+                        <featureBranchPrefix>feature/</featureBranchPrefix>
+                        <releaseBranchPrefix>release/</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+                        <supportBranchPrefix>support/</supportBranchPrefix>
+                        <versionTagPrefix></versionTagPrefix>
+                        <origin>origin</origin>
+                    </gitFlowConfig>
+
+                    <commitMessages>
+                        <featureStartMessage>update ${project.artifactId} for feature branch</featureStartMessage>
+                        <featureFinishMessage>update ${project.artifactId} for development branch</featureFinishMessage>
+
+                        <hotfixStartMessage>update ${projecct.artifactId} for hotfix</hotfixStartMessage>
+                        <hotfixFinishMessage>update for next development ${project.artifactId}</hotfixFinishMessage>
+
+                        <releaseStartMessage>update ${project.artifactId} for release</releaseStartMessage>
+                        <releaseFinishMessage>update for next development ${project.artifactId}</releaseFinishMessage>
+
+                        <tagHotfixMessage>tag hotfix</tagHotfixMessage>
+                        <tagReleaseMessage>tag release</tagReleaseMessage>
+                    </commitMessages>
+                </configuration>
+            </plugin>
         </plugins>
 
     </build>

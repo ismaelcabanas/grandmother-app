@@ -8,6 +8,7 @@ import javax.persistence.CascadeType
 import javax.persistence.Embeddable
 import javax.persistence.FetchType
 import javax.persistence.OneToMany
+import javax.persistence.Transient
 
 /**
  * Created by XI317311 on 15/12/2016.
@@ -21,6 +22,7 @@ class Transactions {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
     Collection<Transaction> list = new ArrayList<Transaction>()
 
+    @Transient
     BigDecimal total = BigDecimal.ZERO
 
     Transactions(){
