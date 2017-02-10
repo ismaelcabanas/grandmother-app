@@ -1,6 +1,6 @@
 language: groovy
 jdk:
-- oraclejdk8
+  - oraclejdk8
 sudo: false
 install: true
 git:
