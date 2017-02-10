@@ -6,7 +6,7 @@
 
     <groupId>cabanas.garcia.ismael.grandmother</groupId>
     <artifactId>grandmother-api</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.0.5</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
