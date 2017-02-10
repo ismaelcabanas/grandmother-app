@@ -7,6 +7,8 @@ Coverity Scan:
 
 # Aplicación de gestión de gastos del piso de mi abuela
 
+Aplicación para gestionar la cuenta del piso de mi abuela.
+
 ## Dockerización de la aplicación
 
 Para ejecutar la aplicación de una forma totalmente aislada, sin dependencias, 
