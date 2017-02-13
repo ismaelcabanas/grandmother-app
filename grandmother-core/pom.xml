@@ -30,6 +30,22 @@
         <docker.image.prefix>ismaelcabanas14</docker.image.prefix>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <!-- Plugin para compilar groovy -->
@@ -112,6 +128,7 @@
                 <configuration>
                     <!-- Establece la Sets the VM argument line used when unit tests are run. -->
                     <argLine>${surefireArgLine}</argLine>
+                    <skipTests>${skip.unit.tests}</skipTests>
                     <includes>
                         <include>**/*Spec.*</include>
                     </includes>
@@ -194,6 +211,7 @@
                             <includes>
                                 <include>**/*ITSpec.*</include>
                             </includes>
+                            <skipTests>${skip.integration.tests}</skipTests>
                         </configuration>
                     </execution>
                 </executions>

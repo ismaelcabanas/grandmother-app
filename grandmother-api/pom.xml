@@ -32,6 +32,22 @@
         <docker.image.prefix>ismaelcabanas14</docker.image.prefix>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>grandmother-api</finalName>
         <plugins>
