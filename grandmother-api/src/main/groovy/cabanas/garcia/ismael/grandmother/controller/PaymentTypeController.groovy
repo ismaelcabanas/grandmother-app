@@ -6,6 +6,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.service.PaymentTypeService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 import javax.validation.Valid
 
@@ -32,8 +34,16 @@ class PaymentTypeController {
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<Void> create(@Valid @RequestBody PaymentType paymentType){
         log.debug("Creating... $paymentType")
-        paymentTypeService.create(paymentType)
-        new ResponseEntity<Void>(HttpStatus.CREATED)
+        PaymentType paymentTypeBo = paymentTypeService.create(paymentType)
+
+        HttpHeaders headers = new HttpHeaders()
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8)
+        headers.setLocation(ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/paymentTypes/" + paymentTypeBo.id)
+                .buildAndExpand(paymentTypeBo.id).toUri())
+
+        new ResponseEntity<Void>(headers, HttpStatus.CREATED)
     }
 
     @RequestMapping(method = RequestMethod.GET)
