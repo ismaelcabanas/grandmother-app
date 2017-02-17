@@ -58,6 +58,29 @@ class PaymentControllerSpec extends Specification {
             responsePaymentsTypeAre(getAguaPersistedPayment(), getEndesaPersistedPayment(), getGasPersistedPayment())
     }
 
+    def "should return payment type when hits URL for getting a payment type determinded"(){
+        given:
+            PaymentType gasPaymentType = getGasPersistedPayment()
+            List<PaymentType> paymentTypeList = new ArrayList<>()
+            paymentTypeList.add(getGasPersistedPayment())
+            paymentTypeList.add(getEndesaPersistedPayment())
+        and:
+            PaymentTypeService paymentTypeService = new AllPaymentTypeService(paymentTypeList)
+            PaymentTypeController controller = new PaymentTypeController(paymentTypeService: paymentTypeService)
+        when:
+            response = sendGet(controller, "/paymentTypes/${gasPaymentType.id}")
+        then:
+            response.status == HttpStatus.OK.value()
+            response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+            responsePaymentTypeIs(gasPaymentType)
+    }
+
+    def void responsePaymentTypeIs(PaymentType paymentType) {
+        def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
+        assert jsonResponse.id == paymentType.id
+        assert jsonResponse.name == paymentType.name
+    }
+
     def void responsePaymentsTypeAre(PaymentType... paymentTypes) {
         def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
         paymentTypes.eachWithIndex { PaymentType paymentType, int i ->

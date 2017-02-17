@@ -12,4 +12,6 @@ interface PaymentTypeService {
     def deleteAll()
 
     List<PaymentType> findAll()
+
+    PaymentType findById(Long id)
 }

@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.controller.adapter.PaymentTypeAdapter
+import cabanas.garcia.ismael.grandmother.controller.response.PaymentTypeResponse
 import cabanas.garcia.ismael.grandmother.controller.response.PaymentTypesResponse
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.service.PaymentTypeService
@@ -10,6 +11,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -59,5 +61,15 @@ class PaymentTypeController {
         new ResponseEntity<PaymentTypesResponse>(paymentTypeResponse, HttpStatus.OK)
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}")
+    ResponseEntity<PaymentTypeResponse> read(@PathVariable("id") Long paymentTypeId){
 
+        PaymentType paymentType = paymentTypeService.findById(paymentTypeId)
+
+        log.debug("Payment type entity returned by payment type service $paymentType")
+
+        PaymentTypeResponse paymentTypeResponse = PaymentTypeAdapter.mapEntityToResponse(paymentType)
+
+        new ResponseEntity<PaymentTypeResponse>(paymentTypeResponse, HttpStatus.OK)
+    }
 }
