@@ -62,14 +62,19 @@ class PaymentTypeController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
-    ResponseEntity<PaymentTypeResponse> read(@PathVariable("id") Long paymentTypeId){
+    ResponseEntity<?> read(@PathVariable("id") Long paymentTypeId){
 
-        PaymentType paymentType = paymentTypeService.findById(paymentTypeId)
+        Optional<PaymentType> paymentType = paymentTypeService.findById(paymentTypeId)
 
         log.debug("Payment type entity returned by payment type service $paymentType")
 
-        PaymentTypeResponse paymentTypeResponse = PaymentTypeAdapter.mapEntityToResponse(paymentType)
+        ResponseEntity<?> responseEntity = new ResponseEntity(HttpStatus.NOT_FOUND)
+        if(paymentType.isPresent()){
+            PaymentTypeResponse paymentTypeResponse = PaymentTypeAdapter.mapEntityToResponse(paymentType.get())
+            responseEntity = new ResponseEntity<>(paymentTypeResponse, HttpStatus.OK)
+        }
 
-        new ResponseEntity<PaymentTypeResponse>(paymentTypeResponse, HttpStatus.OK)
+        return responseEntity
+
     }
 }

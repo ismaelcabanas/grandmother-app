@@ -31,11 +31,11 @@ class AllPaymentTypeService implements PaymentTypeService{
     }
 
     @Override
-    PaymentType findById(Long id) {
+    Optional<PaymentType> findById(Long id) {
         Predicate<PaymentType> filterById = {paymentType -> id.equals(paymentType.id)}
 
         Optional<PaymentType> paymentType = paymentTypes.stream().filter(filterById).findFirst()
 
-        return paymentType.get()
+        return paymentType
     }
 }

@@ -13,5 +13,5 @@ interface PaymentTypeService {
 
     List<PaymentType> findAll()
 
-    PaymentType findById(Long id)
+    Optional<PaymentType> findById(Long id)
 }
