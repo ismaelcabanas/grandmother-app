@@ -54,9 +54,37 @@ class PaymentsAccountControllerSpec extends Specification{
 
     }
 
+    @Unroll
+    def "should return payments response ordered ascending by date when hits URL for getting payments on an account for a given year #year" (){
+        given: "an account"
+            Account account = getDefaultAccountPersisted()
+        and: "some payments on account in diferent dates"
+            payment(account, paymentAguaOf10000FromJune2010())
+            payment(account, paymentAguaOf10000From1August2011())
+            payment(account, paymentAguaOf10000From8August2011())
+        and: "account controller configured with his services"
+            PaymentAccountService paymentAccountService =
+                new PaymentAccountServiceWithPaymentsInAccountStub(account)
+            PaymentsAccountController controller = new PaymentsAccountController(paymentAccountService: paymentAccountService)
+        when: "REST payments on account url is hit"
+            response = sendGet(controller, "/accounts/$account.id/payments?year=$year")
+        then:
+            responseIsOk()
+        and:
+            responseSizeOfPaymentsIs(payments.size())
+            totalPaymensTransactionsAre(totalAmount)
+            paymentTransactionsReturnedAre(payments)
+        where:
+        year | payments                                                                   | totalAmount
+        2010 | [paymentAguaOf10000FromJune2010()]                                         | 10000
+        2001 | []                                                                         | 0
+        2011 | [paymentAguaOf10000From8August2011(), paymentAguaOf10000From1August2011()] | 20000
+
+    }
+
     def void responseIsOk() {
-        response.status == HttpStatus.OK.value()
-        response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
+        assert response.status == HttpStatus.OK.value()
+        assert response.contentType == MediaType.APPLICATION_JSON_UTF8_VALUE
     }
 
     def void paymentTransactionsReturnedAre(List<Payment> payments) {

@@ -53,6 +53,22 @@ class PaymentsAccountController {
         return new ResponseEntity<PaymentsResponse>(paymentsResponse, HttpStatus.OK)
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}/payments", params = ["year"])
+    ResponseEntity<PaymentsResponse> paymentsByYear(@PathVariable("id") long accountId,
+                                                            @RequestParam(value = "year", required = true) int year){
+
+        log.debug("Getting payment transactions by year on account $accountId for year $year")
+
+        Transactions paymentTransactions =
+                paymentAccountService.getPaymentTransactionsByYear(accountId, year)
+
+        log.debug("Payment transactions returned $paymentTransactions")
+
+        PaymentsResponse paymentsResponse = TransactionsAdapter.mapPaymentTransactionsEntityToResponse(paymentTransactions)
+
+        return new ResponseEntity<PaymentsResponse>(paymentsResponse, HttpStatus.OK)
+    }
+
     BigDecimal totalOfPaymentTransactions(Collection<PaymentTransaction> transactions) {
         assert transactions != null
         BinaryOperator<BigDecimal> addOperator = { s1, s2 -> s1.add(s2)}
