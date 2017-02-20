@@ -51,6 +51,32 @@ class RepositoryPaymentAccountServiceSpec extends Specification{
             paymentTransactionsAre(paymentTransactions, aguaPayment, gasPayment)
     }
 
+    def "should return payment transactions in ascending order by date for given account on a year"(){
+        given: "a given account with transactions"
+            Account account = Account.builder().id(1).balance(BigDecimal.ZERO).transactions(new Transactions())build()
+            Collection<PaymentTransaction> paymentsTransactions = new ArrayList<>()
+            PaymentTransaction aguaPayment2015 = new PaymentTransaction(amount: AmountUtil.TEN_THOUSAND, chargeType: PaymentTypeUtil.aguaPersistedPayment, dateOfMovement: cabanas.garcia.ismael.grandmother.utils.DateUtils.parse("2015-01-01 00:00:00.0"))
+            PaymentTransaction aguaPayment = new PaymentTransaction(amount: AmountUtil.TEN_THOUSAND, chargeType: PaymentTypeUtil.aguaPersistedPayment, dateOfMovement: cabanas.garcia.ismael.grandmother.utils.DateUtils.parse("2016-01-01 00:00:00.0"))
+            PaymentTransaction gasPayment = new PaymentTransaction(amount: AmountUtil.TWENTY_THOUSAND, chargeType: PaymentTypeUtil.gasPersistedPayment, dateOfMovement: cabanas.garcia.ismael.grandmother.utils.DateUtils.parse("2016-01-20 00:00:00.0"))
+            paymentsTransactions.add(aguaPayment)
+            paymentsTransactions.add(gasPayment)
+        and:
+            PaymentTransactionRepository paymentTransactionRepository = Mock(PaymentTransactionRepository.class)
+            PaymentAccountService paymentAccountService =
+                new RepositoryPaymentAccountService(paymentTransactionRepository: paymentTransactionRepository)
+        and: "year for consulting payment transactions"
+            int year = 2016
+        when:
+            Transactions paymentTransactions =
+                paymentAccountService.getPaymentTransactionsByYear(account.id, year)
+        then:
+            1 * paymentTransactionRepository.findByAccountIdAndDateOfMovementBetweenOrderByDateOfMovementAsc(account.id, _, _) >> paymentsTransactions
+            paymentTransactions.areEmpty() == false
+            paymentTransactions.total == AmountUtil.THIRTY_THOUSAND
+            paymentTransactions.count() == 2
+            paymentTransactionsAre(paymentTransactions, aguaPayment, gasPayment)
+    }
+
     void paymentTransactionsAre(Transactions transactions, PaymentTransaction... payments) {
         transactions.list.each {PaymentTransaction pt ->
             assert payments.contains(pt)

@@ -8,4 +8,6 @@ import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 interface PaymentAccountService {
 
     Transactions getPaymentTransactionsByYearAndMonth(Long accountId, int year, int month)
+
+    Transactions getPaymentTransactionsByYear(Long accountId, int year)
 }
