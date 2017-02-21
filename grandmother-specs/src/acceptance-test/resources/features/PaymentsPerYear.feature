@@ -26,4 +26,4 @@ Feature: API para consultar los pagos realizados por año sobre la cuenta de la 
   Scenario: Cuenta sin pagos para el año consultado
     When consulto los pagos del año 2001
     Then no hay pagos realizados en el año
-    And la cantidad total de los pagos del año es 0.00
+    And la cantidad total de los pagos del año es 0
