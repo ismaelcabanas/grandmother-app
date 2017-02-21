@@ -13,6 +13,8 @@ import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTypeRe
 import cabanas.garcia.ismael.grandmother.domain.account.repository.DepositTransactionRepository
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 import cabanas.garcia.ismael.grandmother.domain.person.repository.PersonRepository
+import cabanas.garcia.ismael.grandmother.utils.test.AccountUtil
+import cabanas.garcia.ismael.grandmother.utils.test.AmountUtil
 import cabanas.garcia.ismael.grandmother.utils.test.DateUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -20,6 +22,8 @@ import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.web.util.UriComponentsBuilder
 import spock.lang.Unroll
+
+import static cabanas.garcia.ismael.grandmother.utils.test.AmountUtil.*
 
 /**
  * Created by XI317311 on 12/12/2016.
@@ -47,11 +51,11 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         then:
             response.statusCode == statusCodeExpected
         where:
-        accountNumber | balance                 | statusCodeExpected
-        ""            | new BigDecimal(30.000)  | HttpStatus.BAD_REQUEST
-        null          | new BigDecimal(30.000)  | HttpStatus.BAD_REQUEST
-        "123123"      | new BigDecimal(0)       | HttpStatus.CREATED
-        "123123"      | new BigDecimal(-30.000) | HttpStatus.CREATED
+        accountNumber | balance          | statusCodeExpected
+        ""            | THIRTY_THOUSAND  | HttpStatus.BAD_REQUEST
+        null          | THIRTY_THOUSAND  | HttpStatus.BAD_REQUEST
+        "123123"      | ZERO             | HttpStatus.CREATED
+        "123123"      | -THIRTY_THOUSAND | HttpStatus.CREATED
     }
 
     @Unroll
@@ -68,10 +72,10 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         then:
             response.statusCode == statusCodeExpected
         where:
-        amount                | person                   | date                    | description     | statusCodeExpected
-        new BigDecimal(30000) | new Person(name: "Isma") | parseDate("01/01/2010") | "Transferencia" | HttpStatus.NO_CONTENT
-        null                  | new Person(name: "Isma") | parseDate("01/01/2010") | "Transferencia" | HttpStatus.BAD_REQUEST
-        new BigDecimal(30000) | new Person(name: "Isma") | null                    | "Transferencia" | HttpStatus.BAD_REQUEST
+        amount          | person                   | date                    | description     | statusCodeExpected
+        THIRTY_THOUSAND | new Person(name: "Isma") | parseDate("01/01/2010") | "Transferencia" | HttpStatus.NO_CONTENT
+        null            | new Person(name: "Isma") | parseDate("01/01/2010") | "Transferencia" | HttpStatus.BAD_REQUEST
+        THIRTY_THOUSAND | new Person(name: "Isma") | null                    | "Transferencia" | HttpStatus.BAD_REQUEST
     }
 
     @Unroll
@@ -88,10 +92,10 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
         then:
             response.statusCode == statusCodeExpected
         where:
-        amount                | paymentType                   | date                    | description | statusCodeExpected
-        new BigDecimal(30000) | new PaymentType(name: "Agua") | parseDate("01/01/2010") | "Agua"      | HttpStatus.NO_CONTENT
-        null                  | new PaymentType(name: "Agua") | parseDate("01/01/2010") | "Agua"      | HttpStatus.BAD_REQUEST
-        new BigDecimal(30000) | new PaymentType(name: "Agua") | null                    | "Agua"      | HttpStatus.BAD_REQUEST
+        amount          | paymentType                   | date                    | description | statusCodeExpected
+        THIRTY_THOUSAND | new PaymentType(name: "Agua") | parseDate("01/01/2010") | "Agua"      | HttpStatus.NO_CONTENT
+        null            | new PaymentType(name: "Agua") | parseDate("01/01/2010") | "Agua"      | HttpStatus.BAD_REQUEST
+        THIRTY_THOUSAND | new PaymentType(name: "Agua") | null                    | "Agua"      | HttpStatus.BAD_REQUEST
 
     }
 
@@ -132,7 +136,10 @@ class AccountControllerITSpec extends RestIntegrationBaseSpec{
     }
 
     Account openDefaultAccount() {
-        return accountRepository.save(new Account(accountNumber: "123"))
+        return accountRepository.save(Account.builder()
+                .accountNumber(AccountUtil.DEFAULT_ACCOUNT_NUMBER)
+                .balance(AccountUtil.DEFAULT_BALANCE)
+                .build())
     }
 
     def persistPerson(Person person){
