@@ -75,7 +75,7 @@ public class PaymentsPerYearStepDefs {
     }
 
     @And("^la cantidad total de los pagos del año es (.*)$")
-    public void laCantidadTotalDeLosPagosDelAnioEs(BigDecimal amount) throws Throwable {
+    public void laCantidadTotalDeLosPagosDelAnioEs(String amount) throws Throwable {
         Assert.assertThat(paymentsResponse.getTotal(), Is.is(IsEqual.equalTo(amount)));
     }
 
