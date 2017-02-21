@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.grandmother.util.http;
 
-import cabanas.garcia.ismael.grandmother.model.Payment;
 import cabanas.garcia.ismael.grandmother.util.JsonUtil;
+import cabanas.garcia.ismael.grandmother.util.RegExpUtil;
 import org.apache.http.Header;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -18,7 +18,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by XI317311 on 16/02/2017.
@@ -28,7 +27,7 @@ public class HttpUtil<T> {
     private static final String APPLICATION_JSON = "application/json";
     private static final Header CONTENT_TYPE_APPLICATION_JSON_HEADER = new BasicHeader(CONTENT_TYPE, APPLICATION_JSON);
 
-    private final String endpoint;
+    private String endpoint;
     private final CloseableHttpClient httpClient;
     private final Class<T> targetClass;
 
@@ -39,11 +38,7 @@ public class HttpUtil<T> {
 
     }
 
-    public HttpUtil(String endpoint) {
-        this(endpoint, null);
-    }
-
-    public <K> Response post(K payload) {
+    public <K> Response<T> post(K payload) {
         HttpPost postRequest = new HttpPost(endpoint);
 
         addContentTypeApplicationJsonHeader(postRequest);
@@ -67,32 +62,45 @@ public class HttpUtil<T> {
         execute(putRequest);
     }
 
-    public Response get(String uri) {
-        HttpGet request = new HttpGet(uri);
+    public Response<T> get() {
+        HttpGet request = new HttpGet(endpoint);
 
         final HttpResponse httpResponse = execute(request);
 
-        Response response = extractResponse(httpResponse);
+        Response<T> response = extractResponse(httpResponse);
 
         return response;
     }
 
-    private Response extractResponse(HttpResponse httpResponse) {
-        T contentInObject = null;
-        try {
-            final InputStream inputStream = httpResponse.getEntity().getContent();
-            if(!(inputStream instanceof EmptyInputStream)) {
-                contentInObject = JsonUtil.toObject(inputStream, targetClass);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Error processing entity.", e);
+    public void addPathVariable(String pathVariableName, String pathVariableValue) {
+        this.endpoint = RegExpUtil.replacePathVariable(endpoint, pathVariableName, pathVariableValue);
+    }
+
+    public void addQueryString(String name, String value) {
+        StringBuffer result = new StringBuffer(this.endpoint);
+        if(!endpoint.contains("?")){
+            result.append("?");
+        }
+        if(endpoint.contains("&")){
+            result.append("&").append(name).append("=").append(value);
+        }
+        else{
+            result.append(name).append("=").append(value);
         }
 
-        return Response.builder()
-                .statusCode(httpResponse.getStatusLine().getStatusCode())
-                .content(contentInObject)
-                .headers(toResponseHeaders(httpResponse.getAllHeaders()))
-                .build();
+        this.endpoint = result.toString();
+    }
+
+    private Response<T> extractResponse(HttpResponse httpResponse) {
+        Response<T> response = null;
+        try {
+            response = new Response<T>(httpResponse.getStatusLine().getStatusCode(), httpResponse.getEntity().getContent(),
+                    toResponseHeaders(httpResponse.getAllHeaders()), targetClass);
+        } catch (IOException e) {
+            throw new RuntimeException("Error extracting response from httpResponse.", e);
+        }
+
+        return response;
     }
 
     private <K> void setPayload(K payload, HttpEntityEnclosingRequestBase httpEntityRequest) {

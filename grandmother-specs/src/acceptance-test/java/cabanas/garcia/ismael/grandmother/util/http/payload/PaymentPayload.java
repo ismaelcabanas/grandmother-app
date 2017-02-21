@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Setter
 public class PaymentPayload {
     private Long paymentTypeId;
-    private BigDecimal amount;
+    private String amount;
     private String dateOfPayment;
     private String description;
 }

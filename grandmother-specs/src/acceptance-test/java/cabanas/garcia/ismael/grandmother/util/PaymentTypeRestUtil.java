@@ -39,11 +39,12 @@ public final class PaymentTypeRestUtil {
         final Response[] responseForGetRequest = new Response[1];
         Optional<cabanas.garcia.ismael.grandmother.util.http.Header> locationHeader = postResponse.getHeader("Location");
         locationHeader.ifPresent(header -> {
-            responseForGetRequest[0] = httpUtil.get(header.getValue());
+            HttpUtil<PaymentType> httpUtil1 = new HttpUtil(header.getValue(), PaymentType.class);
+            responseForGetRequest[0] = httpUtil1.get();
         });
 
         Response response = responseForGetRequest[0];
 
-        return Optional.ofNullable((PaymentType) response.getContent());
+        return response.getContent();
     }
 }
