@@ -48,9 +48,9 @@ class PaymentsAccountControllerSpec extends Specification{
             paymentTransactionsReturnedAre(payments)
         where:
         year | month | payments                                                                   | totalAmount
-        2010 | 1     | []                                                                         | 0
-        2001 | 8     | []                                                                         | 0
-        2011 | 8     | [paymentAguaOf10000From8August2011(), paymentAguaOf10000From1August2011()] | 20000
+        2010 | 1     | []                                                                         | 0.00
+        2001 | 8     | []                                                                         | 0.00
+        2011 | 8     | [paymentAguaOf10000From8August2011(), paymentAguaOf10000From1August2011()] | 20000.00
 
     }
 
@@ -76,9 +76,9 @@ class PaymentsAccountControllerSpec extends Specification{
             paymentTransactionsReturnedAre(payments)
         where:
         year | payments                                                                   | totalAmount
-        2010 | [paymentAguaOf10000FromJune2010()]                                         | 10000
-        2001 | []                                                                         | 0
-        2011 | [paymentAguaOf10000From8August2011(), paymentAguaOf10000From1August2011()] | 20000
+        2010 | [paymentAguaOf10000FromJune2010()]                                         | 10000.00
+        2001 | []                                                                         | 0.00
+        2011 | [paymentAguaOf10000From8August2011(), paymentAguaOf10000From1August2011()] | 20000.00
 
     }
 

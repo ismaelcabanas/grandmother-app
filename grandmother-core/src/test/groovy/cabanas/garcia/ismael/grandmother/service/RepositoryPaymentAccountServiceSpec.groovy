@@ -53,7 +53,7 @@ class RepositoryPaymentAccountServiceSpec extends Specification{
 
     def "should return payment transactions in ascending order by date for given account on a year"(){
         given: "a given account with transactions"
-            Account account = Account.builder().id(1).balance(BigDecimal.ZERO).transactions(new Transactions())build()
+            Account account = Account.builder().id(1).balance(AmountUtil.ZERO).transactions(new Transactions())build()
             Collection<PaymentTransaction> paymentsTransactions = new ArrayList<>()
             PaymentTransaction aguaPayment2015 = new PaymentTransaction(amount: AmountUtil.TEN_THOUSAND, chargeType: PaymentTypeUtil.aguaPersistedPayment, dateOfMovement: cabanas.garcia.ismael.grandmother.utils.DateUtils.parse("2015-01-01 00:00:00.0"))
             PaymentTransaction aguaPayment = new PaymentTransaction(amount: AmountUtil.TEN_THOUSAND, chargeType: PaymentTypeUtil.aguaPersistedPayment, dateOfMovement: cabanas.garcia.ismael.grandmother.utils.DateUtils.parse("2016-01-01 00:00:00.0"))
