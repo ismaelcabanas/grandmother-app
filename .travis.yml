@@ -12,11 +12,6 @@ addons:
 
 script: mvn clean verify sonar:sonar
 
-cache:
-  directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
-
 deploy:
   skip_cleanup: true
   provider: heroku
