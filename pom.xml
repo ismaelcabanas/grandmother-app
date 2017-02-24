@@ -23,6 +23,12 @@
         <url>https://github.com/ismaelcabanas/grandmother-app/issues</url>
     </issueManagement>
 
+    <scm>
+        <connection>scm:git:git://github.com/ismaelcabanas/grandmother-app.git</connection>
+        <developerConnection>scm:git:git@github.com:ismaelcabanas/grandmother-app.git</developerConnection>
+        <url>https://github.com/ismaelcabanas/grandmother-app</url>
+    </scm>
+
     <modules>
         <module>grandmother-core</module>
         <module>grandmother-api</module>
