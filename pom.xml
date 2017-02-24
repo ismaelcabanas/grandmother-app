@@ -17,6 +17,12 @@
         </developer>
     </developers>
 
+    <issueManagement>
+        <!-- Issues, bugs, and feature requests should be submitted to the following issue management system for this project -->
+        <system>GitHub</system>
+        <url>https://github.com/ismaelcabanas/grandmother-app/issues</url>
+    </issueManagement>
+
     <modules>
         <module>grandmother-core</module>
         <module>grandmother-api</module>
