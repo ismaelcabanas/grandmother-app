@@ -9,6 +9,14 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <developers>
+        <developer>
+            <id>ismaelcabanas</id>
+            <name>Ismael Cabañas García</name>
+            <email>ismaelcabanas@gmail.com</email>
+        </developer>
+    </developers>
+
     <modules>
         <module>grandmother-core</module>
         <module>grandmother-api</module>
