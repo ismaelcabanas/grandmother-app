@@ -1,7 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller.adapter
 
 import cabanas.garcia.ismael.grandmother.controller.response.PersonResponse
-import cabanas.garcia.ismael.grandmother.domain.account.DepositTransaction
 import cabanas.garcia.ismael.grandmother.domain.person.Person
 
 /**
