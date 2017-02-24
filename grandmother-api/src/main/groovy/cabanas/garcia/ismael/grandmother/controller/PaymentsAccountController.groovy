@@ -1,29 +1,18 @@
 package cabanas.garcia.ismael.grandmother.controller
 
-import cabanas.garcia.ismael.grandmother.adapters.DepositTransactionToDepositResponseFunction
 import cabanas.garcia.ismael.grandmother.controller.adapter.TransactionsAdapter
-import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
-import cabanas.garcia.ismael.grandmother.controller.response.PaymentResponse
 import cabanas.garcia.ismael.grandmother.controller.response.PaymentsResponse
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Transactions
-import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.service.PaymentAccountService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 import java.util.function.BinaryOperator
-import java.util.function.Function
-import java.util.stream.Collectors
 
 /**
  * Created by XI317311 on 04/01/2017.
