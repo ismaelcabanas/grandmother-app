@@ -1,18 +1,22 @@
 package cabanas.garcia.ismael.grandmother.controller
 
 import cabanas.garcia.ismael.grandmother.controller.adapter.PaymentTypeAdapter
+import cabanas.garcia.ismael.grandmother.controller.response.PaymentTypeResponse
 import cabanas.garcia.ismael.grandmother.controller.response.PaymentTypesResponse
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.service.PaymentTypeService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 import javax.validation.Valid
 
@@ -32,8 +36,16 @@ class PaymentTypeController {
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<Void> create(@Valid @RequestBody PaymentType paymentType){
         log.debug("Creating... $paymentType")
-        paymentTypeService.create(paymentType)
-        new ResponseEntity<Void>(HttpStatus.CREATED)
+        PaymentType paymentTypeBo = paymentTypeService.create(paymentType)
+
+        HttpHeaders headers = new HttpHeaders()
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8)
+        headers.setLocation(ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/paymentTypes/" + paymentTypeBo.id)
+                .buildAndExpand(paymentTypeBo.id).toUri())
+
+        new ResponseEntity<Void>(headers, HttpStatus.CREATED)
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -49,5 +61,20 @@ class PaymentTypeController {
         new ResponseEntity<PaymentTypesResponse>(paymentTypeResponse, HttpStatus.OK)
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}")
+    ResponseEntity<?> read(@PathVariable("id") Long paymentTypeId){
 
+        Optional<PaymentType> paymentType = paymentTypeService.findById(paymentTypeId)
+
+        log.debug("Payment type entity returned by payment type service $paymentType")
+
+        ResponseEntity<?> responseEntity = new ResponseEntity(HttpStatus.NOT_FOUND)
+        if(paymentType.isPresent()){
+            PaymentTypeResponse paymentTypeResponse = PaymentTypeAdapter.mapEntityToResponse(paymentType.get())
+            responseEntity = new ResponseEntity<>(paymentTypeResponse, HttpStatus.OK)
+        }
+
+        return responseEntity
+
+    }
 }

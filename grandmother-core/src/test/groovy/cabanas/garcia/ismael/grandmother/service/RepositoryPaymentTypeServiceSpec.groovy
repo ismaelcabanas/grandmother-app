@@ -3,6 +3,7 @@ package cabanas.garcia.ismael.grandmother.service
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentType
 import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTypeRepository
 import cabanas.garcia.ismael.grandmother.service.impl.RepositoryPaymentTypeService
+import cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil
 import spock.lang.Specification
 
 import static cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.*
@@ -40,7 +41,50 @@ class RepositoryPaymentTypeServiceSpec extends Specification{
             paymentTypesAre(paymentTypesResult, cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.getAguaPersistedPayment(), cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.getEndesaPersistedPayment(), cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.getGasPersistedPayment())
     }
 
-    def void paymentTypesAre(List<PaymentType> result, PaymentType... paymentTypes) {
+    def "findBy() should return payment type data"(){
+        given:
+            List<PaymentType> paymentTypes = new ArrayList<>()
+            paymentTypes.add(cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.getEndesaPersistedPayment())
+            paymentTypes.add(cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.getGasPersistedPayment())
+            paymentTypes.add(cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.getAguaPersistedPayment())
+
+        and:
+            PaymentType paymentTypeToFind = PaymentTypeUtil.getEndesaPersistedPayment()
+        and:
+            PaymentTypeRepository paymentTypeRepository = Mock(PaymentTypeRepository)
+            paymentTypeRepository.findOne(_) >> paymentTypeToFind
+            PaymentTypeService paymentTypeService = new RepositoryPaymentTypeService(paymentTypeRepository: paymentTypeRepository)
+        when:
+            Optional<PaymentType> paymentType = paymentTypeService.findById(paymentTypeToFind.id)
+        then:
+            paymentTypeIs(paymentType.get(), paymentTypeToFind)
+    }
+
+    def "findBy() should return empty if doesn't exist a given payment type"(){
+        given:
+            List<PaymentType> paymentTypes = new ArrayList<>()
+            paymentTypes.add(cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.getEndesaPersistedPayment())
+            paymentTypes.add(cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.getGasPersistedPayment())
+            paymentTypes.add(cabanas.garcia.ismael.grandmother.utils.test.PaymentTypeUtil.getAguaPersistedPayment())
+
+        and:
+            PaymentType paymentTypeToFind = PaymentTypeUtil.getEndesaPersistedPayment()
+        and:
+            PaymentTypeRepository paymentTypeRepository = Mock(PaymentTypeRepository)
+            paymentTypeRepository.findOne(_) >> null
+            PaymentTypeService paymentTypeService = new RepositoryPaymentTypeService(paymentTypeRepository: paymentTypeRepository)
+        when:
+            Optional<PaymentType> paymentType = paymentTypeService.findById(paymentTypeToFind.id)
+        then:
+            assert paymentType.isPresent() == false
+    }
+
+    void paymentTypeIs(PaymentType source, PaymentType target) {
+        assert source.id == target.id
+        assert source.name == target.name
+    }
+
+    void paymentTypesAre(List<PaymentType> result, PaymentType... paymentTypes) {
         paymentTypes.eachWithIndex { PaymentType paymentType, int i ->
             assert result.get(i).name == paymentType.name
         }

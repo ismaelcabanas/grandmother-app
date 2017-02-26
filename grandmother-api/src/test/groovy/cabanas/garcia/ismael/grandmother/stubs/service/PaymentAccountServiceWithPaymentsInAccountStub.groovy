@@ -34,4 +34,20 @@ class PaymentAccountServiceWithPaymentsInAccountStub implements PaymentAccountSe
 
         transactions
     }
+
+    @Override
+    Transactions getPaymentTransactionsByYear(Long accountId, int year) {
+        Collection<DepositTransaction> paymentTransactions =
+                account.transactions.list.sort(false, this.byDateOfTransactionAscendingOrder)
+
+        Collection<DepositTransaction> paymentTransactionsByYear =
+                paymentTransactions.findAll { PaymentTransaction dt ->
+                    (DateUtil.yearOf(dt.dateOfMovement) == year)}
+
+        Transactions transactions = new Transactions()
+
+        paymentTransactionsByYear.each {PaymentTransaction dt -> transactions.add(dt)}
+
+        transactions
+    }
 }

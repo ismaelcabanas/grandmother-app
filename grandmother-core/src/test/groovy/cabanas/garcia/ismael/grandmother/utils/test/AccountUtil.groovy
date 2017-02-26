@@ -10,7 +10,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.Transactions
  */
 class AccountUtil {
 
-    static final BigDecimal DEFAULT_BALANCE = new BigDecimal(30000)
+    static final BigDecimal DEFAULT_BALANCE = AmountUtil.THIRTY_THOUSAND
     static final String DEFAULT_ACCOUNT_NUMBER = "123"
     static final Long DEFAULT_ID = 1L
 

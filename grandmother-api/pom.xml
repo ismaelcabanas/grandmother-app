@@ -6,7 +6,7 @@
 
     <groupId>cabanas.garcia.ismael.grandmother</groupId>
     <artifactId>grandmother-api</artifactId>
-    <version>1.0.6</version>
+    <version>1.1.0</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -31,6 +31,22 @@
         <swagger.version>2.4.0</swagger.version>
         <docker.image.prefix>ismaelcabanas14</docker.image.prefix>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <finalName>grandmother-api</finalName>
@@ -95,11 +111,11 @@
                 <artifactId>maven-source-plugin</artifactId>
                 <version>2.2.1</version>
             </plugin>
-
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${surefire.version}</version>
                 <configuration>
+                    <skipTests>${skipUTs}</skipTests>
                     <!-- Establece la Sets the VM argument line used when unit tests are run. -->
                     <argLine>${surefireArgLine}</argLine>
                     <includes>
@@ -111,11 +127,29 @@
                     </excludes>
                 </configuration>
             </plugin>
-
+            <!-- Configure Integration Tests   -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                    <skipITs>${skipITs}</skipITs>
+                    <includes>
+                        <include>**/*ITSpec.*</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.9.1</version>
                 <executions>
                     <execution>
                         <id>add-source</id>
@@ -157,33 +191,6 @@
                                     <directory>src/itest/resources</directory>
                                 </resource>
                             </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Failsafe : Ejecuta los tests integrados -->
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18.1</version>
-                <executions>
-                    <!--
-                        Asegura que los goals de integration-test y verify del Failsafe Maven
-                        plugin se ejecutan.
-                    -->
-                    <execution>
-                        <id>integration-tests</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Establece el valor de la línea de argumentos de la VM utilizado cuando se ejecutan los tests de integración. -->
-                            <argLine>${failsafeArgLine}</argLine>
-                            <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-                            <includes>
-                                <include>**/*ITSpec.*</include>
-                            </includes>
                         </configuration>
                     </execution>
                 </executions>
@@ -439,7 +446,7 @@
         <dependency>
             <groupId>cabanas.garcia.ismael.grandmother</groupId>
             <artifactId>grandmother-core</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.1.0</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

@@ -14,7 +14,6 @@ import javax.persistence.*
 @EqualsAndHashCode
 @Entity
 class Account {
-    private static final BigDecimal ZERO_BALANCE = BigDecimal.ZERO
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

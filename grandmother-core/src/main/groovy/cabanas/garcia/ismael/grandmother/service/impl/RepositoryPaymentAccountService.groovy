@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.grandmother.domain.account.PaymentTransaction
 import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 import cabanas.garcia.ismael.grandmother.domain.account.repository.PaymentTransactionRepository
 import cabanas.garcia.ismael.grandmother.service.PaymentAccountService
+import cabanas.garcia.ismael.grandmother.utils.DateUtils
 import groovy.util.logging.Slf4j
 import org.joda.time.DateTime
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,6 +41,27 @@ class RepositoryPaymentAccountService implements PaymentAccountService {
         paymentTransactions.each {PaymentTransaction pt -> transactions.add(pt)}
         log.debug("Transactions $transactions")
         
+        transactions
+    }
+
+    @Override
+    Transactions getPaymentTransactionsByYear(Long accountId, int year) {
+        log.debug("Init method getPaymentTransactionsByYear($accountId, $year)")
+
+        Date startDate = DateUtils.firstDateOfYear(year)
+        log.debug("Start date $startDate")
+
+        // last day of year
+        Date endDate = DateUtils.lastDayOfYear(year)
+        log.debug("End date $endDate")
+
+        Collection<PaymentTransaction> paymentTransactions =
+                paymentTransactionRepository.findByAccountIdAndDateOfMovementBetweenOrderByDateOfMovementAsc(accountId, startDate, endDate)
+
+        Transactions transactions = new Transactions()
+        paymentTransactions.each {PaymentTransaction pt -> transactions.add(pt)}
+        log.debug("Transactions $transactions")
+
         transactions
     }
 }

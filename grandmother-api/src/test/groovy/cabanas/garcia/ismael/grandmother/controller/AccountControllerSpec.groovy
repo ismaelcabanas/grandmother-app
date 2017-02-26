@@ -10,6 +10,7 @@ import cabanas.garcia.ismael.grandmother.service.AccountService
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceDefaultAccountStub
 import cabanas.garcia.ismael.grandmother.stubs.service.AccountServiceThatGetAnAccountStub
 import cabanas.garcia.ismael.grandmother.utils.test.AccountUtil
+import cabanas.garcia.ismael.grandmother.utils.test.AmountUtil
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.http.HttpStatus
@@ -31,11 +32,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  */
 class AccountControllerSpec extends Specification{
 
-    private static final BigDecimal ZERO = BigDecimal.ZERO
-    private static final BigDecimal TEN_THOUSAND = new BigDecimal(10000)
-    private static final BigDecimal TWENTY_THOUSAND = new BigDecimal(20000)
-    private static final BigDecimal THIRTY_THOUSAND = new BigDecimal(30000)
-
     def "should return status 200 when hits the URL for getting an existing account"(){
         given: "a given account identifier"
             Account account = getDefaultAccount()
@@ -52,11 +48,11 @@ class AccountControllerSpec extends Specification{
     def "should get account details when hits the URL for getting an existing account"(){
         given: "a given account with list"
             Account account = getDefaultAccount()
-            Deposit deposit10000 = new Deposit(amount: TEN_THOUSAND, date: TODAY)
+            Deposit deposit10000 = new Deposit(amount: AmountUtil.TEN_THOUSAND, date: TODAY)
             Deposit deposit15000 = new Deposit(amount: 15000, date: YESTERDAY)
             deposit(account, deposit10000)
             deposit(account, deposit15000)
-            payment(account, TEN_THOUSAND, TODAY)
+            payment(account, AmountUtil.TEN_THOUSAND, TODAY)
         and: "account controller configured with his services"
             AccountService accountService = new AccountServiceThatGetAnAccountStub(account)
             AccountController controller = new AccountController(accountService: accountService)

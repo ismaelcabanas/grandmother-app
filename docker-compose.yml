@@ -1,0 +1,22 @@
+postgres: # Entrada para definir el contenedor. Por defecto este nombre se usa como hostname
+  image: postgres:9.6.1 # El nombre de la imagen
+  volumes:  # Definición de volúmenes
+    - /var/lib/postgresql/data
+  environment: # Definición de variables de entorno
+    POSTGRES_USER: grandmotherdb
+    POSTGRES_PASSWORD: secret
+  ports:  # Mapeo de puertos
+    - "5432:5432"
+
+rest-api:
+  build: grandmother-api
+  dockerfile: src/main/docker/Dockerfile
+  environment:
+    SPRING_PROFILES_ACTIVE: integration
+    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/grandmotherdb # el hostname 'postgres' viene del nombre de la entrada al contendor
+    SPRING_DATASOURCE_USERNAME: grandmotherdb
+    SPRING_DATASOURCE_PASSWORD: secret
+  ports:
+    - "8080:8080"
+  links:
+    - postgres

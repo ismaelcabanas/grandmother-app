@@ -1,6 +1,5 @@
 package cabanas.garcia.ismael.grandmother.controller.adapter
 
-import cabanas.garcia.ismael.grandmother.controller.adapter.PersonAdapter
 import cabanas.garcia.ismael.grandmother.controller.response.DepositResponse
 import cabanas.garcia.ismael.grandmother.controller.response.DepositsResponse
 import cabanas.garcia.ismael.grandmother.controller.response.PaymentResponse

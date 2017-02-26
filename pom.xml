@@ -6,13 +6,44 @@
 
     <groupId>cabanas.garcia.ismael.grandmother</groupId>
     <artifactId>grandmother-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
+
+    <developers>
+        <developer>
+            <id>ismaelcabanas</id>
+            <name>Ismael Cabañas García</name>
+            <email>ismaelcabanas@gmail.com</email>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <!-- Issues, bugs, and feature requests should be submitted to the following issue management system for this project -->
+        <system>GitHub</system>
+        <url>https://github.com/ismaelcabanas/grandmother-app/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:git://github.com/ismaelcabanas/grandmother-app.git</connection>
+        <developerConnection>scm:git:git@github.com:ismaelcabanas/grandmother-app.git</developerConnection>
+        <url>https://github.com/ismaelcabanas/grandmother-app</url>
+    </scm>
 
     <modules>
         <module>grandmother-core</module>
         <module>grandmother-api</module>
     </modules>
+
+    <properties>
+        <!--
+            mvn install -DskipUTs : Skips Unit tests
+            mvn install -DskipITs : Skips Integration tests
+            mvn install -DskipTests : Skips both Unit and Integration Tests
+        -->
+        <skipTests>false</skipTests>
+        <skipITs>${skipTests}</skipITs>
+        <skipUTs>${skipTests}</skipUTs>
+    </properties>
 
     <build>
         <!-- To define the plugin version in your parent POM -->
@@ -23,7 +54,55 @@
                     <artifactId>gitflow-maven-plugin</artifactId>
                     <version>1.3.1</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.19.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.19.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.9.1</version>
+                </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <configuration>
+                    <gitFlowConfig>
+                        <productionBranch>master</productionBranch>
+                        <developmentBranch>development</developmentBranch>
+                        <featureBranchPrefix>feature/</featureBranchPrefix>
+                        <releaseBranchPrefix>release/</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+                        <supportBranchPrefix>support/</supportBranchPrefix>
+                        <versionTagPrefix></versionTagPrefix>
+                        <origin>origin</origin>
+                    </gitFlowConfig>
+
+                    <commitMessages>
+                        <featureStartMessage>update ${project.artifactId} for feature branch</featureStartMessage>
+                        <featureFinishMessage>update ${project.artifactId} for development branch</featureFinishMessage>
+
+                        <hotfixStartMessage>update ${project.artifactId} for hotfix</hotfixStartMessage>
+                        <hotfixFinishMessage>update for next development ${project.artifactId}</hotfixFinishMessage>
+
+                        <releaseStartMessage>update ${project.artifactId} for release</releaseStartMessage>
+                        <releaseFinishMessage>update for next development ${project.artifactId}</releaseFinishMessage>
+
+                        <tagHotfixMessage>tag hotfix</tagHotfixMessage>
+                        <tagReleaseMessage>tag release</tagReleaseMessage>
+                    </commitMessages>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

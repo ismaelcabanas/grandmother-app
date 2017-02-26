@@ -26,6 +26,12 @@ class RepositoryPaymentTypeService implements PaymentTypeService{
     }
 
     @Override
+    Optional<PaymentType> findById(Long id) {
+        def paymentType = paymentTypeRepository.findOne(id)
+        Optional.ofNullable(paymentType)
+    }
+
+    @Override
     def deleteAll() {
         paymentTypeRepository.deleteAll()
     }

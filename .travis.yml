@@ -1,11 +1,25 @@
 language: groovy
+
 jdk:
   - oraclejdk8
+
 sudo: false
+
 install: true
+
 git:
   depth: 3
-script: mvn clean verify
+
+addons:
+  sonarqube:
+    token:
+      secure: H60K+a1/R8bgkBZpG6Eb92rS8Iv3e3JcgOtmKeltY7suANtP9oQrOl2o/Q1lECgp2sEF8I49iod4chkgW99MrL2oB+ws9F2MV86az7phDp/XAvYmWlchOEkEvX6swhnGutrH8wpK3a4/FAGbZDBcu0yVDTHLjBLyQTgoOmHk8kFpd2WZvPvjKrprTUmT6VVJlkHKxhFR8h4vObOdZJq7dFcRrRLXwH1wjxEBsmVXU993Emaok6d5d93iyBidb9zfKbXV5XITOBWNkEYHFYbc54bv9YltdkjIjOV8LHeH7wfqlMzwn2GuaXialVLIPnNELUtRP1Pe8XNGvgVpNVk4mAIbsa6baOJWGFRTiW+htQZnoJCSTqGZ5rhTxuJ/RQNU6DiLFs8UBtAnvNW4Wx1lWoVuVXOjdTRr5BtsgTpsG+A2gJsvc79hufq6AxL8OxDAGSFMVFl9ljnZWRds2KEAZI5If0pJsE/Yca+HUg2tVQ2PbCvlFmzgiWHcMxwK1L2I2S22zzTti/4/pGPqjucJ6fYFtd171JWmScz93IsVVPtUHJuY8I86G8P1DWDeaKe7N+JKHl+tlu+BrPCGLJSf1Cl+Vsh4HlwmZhVySXEzmPbBKJY0+8Lw6cIgiO6JXrYdzY9N52NFc1PFXjP1bex8LVTXzRoBaM7CnQb+3HoSI6A=
+    branches:
+      - master
+      - feature_api_payments_per_year
+
+script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar
+
 deploy:
   skip_cleanup: true
   provider: heroku

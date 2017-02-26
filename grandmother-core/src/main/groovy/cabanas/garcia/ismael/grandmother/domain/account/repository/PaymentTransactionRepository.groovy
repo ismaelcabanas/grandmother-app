@@ -1,7 +1,6 @@
 package cabanas.garcia.ismael.grandmother.domain.account.repository
 
 import cabanas.garcia.ismael.grandmother.domain.account.PaymentTransaction
-import cabanas.garcia.ismael.grandmother.domain.account.Transactions
 import org.springframework.data.repository.CrudRepository
 
 /**
