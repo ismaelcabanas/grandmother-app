@@ -71,5 +71,38 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <configuration>
+                    <gitFlowConfig>
+                        <productionBranch>master</productionBranch>
+                        <developmentBranch>development</developmentBranch>
+                        <featureBranchPrefix>feature/</featureBranchPrefix>
+                        <releaseBranchPrefix>release/</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+                        <supportBranchPrefix>support/</supportBranchPrefix>
+                        <versionTagPrefix></versionTagPrefix>
+                        <origin>origin</origin>
+                    </gitFlowConfig>
+
+                    <commitMessages>
+                        <featureStartMessage>update ${project.artifactId} for feature branch</featureStartMessage>
+                        <featureFinishMessage>update ${project.artifactId} for development branch</featureFinishMessage>
+
+                        <hotfixStartMessage>update ${project.artifactId} for hotfix</hotfixStartMessage>
+                        <hotfixFinishMessage>update for next development ${project.artifactId}</hotfixFinishMessage>
+
+                        <releaseStartMessage>update ${project.artifactId} for release</releaseStartMessage>
+                        <releaseFinishMessage>update for next development ${project.artifactId}</releaseFinishMessage>
+
+                        <tagHotfixMessage>tag hotfix</tagHotfixMessage>
+                        <tagReleaseMessage>tag release</tagReleaseMessage>
+                    </commitMessages>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
