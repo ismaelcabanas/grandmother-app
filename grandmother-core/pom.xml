@@ -121,14 +121,13 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${surefire.version}</version>
                 <configuration>
+                    <skipTests>${skipUTs}</skipTests>
                     <!-- Establece la Sets the VM argument line used when unit tests are run. -->
                     <argLine>${surefireArgLine}</argLine>
-                    <skipTests>${skip.unit.tests}</skipTests>
                     <includes>
                         <include>**/*Spec.*</include>
                     </includes>
@@ -138,11 +137,31 @@
                     </excludes>
                 </configuration>
             </plugin>
-
+            <!-- Configure Integration Tests   -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <!-- Establece el valor de la línea de argumentos de la VM utilizado cuando se ejecutan los tests de integración. -->
+                    <argLine>${failsafeArgLine}</argLine>
+                    <skipTests>${skipTests}</skipTests>
+                    <skipITs>${skipITs}</skipITs>
+                    <includes>
+                        <include>**/*ITSpec.*</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.9.1</version>
                 <executions>
                     <execution>
                         <id>add-source</id>
@@ -184,34 +203,6 @@
                                     <directory>src/itest/resources</directory>
                                 </resource>
                             </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Failsafe : Ejecuta los tests integrados -->
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18.1</version>
-                <executions>
-                    <!--
-                        Asegura que los goals de integration-test y verify del Failsafe Maven
-                        plugin se ejecutan.
-                    -->
-                    <execution>
-                        <id>integration-tests</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Establece el valor de la línea de argumentos de la VM utilizado cuando se ejecutan los tests de integración. -->
-                            <argLine>${failsafeArgLine}</argLine>
-                            <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-                            <includes>
-                                <include>**/*ITSpec.*</include>
-                            </includes>
-                            <skipTests>${skip.integration.tests}</skipTests>
                         </configuration>
                     </execution>
                 </executions>
