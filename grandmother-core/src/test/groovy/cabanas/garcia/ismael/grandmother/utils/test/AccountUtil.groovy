@@ -32,4 +32,12 @@ class AccountUtil {
         account.charge(payment)
     }
 
+    static Account getDefaultAccount(){
+        Account.builder()
+            .balance(DEFAULT_BALANCE)
+            .accountNumber(DEFAULT_ACCOUNT_NUMBER)
+            .transactions(new Transactions())
+            .build()
+    }
+
 }
