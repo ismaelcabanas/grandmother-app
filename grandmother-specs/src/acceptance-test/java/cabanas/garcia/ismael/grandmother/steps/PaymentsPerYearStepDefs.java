@@ -40,13 +40,13 @@ public class PaymentsPerYearStepDefs {
         // Write code here that turns the phrase above into concrete actions
         account = AccountRestUtil.createAnAccount();
 
-        payments.forEach(payment -> {
+        /*payments.forEach(payment -> {
             Optional<PaymentType> paymentType = PaymentTypeRestUtil.getPaymentType(payment.getPaymentType());
             if(paymentType.isPresent())
                 AccountRestUtil.payment(account.getId(), paymentType.get().getId(), payment.getAmount(), payment.getDate());
             else
                 LOGGER.debug("No existe tipo de pago %s", payment.getPaymentType());
-        });
+        });*/
     }
 
     @When("^consulto los pagos del año (\\d+)$")

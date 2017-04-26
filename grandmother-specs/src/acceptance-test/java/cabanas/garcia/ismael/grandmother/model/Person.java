@@ -7,7 +7,7 @@ import lombok.*;
 @Value
 @AllArgsConstructor
 @Getter
-public class PaymentType {
+public class Person {
     private Long id;
     private String name;
 }
