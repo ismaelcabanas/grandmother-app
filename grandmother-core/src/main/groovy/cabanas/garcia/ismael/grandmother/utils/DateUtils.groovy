@@ -18,13 +18,13 @@ final class DateUtils {
 
     static Date lastDayOfYear(int year) {
         def calEndDate = Calendar.instance
-        calEndDate.set(year: year, month: Calendar.DECEMBER, date: 31)
+        calEndDate.set(year: year, month: Calendar.DECEMBER, date: 31, hourOfDay: 23, minute: 59, second: 59)
         calEndDate.time
     }
 
     static Date firstDateOfYear(int year) {
         def calStartDate = Calendar.instance
-        calStartDate.set(year: year, month: Calendar.JANUARY, date: 1)
+        calStartDate.set(year: year, month: Calendar.JANUARY, date: 1, hourOfDay: 0, minute: 0, second: 0)
         calStartDate.time
     }
 
