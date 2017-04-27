@@ -17,7 +17,7 @@ class RepositoryAccountBalanceServiceSpec extends Specification{
         and:
             TransactionRepository transactionRepository = Mock(TransactionRepository)
             BigDecimal balanceExpected = AmountUtil.TWENTY_THOUSAND
-            transactionRepository.balance(_,_,_) >> balanceExpected
+            transactionRepository.balance(_,_) >> balanceExpected
             AccountBalanceService sut =
                     new RepositoryAccountBalanceService(transactionRepository)
         and: "year and month for consulting payment transactions"
@@ -27,6 +27,24 @@ class RepositoryAccountBalanceServiceSpec extends Specification{
             BigDecimal actual = sut.balance(account.id, year, month)
         then:
             //1 * transactionRepository.balance(account.id, year, month)
+            actual == balanceExpected
+    }
+
+    def "should return zero balance of an account unitl given year and month if not exist transactions to that date"(){
+        given: "a given account with transactions"
+            Account account = AccountUtil.getDefaultAccountPersisted()
+        and:
+            TransactionRepository transactionRepository = Mock(TransactionRepository)
+            BigDecimal balanceExpected = AmountUtil.ZERO
+            transactionRepository.balance(_,_) >> null
+            AccountBalanceService sut =
+                    new RepositoryAccountBalanceService(transactionRepository)
+        and: "year and month for consulting payment transactions"
+            int year = DateUtil.yearOf(DateUtil.TODAY)
+            int month = DateUtil.monthOf(DateUtil.TODAY)
+        when:
+            BigDecimal actual = sut.balance(account.id, year, month)
+        then:
             actual == balanceExpected
     }
 }

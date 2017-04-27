@@ -37,12 +37,11 @@ class TransactionRepositoryITSpec extends Specification{
             testEntityManager.persist(account)
         and: "dates are"
             DateTime dateTime = new DateTime(year, month, 1, 0, 0, 0)
-            Date startDate = dateTime.toDate()
             DateTime lastDayOfMonth = dateTime.dayOfMonth().withMaximumValue()
             Date endDate = lastDayOfMonth.toDate()
         when: "find transactions on account"
             BigDecimal balance =
-                sut.balance(account.id, startDate, endDate)
+                sut.balance(account.id, endDate)
         then:
             assert balance == balanceExpected
         where:

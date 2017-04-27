@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service
 @Slf4j
 @Service
 class RepositoryAccountBalanceService implements AccountBalanceService{
+
+    private static final BigDecimal ZERO_BALANCE = BigDecimal.ZERO
+
     TransactionRepository transactionRepository
 
     RepositoryAccountBalanceService(TransactionRepository transactionRepository) {
@@ -21,14 +24,13 @@ class RepositoryAccountBalanceService implements AccountBalanceService{
 
         DateTime dateTime = new DateTime(year, month, 1, 0, 0, 0)
 
-        Date startDate = dateTime.toDate()
-        log.debug("Start date $startDate")
-
         // last day of month
         DateTime lastDayOfMonth = dateTime.dayOfMonth().withMaximumValue()
         Date endDate = lastDayOfMonth.toDate()
         log.debug("End date $endDate")
 
-        return transactionRepository.balance(accountId, startDate, endDate)
+        BigDecimal balance = transactionRepository.balance(accountId, endDate)
+
+        return (balance == null ? ZERO_BALANCE : balance)
     }
 }
