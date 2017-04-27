@@ -29,7 +29,7 @@ class AccountBalanceControllerSpec extends Specification{
             String year = 2010
         and: "balance controller configured with stub account service"
             AccountBalanceService balanceService = new AccountBalanceServiceDefaultStub(account)
-            AccountBalanceController sut = new AccountBalanceController(balanceService: balanceService)
+            AccountBalanceController sut = new AccountBalanceController(balanceService)
         when: "REST balance get url is hit"
             def response = sendGet(sut, "/accounts/$account.id/balance?year=$year&month=$month")
         then:
@@ -41,29 +41,30 @@ class AccountBalanceControllerSpec extends Specification{
         given: "a given account"
             Account account = AccountUtil.getDefaultAccountPersisted()
         and: "a given month and year"
-            String month = 2
-            String year = 2010
+            int month = 2
+            int year = 2010
         and: "balance controller configured with stub account service"
             AccountBalanceService balanceService = Mock(AccountBalanceService)
-            AccountBalanceController sut = new AccountBalanceController(balanceService: balanceService)
+            AccountBalanceController sut = new AccountBalanceController(balanceService)
         when: "REST balance get url is hit"
             def response = sendGet(sut, "/accounts/$account.id/balance?year=$year&month=$month")
         then:
-            1 * balanceService.balance(account.id, year, month)
+            1 * balanceService.balance(account.getId().longValue(), year, month)
     }
 
     def "should return balance when hits the URL for getting the balance for an existing account for a given month and year"(){
         given: "a given account"
             Account account = AccountUtil.getDefaultAccountPersisted()
+            BigDecimal balanceExpected = account.balance
             account.deposit(DepositUtil.depositFromIsmaelOf10000Today())
             account.charge(PaymentUtil.paymentForWaterOf20000Yesterday())
-            BigDecimal balanceExpected = AmountUtil.TEN_THOUSAND - AmountUtil.TWENTY_THOUSAND
+            balanceExpected += AmountUtil.TEN_THOUSAND - AmountUtil.TWENTY_THOUSAND
         and: "a given month and year"
             String month = 2
             String year = 2010
         and: "balance controller configured with stub account service"
             AccountBalanceService balanceService = new AccountBalanceServiceDefaultStub(account)
-            AccountBalanceController sut = new AccountBalanceController(balanceService: balanceService)
+            AccountBalanceController sut = new AccountBalanceController(balanceService)
         when: "REST balance get url is hit"
             def response = sendGet(sut, "/accounts/$account.id/balance?year=$year&month=$month")
         then:
@@ -79,8 +80,8 @@ class AccountBalanceControllerSpec extends Specification{
             String month = 2
             String year = 2010
         and: "balance controller configured with stub account service"
-            AccountBalanceService balanceService = new AccountBalanceServiceNonExistAccountStub()
-            AccountBalanceController sut = new AccountBalanceController(balanceService: balanceService)
+            AccountBalanceService balanceService = new AccountBalanceServiceDefaultStub()
+            AccountBalanceController sut = new AccountBalanceController(balanceService)
         when: "REST balance get url is hit"
         def response = sendGet(sut, "/accounts/$notExistAccountId/balance?year=$year&month=$month")
         then:
@@ -91,17 +92,18 @@ class AccountBalanceControllerSpec extends Specification{
     def "should return zero balance when hits the URL for getting the balance for an existing account but there is not transactions for given month and year"(){
         given: "a given account"
             Account account = AccountUtil.getDefaultAccountPersisted()
+            BigDecimal balanceExpected = account.balance
         and: "a given month and year"
             String month = 2
             String year = 2010
         and: "balance controller configured with stub account service"
             AccountBalanceService balanceService = new AccountBalanceServiceDefaultStub(account)
-            AccountBalanceController sut = new AccountBalanceController(balanceService: balanceService)
+            AccountBalanceController sut = new AccountBalanceController(balanceService)
         when: "REST balance get url is hit"
             def response = sendGet(sut, "/accounts/$account.id/balance?year=$year&month=$month")
         then:
             def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
-            jsonResponse.balance == AmountUtil.ZERO
+            jsonResponse.balance == balanceExpected
     }
 
     def responseStatusCodeIsNotFound(MockHttpServletResponse response) {
