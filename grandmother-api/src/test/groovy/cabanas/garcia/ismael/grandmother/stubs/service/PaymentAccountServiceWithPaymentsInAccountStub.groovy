@@ -26,7 +26,7 @@ class PaymentAccountServiceWithPaymentsInAccountStub implements PaymentAccountSe
         Collection<DepositTransaction> paymentTransactionsByYearAndMonth =
                 paymentTransactions.findAll { PaymentTransaction dt ->
                     (DateUtil.yearOf(dt.dateOfMovement) == year
-                        && DateUtil.monthOf(dt.dateOfMovement) == month-1)}
+                        && DateUtil.monthOf(dt.dateOfMovement) == month)}
 
         Transactions transactions = new Transactions()
 
