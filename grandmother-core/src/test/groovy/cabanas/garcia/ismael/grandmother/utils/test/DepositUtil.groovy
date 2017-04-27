@@ -20,7 +20,7 @@ final class DepositUtil {
 
     static Deposit depositFromBeaOf20000Yesterday() {
         Deposit.builder()
-                .amount(AmountUtil.TEN_THOUSAND)
+                .amount(AmountUtil.TWENTY_THOUSAND)
                 .person(PersonUtil.getBea())
                 .date(DateUtil.YESTERDAY)
                 .description("Deposit Bea")
