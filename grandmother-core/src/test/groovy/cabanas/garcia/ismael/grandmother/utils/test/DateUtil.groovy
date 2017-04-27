@@ -20,6 +20,6 @@ class DateUtil {
     }
 
     static int monthOf(Date date) {
-        date[Calendar.MONTH]
+        date[Calendar.MONTH] + 1
     }
 }
