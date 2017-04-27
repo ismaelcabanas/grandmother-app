@@ -29,6 +29,6 @@ class RepositoryAccountBalanceService implements AccountBalanceService{
         Date endDate = lastDayOfMonth.toDate()
         log.debug("End date $endDate")
 
-        return transactionRepository.balance(accountId, year, month)
+        return transactionRepository.balance(accountId, startDate, endDate)
     }
 }
