@@ -23,7 +23,7 @@ Feature: API para consultar el balance de la cuenta en un momento determinado
 
   Scenario: Balance positivo
     When consulto el balance a Enero del 2010
-    Then el balance es 120.00
+    Then el balance es 270.00
 
   Scenario: Balance negativo
     When consulto el balance a Enero del 2013
