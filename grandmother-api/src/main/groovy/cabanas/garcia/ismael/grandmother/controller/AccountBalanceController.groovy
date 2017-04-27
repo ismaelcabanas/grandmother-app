@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.grandmother.controller
 
+import cabanas.garcia.ismael.grandmother.controller.response.AccountBalanceResponse
 import cabanas.garcia.ismael.grandmother.controller.response.DepositsResponse
 import cabanas.garcia.ismael.grandmother.controller.response.PaymentsResponse
 import cabanas.garcia.ismael.grandmother.service.AccountBalanceService
@@ -27,10 +28,14 @@ class AccountBalanceController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}/balance", params = ["year","month"])
-    ResponseEntity<PaymentsResponse> paymentsByYearAndMonth(@PathVariable("id") long accountId,
-                                                            @RequestParam(value = "year", required = true) int year,
-                                                            @RequestParam(value = "month", required = true) int month){
+    ResponseEntity<AccountBalanceResponse> paymentsByYearAndMonth(@PathVariable("id") long accountId,
+                                                                  @RequestParam(value = "year", required = true) int year,
+                                                                  @RequestParam(value = "month", required = true) int month){
 
-        return new ResponseEntity<Void>(HttpStatus.OK)
+        BigDecimal balance = balanceService.balance(accountId, year, month)
+
+        AccountBalanceResponse response = AccountBalanceResponse.builder().balance(balance).build();
+
+        return new ResponseEntity<AccountBalanceResponse>(response, HttpStatus.OK)
     }
 }
