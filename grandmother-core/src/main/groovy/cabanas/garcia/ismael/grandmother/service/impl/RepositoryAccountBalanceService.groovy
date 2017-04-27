@@ -1,9 +1,17 @@
 package cabanas.garcia.ismael.grandmother.service.impl
 
-/**
- * Created by XI317311 on 27/04/2017.
- */
-class RepositoryAccountBalanceService {
+import cabanas.garcia.ismael.grandmother.domain.account.repository.AccountRepository
+import cabanas.garcia.ismael.grandmother.service.AccountBalanceService
+
+class RepositoryAccountBalanceService implements AccountBalanceService{
+    AccountRepository accountRepository
+
     RepositoryAccountBalanceService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository
+    }
+
+    @Override
+    BigDecimal balance(long accountId, int year, int month) {
+        return accountRepository.balance(accountId, year, month)
     }
 }
