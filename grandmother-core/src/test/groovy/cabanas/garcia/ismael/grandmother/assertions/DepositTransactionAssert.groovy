@@ -36,7 +36,7 @@ class DepositTransactionAssert extends AbstractAssert<DepositTransactionAssert, 
                 && !depositTransaction.getDescription().equals(deposit.getDescription())
                 && !depositTransaction.getDateOfMovement().equals(deposit.getDate())
                 && !depositTransaction.getPerson().getName().equals(deposit.getPerson().getName())){
-                    failWithMessage("Expected deposit transaction <%s> but was <%s>", depositTransaction, deposit)
+                    failWithMessage("Expected deposit transactions <%s> but was <%s>", depositTransaction, deposit)
             }
         }
         return this

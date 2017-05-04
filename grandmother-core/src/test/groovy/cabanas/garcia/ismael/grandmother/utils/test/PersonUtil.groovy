@@ -23,14 +23,18 @@ class PersonUtil {
     }
 
     static Person getIsmael() {
-        Person.builder().name(DEFAULT_PERSON_NAME).build()
+        getDefaultPerson()
     }
 
     static Person getBea() {
-        return Person.builder().name("Bea").build()
+        getPerson("Bea")
     }
 
     static Person getDefaultPerson(){
-        Person.builder().name(DEFAULT_PERSON_NAME).build()
+        getPerson(DEFAULT_PERSON_NAME)
+    }
+
+    static Person getPerson(String name) {
+        Person.builder().name(name).build()
     }
 }

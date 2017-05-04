@@ -81,12 +81,8 @@ public class HttpUtil<T> {
         if(!endpoint.contains("?")){
             result.append("?");
         }
-        if(endpoint.contains("&")){
-            result.append("&").append(name).append("=").append(value);
-        }
-        else{
-            result.append(name).append("=").append(value);
-        }
+
+        result.append(name).append("=").append(value).append("&");
 
         this.endpoint = result.toString();
     }

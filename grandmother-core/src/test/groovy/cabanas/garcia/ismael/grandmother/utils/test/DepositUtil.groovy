@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.grandmother.utils.test
 
 import cabanas.garcia.ismael.grandmother.domain.account.Deposit
+import cabanas.garcia.ismael.grandmother.utils.DateUtils
 
 /**
  * Created by XI317311 on 25/01/2017.
@@ -25,6 +26,15 @@ final class DepositUtil {
                 .date(DateUtil.YESTERDAY)
                 .description("Deposit Bea")
                 .build()
+    }
+
+    static Deposit depositFrom(String personName, BigDecimal amount, String date) {
+        Deposit.builder()
+            .amount(amount)
+            .person(PersonUtil.getPerson(personName))
+            .date(DateUtils.parse(date))
+            .description("deposit")
+            .build()
     }
 }
 

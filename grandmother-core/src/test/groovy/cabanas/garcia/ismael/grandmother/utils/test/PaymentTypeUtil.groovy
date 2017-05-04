@@ -26,6 +26,10 @@ final class PaymentTypeUtil {
     }
 
     static PaymentType getWaterPayment(){
-        PaymentType.builder().name(PAYMENT_WATER_NAME).build()
+        getPayment(PAYMENT_WATER_NAME)
+    }
+
+    static PaymentType getPayment(String name) {
+        PaymentType.builder().name(name).build()
     }
 }

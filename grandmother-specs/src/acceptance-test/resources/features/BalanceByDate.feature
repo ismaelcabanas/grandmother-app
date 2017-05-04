@@ -28,3 +28,7 @@ Feature: API para consultar el balance de la cuenta en un momento determinado
   Scenario: Balance negativo
     When consulto el balance a Enero del 2013
     Then el balance es -110.00
+
+  Scenario: Balance cero cuando no existen transacciones para la fecha dada
+    When consulto el balance a Enero del 2009
+    Then el balance es 0
